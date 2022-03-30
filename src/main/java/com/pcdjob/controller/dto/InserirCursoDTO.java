@@ -25,3 +25,4 @@ public class InserirCursoDTO {
 		return new CursoCandidato(candidato.get(), cursoObj.get());
 	}
 }
+

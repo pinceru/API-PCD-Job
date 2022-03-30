@@ -41,4 +41,5 @@ public class Nivel {
 		this.curso = curso;
 	}
 	
+	
 }
