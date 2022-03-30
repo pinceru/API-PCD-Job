@@ -19,7 +19,7 @@ public class Estado {
 	private Long id;
 	private String estado;
 	private String sigla;
-	@OneToMany
+	@OneToMany(mappedBy = "cidade")
 	private List<Cidade> cidade;
 	
 	public Long getId() {
@@ -38,6 +38,15 @@ public class Estado {
 		return sigla;
 	}
 	public void setSigla(String sigla) {
+		this.sigla = sigla;
+	}
+	
+	public Estado() {
+		
+	}
+	
+	public Estado(String estado, String sigla) {
+		this.estado = estado;
 		this.sigla = sigla;
 	}
 }

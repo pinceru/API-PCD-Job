@@ -17,7 +17,7 @@ public class Cidade {
 	private Long id;
 	private String cidade;
 	@ManyToOne
-	private Estado idEstado;
+	private Estado estado;
 	
 	public Long getId() {
 		return id;
@@ -32,11 +32,19 @@ public class Cidade {
 		this.cidade = cidade;
 	}
 	public Estado getEstado() {
-		return idEstado;
+		return estado;
 	}
 	public void setEstado(Estado estado) {
-		this.idEstado = estado;
+		this.estado = estado;
 	}
 	
+	public Cidade() {
+		
+	}
+	
+	public Cidade(String cidade, Estado estado) {
+		this.cidade = cidade;
+		this.estado = estado;
+	}
 	
 }

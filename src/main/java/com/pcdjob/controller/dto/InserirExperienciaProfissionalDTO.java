@@ -14,61 +14,41 @@ public class InserirExperienciaProfissionalDTO {
 	private String atribuicoes;
 	private String nomeEmpresa;
 	
-	
-
 	public String getCargo() {
 		return cargo;
 	}
-
-
 
 	public void setCargo(String cargo) {
 		this.cargo = cargo;
 	}
 
-
-
 	public String getDataInicio() {
 		return dataInicio;
 	}
-
-
 
 	public void setDataInicio(String dataInicio) {
 		this.dataInicio = dataInicio;
 	}
 
-
-
 	public String getDataSaida() {
 		return dataSaida;
 	}
-
-
 
 	public void setDataSaida(String dataSaida) {
 		this.dataSaida = dataSaida;
 	}
 
-
-
 	public String getAtribuicoes() {
 		return atribuicoes;
 	}
-
-
 
 	public void setAtribuicoes(String atribuicoes) {
 		this.atribuicoes = atribuicoes;
 	}
 
-
-
 	public String getNomeEmpresa() {
 		return nomeEmpresa;
 	}
-
-
 
 	public void setNomeEmpresa(String nomeEmpresa) {
 		this.nomeEmpresa = nomeEmpresa;

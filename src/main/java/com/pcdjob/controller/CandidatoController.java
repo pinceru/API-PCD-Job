@@ -29,6 +29,7 @@ import com.pcdjob.controller.dto.CursoCandidatoDTO;
 import com.pcdjob.controller.dto.ExperienciaProfissionalDTO;
 import com.pcdjob.controller.dto.InserirCandidatoDTO;
 import com.pcdjob.controller.dto.InserirCursoDTO;
+import com.pcdjob.controller.dto.InserirEnderecoCandidatoDTO;
 import com.pcdjob.controller.dto.InserirExperienciaProfissionalDTO;
 import com.pcdjob.model.candidato.CandidatoEntity;
 import com.pcdjob.model.candidato.CursoCandidato;
@@ -204,5 +205,11 @@ public class CandidatoController {
 		} else {
 			return ResponseEntity.notFound().build();
 		}
+	}
+	
+	@DeleteMapping("/cadastrar/endereco/{id}")
+	@Transactional
+	public ResponseEntity<EnderecoCandidatoDTO> cadastrarEndereco(@PathVariable Long id, @RequestBody InserirEnderecoCandidatoDTO insercaoDTO, UriComponentsBuilder uriBuilder) {
+		
 	}
 }

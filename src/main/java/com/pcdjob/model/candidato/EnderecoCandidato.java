@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -24,8 +23,6 @@ public class EnderecoCandidato {
 	private String bairro;
 	@ManyToOne
 	private Cidade cidade;
-	
-	@JoinColumn(name = "id")
 	@ManyToOne
 	private CandidatoEntity candidato;
 	
@@ -70,6 +67,19 @@ public class EnderecoCandidato {
 	}
 	public void setCandidato(CandidatoEntity candidato) {
 		this.candidato = candidato;
+	}
+	
+	public EnderecoCandidato() {
+		
+	}
+	
+	public EnderecoCandidato(String rua, String numero, String cep, String bairro, Cidade cidade, CandidatoEntity candidato) {
+		this.bairro = bairro;
+		this.candidato = candidato;
+		this.cep = cep;
+		this.cidade = cidade;
+		this.numero = numero;
+		this.rua = rua;
 	}
 	
 }
