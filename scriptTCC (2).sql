@@ -71,13 +71,13 @@ create table tbl_deficiencia(
 
 create table tbl_deficiencia_candidato(
 	id_deficiencia_candidato int not null auto_increment primary key,
-    id_deficiencia int not null,
-    id_candidato int not null,
+    deficiencia_id_deficiencia int not null,
+    candidato_id_candidato int not null,
     constraint fk_candidato_deficiencia_candidato
-    foreign key(id_candidato)
+    foreign key(candidato_id_candidato)
     references tbl_candidato(id_candidato),
     constraint fk_deficiencia_deficiencia_candidato
-    foreign key(id_deficiencia)
+    foreign key(deficiencia_id_deficiencia)
     references tbl_deficiencia(id_deficiencia)
 );
 
@@ -90,9 +90,9 @@ create table tbl_estado(
 create table tbl_cidade(
 	id_cidade int not null auto_increment primary key,
     cidade text not null,
-    id_estado int not null,
+    estado_id_estado int not null,
     constraint fk_estado_cidade
-    foreign key(id_estado)
+    foreign key(estado_id_estado)
     references tbl_estado(id_estado)
 );
 
@@ -102,13 +102,13 @@ create table tbl_endereco_candidato(
     rua text not null,
     cep text not null,
     bairro text not null,
-    id_cidade int not null,
-    id_candidato int not null,
+    cidade_id_cidade int not null,
+    candidato_id_candidato int not null,
     constraint fk_candidato_endereco_candidato
-    foreign key(id_candidato)
+    foreign key(candidato_id_candidato)
     references tbl_candidato(id_candidato),
     constraint fk_cidade_endereco_candidato
-    foreign key(id_cidade)
+    foreign key(cidade_id_cidade)
     references tbl_cidade(id_cidade)
 );
 
@@ -125,25 +125,25 @@ create table tbl_area_atuacao(
 create table tbl_curso(
 	id_curso int not null auto_increment primary key,
     curso text not null,
-    id_area_atuacao int not null,
-    id_nivel int not null,
+    area_atuacao_id_area_atuacao int not null,
+    nivel_id_nivel int not null,
 	constraint fk_area_atuacao_curso
-    foreign key(id_area_atuacao)
+    foreign key(area_atuacao_id_area_atuacao)
     references tbl_area_atuacao(id_area_atuacao),
 	constraint fk_nivel_curso
-    foreign key(id_nivel)
+    foreign key(nivel_id_nivel)
     references tbl_nivel(id_nivel)
 );
 
 create table tbl_curso_candidato(
 	id_curso_candidato int not null auto_increment primary key,
-    id_candidato int not null,
-    id_curso int not null,
+    candidato_id_candidato int not null,
+    curso_id_curso int not null,
     constraint fk_candidato_curso_candidato
-    foreign key(id_candidato)
+    foreign key(candidato_id_candidato)
     references tbl_candidato(id_candidato),
     constraint fk_curso_curso_candidato
-    foreign key(id_curso)
+    foreign key(curso_id_curso)
     references tbl_curso(id_curso)
 );
 

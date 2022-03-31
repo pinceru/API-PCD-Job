@@ -1,5 +1,14 @@
 package com.pcdjob.controller.dto;
 
+import java.util.Optional;
+
+import com.pcdjob.model.Cidade;
+import com.pcdjob.model.Estado;
+import com.pcdjob.model.candidato.CandidatoEntity;
+import com.pcdjob.model.candidato.EnderecoCandidato;
+import com.pcdjob.repository.CidadeRepository;
+import com.pcdjob.repository.EstadoRepository;
+
 public class InserirEnderecoCandidatoDTO {
 	private String rua;
 	private String bairro;
@@ -52,8 +61,28 @@ public class InserirEnderecoCandidatoDTO {
 		this.numero = numero;
 	}
 	
-	public Estado converterEstado() {
-		
+	public Estado converterEstado(EstadoRepository estadoRepository) {
+		Optional<Estado> estadoObj = estadoRepository.findBySigla(sigla);
+		if(estadoObj.isPresent()) {
+			return estadoObj.get();
+		} else {
+			Estado novoEstado = new Estado(estado, sigla);
+			return estadoRepository.save(novoEstado);
+		}
+	}
+	
+	public Cidade converterCidade(CidadeRepository cidadeRepository, Estado estadoObj) {
+		Optional<Cidade> cidadeObj = cidadeRepository.findByCidade(cidade);
+		if(cidadeObj.isPresent()) {
+			return cidadeObj.get();
+		} else {
+			Cidade novaCidade = new Cidade(cidade, estadoObj);
+			return cidadeRepository.save(novaCidade);
+		}
+	}
+	
+	public EnderecoCandidato converter(CandidatoEntity candidato, Cidade cidade) {
+		return new EnderecoCandidato(rua, numero, cep, bairro, cidade, candidato);
 	}
 	
 }

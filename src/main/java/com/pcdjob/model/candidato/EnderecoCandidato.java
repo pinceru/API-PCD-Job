@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.pcdjob.model.Cidade;
@@ -23,7 +24,7 @@ public class EnderecoCandidato {
 	private String bairro;
 	@ManyToOne
 	private Cidade cidade;
-	@ManyToOne
+	@OneToOne
 	private CandidatoEntity candidato;
 	
 	public Long getId() {

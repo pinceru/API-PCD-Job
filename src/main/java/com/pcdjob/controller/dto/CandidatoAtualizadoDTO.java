@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
+import com.pcdjob.controller.EnderecoCandidatoDTO;
 import com.pcdjob.controller.dto.response.ResponseCursoCandidato;
 import com.pcdjob.controller.dto.response.ResponseDeficiencia;
 import com.pcdjob.controller.dto.response.ResponseEmailCandidato;
@@ -29,6 +30,7 @@ public class CandidatoAtualizadoDTO {
 	private List<ResponseDeficiencia> deficiencia;
 	private List<ResponseExperienciaProfissional> experiencia;
 	private List<ResponseCursoCandidato> curso;
+	private EnderecoCandidatoDTO endereco;
 	
 	public Long getId() {
 		return id;
@@ -138,6 +140,17 @@ public class CandidatoAtualizadoDTO {
 		this.curso = curso;
 	}
 
+	
+	
+	public EnderecoCandidatoDTO getEndereco() {
+		return endereco;
+	}
+
+
+	public void setEndereco(EnderecoCandidatoDTO endereco) {
+		this.endereco = endereco;
+	}
+
 
 	public CandidatoAtualizadoDTO(CandidatoEntity candidato) {
 			
@@ -147,7 +160,7 @@ public class CandidatoAtualizadoDTO {
 		this.genero = candidato.getGenero().getGenero();
 		this.dataNascimento = candidato.getDataNascimento();
 		this.informacoes = candidato.getInformacoes();
-		
+	
 		if(candidato.getEmailCandidato().size() > 0) {
 			int indice = 0;
 			List<ResponseTelefoneCandidato> telefoneCandidatoList = new ArrayList<>();
@@ -210,6 +223,8 @@ public class CandidatoAtualizadoDTO {
 			}
 			this.curso = cursoList;
 		}
+		
+		this.endereco = new EnderecoCandidatoDTO(candidato.getEndereco());
 
 	}
 

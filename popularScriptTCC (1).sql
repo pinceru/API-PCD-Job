@@ -9,4 +9,12 @@ insert into tbl_deficiencia(id_tipo_deficiencia, deficiencia) values(1, "SURDEZ 
                                                                     (3, "MONOPLEGIA"), (3, "HAMIPLEGIA"), (3, "PARAPLEGIA"), (3, "TETRAPLEGIA"), (3, "AMPUTAÇÃO"),
                                                                     (4, "SÍNDROME DE DOWN"), (4, "AUTISMO"), (4, "SÍNFROME DE ASPERGER"), (4, "TDAH");
                                   
-select * from tbl_deficiencia_candidato;
+insert into tbl_area_atuacao(area_atuacao) values("CIÊNCIAS EXATAS E DA TERRA"), ("CIÊNCIAS BIOLÓGICAS"), ("ENGENHARIAS"), ("CIÊNCIAS DA SAÚDE"), ("CIÊNCIAS AGRÁRIAS"), ("CIÊNCIAS HUMANAS"), ("LINGUISTÍCAS, LETRAS E ARTES"), ("CIÊNCIAS SOCIAIS APLICADAS");
+
+insert into tbl_nivel(nivel) values("TÉCNICO"), ("SUPERIOR"), ("MESTRADO");
+
+insert into tbl_curso(curso, area_atuacao_id_area_atuacao, nivel_id_nivel) values ("DESENVOLVIMENTO DE SISTEMAS", 3, 1), ("ANÁLISE E DESENVOLVIMENTO DE SISTEMAS", 3, 2);
+
+select * from tbl_curso;
+
+select * from tbl_email_candidato;

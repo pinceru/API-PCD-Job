@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.pcdjob.controller.dto.AtualizarCandidatoDTO;
+import com.pcdjob.controller.dto.AtualizarEnderecoCandidatoDTO;
 import com.pcdjob.controller.dto.AtualizarExperienciaDTO;
 import com.pcdjob.controller.dto.CandidatoAtualizadoDTO;
 import com.pcdjob.controller.dto.CandidatoInseridoDTO;
@@ -31,15 +32,21 @@ import com.pcdjob.controller.dto.InserirCandidatoDTO;
 import com.pcdjob.controller.dto.InserirCursoDTO;
 import com.pcdjob.controller.dto.InserirEnderecoCandidatoDTO;
 import com.pcdjob.controller.dto.InserirExperienciaProfissionalDTO;
+import com.pcdjob.model.Cidade;
+import com.pcdjob.model.Estado;
 import com.pcdjob.model.candidato.CandidatoEntity;
 import com.pcdjob.model.candidato.CursoCandidato;
+import com.pcdjob.model.candidato.EnderecoCandidato;
 import com.pcdjob.model.candidato.ExperienciaProfissional;
 import com.pcdjob.repository.CandidatoRepository;
+import com.pcdjob.repository.CidadeRepository;
 import com.pcdjob.repository.CursoCandidatoRepository;
 import com.pcdjob.repository.CursoRepository;
 import com.pcdjob.repository.DeficienciaCandidatoRepository;
 import com.pcdjob.repository.DeficienciaRepository;
 import com.pcdjob.repository.EmailCandidatoRepository;
+import com.pcdjob.repository.EnderecoCandidatoRepository;
+import com.pcdjob.repository.EstadoRepository;
 import com.pcdjob.repository.ExperienciaProfissionalRepository;
 import com.pcdjob.repository.GeneroRepository;
 import com.pcdjob.repository.TelefoneCandidatoRepository;
@@ -75,6 +82,14 @@ public class CandidatoController {
 	@Autowired
 	private CursoCandidatoRepository cursoCandidatoRepository;
 	
+	@Autowired
+	private EstadoRepository estadoRepository;
+	
+	@Autowired
+	private CidadeRepository cidadeRepository;
+	
+	@Autowired
+	private EnderecoCandidatoRepository enderecoRepository;
 	
 	@PostMapping("/cadastrar")
 	@Transactional
@@ -207,9 +222,28 @@ public class CandidatoController {
 		}
 	}
 	
-	@DeleteMapping("/cadastrar/endereco/{id}")
+	@PostMapping("/cadastrar/endereco/{id}")
 	@Transactional
 	public ResponseEntity<EnderecoCandidatoDTO> cadastrarEndereco(@PathVariable Long id, @RequestBody InserirEnderecoCandidatoDTO insercaoDTO, UriComponentsBuilder uriBuilder) {
+		Estado estado = insercaoDTO.converterEstado(estadoRepository);
+		Cidade cidade = insercaoDTO.converterCidade(cidadeRepository, estado);
+		Optional<CandidatoEntity> candidato = candidatoRepository.findById(id);
+		EnderecoCandidato endereco = insercaoDTO.converter(candidato.get(), cidade);
+		enderecoRepository.save(endereco);
 		
+		URI uri = uriBuilder.path("/candidato/endereco/{id}")
+				.buildAndExpand(endereco.getId()).toUri();
+		return ResponseEntity.created(uri).body(new EnderecoCandidatoDTO(endereco));
+	}
+	
+	@PutMapping("/atualizar/endereco/{id}")
+	@Transactional
+	public ResponseEntity<EnderecoCandidatoDTO> atualizarEndereco(@PathVariable Long id, @RequestBody AtualizarEnderecoCandidatoDTO atualizacaoDTO, UriComponentsBuilder uriBuilder) {
+		EnderecoCandidato endereco = atualizacaoDTO.converter(id, enderecoRepository, estadoRepository, cidadeRepository);
+		enderecoRepository.save(endereco);
+		
+		URI uri = uriBuilder.path("/candidato/endereco/{id}")
+				.buildAndExpand(endereco.getId()).toUri();
+		return ResponseEntity.created(uri).body(new EnderecoCandidatoDTO(endereco));
 	}
 }

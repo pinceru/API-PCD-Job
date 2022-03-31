@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -44,8 +45,8 @@ public class CandidatoEntity {
 	private List<ExperienciaProfissional> experienciaProfissional = new ArrayList<>();
 	@OneToMany(mappedBy = "candidato", cascade = CascadeType.ALL)
 	private List<CursoCandidato> cursoCandidato = new ArrayList<>();
-	@OneToMany
-	private List<EnderecoCandidato> enderecoCandidato = new ArrayList<>();
+	@OneToOne(mappedBy = "candidato", cascade = CascadeType.ALL)
+	private EnderecoCandidato endereco;
 	
 	public CandidatoEntity() {
 		
@@ -139,12 +140,12 @@ public class CandidatoEntity {
 		this.cursoCandidato = cursoCandidato;
 	}
 
-	public List<EnderecoCandidato> getEnderecoCandidato() {
-		return enderecoCandidato;
+	public EnderecoCandidato getEndereco() {
+		return endereco;
 	}
 
-	public void setEnderecoCandidato(List<EnderecoCandidato> enderecoCandidato) {
-		this.enderecoCandidato = enderecoCandidato;
+	public void setEndereco(EnderecoCandidato endereco) {
+		this.endereco = endereco;
 	}
 
 	public Genero getGenero() {
