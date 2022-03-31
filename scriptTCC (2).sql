@@ -154,18 +154,18 @@ create table tbl_empresa(
     descricao text,
     foto_empresa text,
     banner text,
-    id_area_atuacao int not null,
+    area_atuacao_id_area_atuacao int not null,
     constraint fk_area_atuacao_empresa
-    foreign key(id_area_atuacao)
+    foreign key(area_atuacao_id_area_atuacao)
     references tbl_area_atuacao(id_area_atuacao)
 );
 
 create table tbl_email_empresa(
 	id_email_empresa int not null auto_increment primary key,
     email text not null,
-    id_empresa int not null,
+    empresa_id_empresa int not null,
     constraint fk_empresa_email_empresa
-    foreign key(id_empresa)
+    foreign key(empresa_id_empresa)
     references tbl_empresa(id_empresa)
 );
 
@@ -188,9 +188,9 @@ create table tbl_endereco_empresa(
 create table tbl_telefone_empresa(
 	id_telefone_empresa int not null auto_increment primary key,
     numero text not null,
-    id_empresa int not null,
+    empresa_id_empresa int not null,
     constraint fk_empresa_telefone_empresa
-    foreign key(id_empresa)
+    foreign key(empresa_id_empresa)
     references tbl_empresa(id_empresa)
 );
 

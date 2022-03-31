@@ -27,6 +27,7 @@ import com.pcdjob.controller.dto.AtualizarExperienciaDTO;
 import com.pcdjob.controller.dto.CandidatoAtualizadoDTO;
 import com.pcdjob.controller.dto.CandidatoInseridoDTO;
 import com.pcdjob.controller.dto.CursoCandidatoDTO;
+import com.pcdjob.controller.dto.EnderecoCandidatoDTO;
 import com.pcdjob.controller.dto.ExperienciaProfissionalDTO;
 import com.pcdjob.controller.dto.InserirCandidatoDTO;
 import com.pcdjob.controller.dto.InserirCursoDTO;

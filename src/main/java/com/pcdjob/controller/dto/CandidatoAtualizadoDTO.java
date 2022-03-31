@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
-import com.pcdjob.controller.EnderecoCandidatoDTO;
 import com.pcdjob.controller.dto.response.ResponseCursoCandidato;
 import com.pcdjob.controller.dto.response.ResponseDeficiencia;
 import com.pcdjob.controller.dto.response.ResponseEmailCandidato;

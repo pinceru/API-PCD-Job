@@ -9,43 +9,42 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tbl_email_empresa")
-public class EmailEmpresa {
+@Table(name = "tbl_telefone_empresa")
+public class TelefoneEmpresa {
 	@Id
-	@Column(name = "id_email_empresa")
+	@Column(name = "id_telefone_empresa")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String email;
-	
+	private String numero;
 	@ManyToOne
 	private EmpresaEntity empresa;
 	
 	public Long getId() {
 		return id;
 	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	public String getEmail() {
-		return email;
+	public String getNumero() {
+		return numero;
 	}
-	
-	public void setEmail(String email) {
-		this.email = email;
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
-	
 	public EmpresaEntity getEmpresa() {
 		return empresa;
 	}
-	
 	public void setEmpresa(EmpresaEntity empresa) {
 		this.empresa = empresa;
 	}
-
-	public EmailEmpresa(String email, EmpresaEntity empresa) {
-		this.email = email;
-		this.empresa = empresa;
+	
+	public TelefoneEmpresa() {
+		
 	}
+	
+	public TelefoneEmpresa(String numero, EmpresaEntity empresa) {
+		this.empresa = empresa;
+		this.numero = numero;
+	}
+	
 }

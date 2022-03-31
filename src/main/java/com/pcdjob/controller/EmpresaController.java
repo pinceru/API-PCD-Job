@@ -14,10 +14,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.pcdjob.controller.dto.EmpresaDTO;
 import com.pcdjob.controller.dto.InserirEmpresaDTO;
-import com.pcdjob.model.empresa.EmailEmpresa;
 import com.pcdjob.model.empresa.EmpresaEntity;
+import com.pcdjob.repository.AreaAtuacaoRepository;
 import com.pcdjob.repository.EmailEmpresaRepository;
 import com.pcdjob.repository.EmpresaRepository;
+import com.pcdjob.repository.TelefoneEmpresaRepository;
 
 @RestController
 @RequestMapping("/empresa")
@@ -29,13 +30,20 @@ public class EmpresaController {
 	@Autowired
 	private EmailEmpresaRepository emailRepository;
 	
-	@PostMapping
+	@Autowired
+	private TelefoneEmpresaRepository telefoneRepository;
+	
+	@Autowired
+	private AreaAtuacaoRepository areaRepository;
+	
+	@PostMapping("/cadastrar")
 	@Transactional
 	public ResponseEntity<EmpresaDTO> cadastrarEmpresa(@RequestBody InserirEmpresaDTO insercaoDTO, UriComponentsBuilder uriBuilder) {
-		EmpresaEntity empresa = insercaoDTO.converter();
+		EmpresaEntity empresa = insercaoDTO.converter(areaRepository);
 		EmpresaEntity empresaSalva = empresaRepository.save(empresa);
-		EmailEmpresa emailEmpresa =  insercaoDTO.converterEmail(empresaRepository, empresaSalva);
-		emailRepository.save(emailEmpresa);
+		insercaoDTO.converterEmail(empresaSalva, emailRepository);
+		insercaoDTO.converterTelefone(empresaSalva, telefoneRepository);
+		
 		
 		URI uri = uriBuilder.path("/empresa/{id}")
 				.buildAndExpand(empresa.getId()).toUri();

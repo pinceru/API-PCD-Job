@@ -9,8 +9,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.pcdjob.model.AreaAtuacao;
 
 import lombok.Data;
 
@@ -24,8 +27,13 @@ public class EmpresaEntity {
 	private Long id;
 	private String nome;
 	private String senha;
+	private String descricao;
 	@OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
 	private List<EmailEmpresa> emailEmpresa = new ArrayList<>();
+	@OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
+	private List<TelefoneEmpresa> telefoneEmpresa = new ArrayList<>();
+	@ManyToOne
+	private AreaAtuacao areaAtuacao;
 	
 	public Long getId() {
 		return id;
@@ -51,14 +59,39 @@ public class EmpresaEntity {
 	public void setEmailEmpresa(List<EmailEmpresa> emailEmpresa) {
 		this.emailEmpresa = emailEmpresa;
 	}
-	
+	public String getDescricao() {
+		return descricao;
+	}
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+	public AreaAtuacao getAreaAtuacao() {
+		return areaAtuacao;
+	}
+	public void setAreaAtuacao(AreaAtuacao areaAtuacao) {
+		this.areaAtuacao = areaAtuacao;
+	}
+	public List<TelefoneEmpresa> getTelefoneEmpresa() {
+		return telefoneEmpresa;
+	}
+	public void setTelefoneEmpresa(List<TelefoneEmpresa> telefoneEmpresa) {
+		this.telefoneEmpresa = telefoneEmpresa;
+	}
 	public EmpresaEntity() {
 		
 	}
 	
-	public EmpresaEntity(String nome, String senha) {
+	public EmpresaEntity(String nome, String senha, AreaAtuacao areaAtuacao) {
 		this.senha = senha;
 		this.nome = nome;
+		this.areaAtuacao = areaAtuacao;
+	}
+	
+	public EmpresaEntity(String nome, String senha, String descricao, AreaAtuacao areaAtuacao) {
+		this.senha = senha;
+		this.nome = nome;
+		this.descricao = descricao;
+		this.areaAtuacao = areaAtuacao;
 	}
 	
 }

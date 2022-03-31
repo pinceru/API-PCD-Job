@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.pcdjob.model.empresa.EmpresaEntity;
+
 @Entity
 @Table(name = "tbl_area_atuacao")
 public class AreaAtuacao {
@@ -21,6 +23,8 @@ public class AreaAtuacao {
 	private String areaAtuacao;
 	@OneToMany(mappedBy = "areaAtuacao", cascade = CascadeType.ALL)
 	private List<Curso> curso;
+	@OneToMany(mappedBy = "areaAtuacao", cascade = CascadeType.ALL)
+	private List<EmpresaEntity> empresa;
 	
 	public Long getId() {
 		return id;
@@ -39,6 +43,12 @@ public class AreaAtuacao {
 	}
 	public void setCurso(List<Curso> curso) {
 		this.curso = curso;
+	}
+	public List<EmpresaEntity> getEmpresa() {
+		return empresa;
+	}
+	public void setEmpresa(List<EmpresaEntity> empresa) {
+		this.empresa = empresa;
 	}
 	
 	

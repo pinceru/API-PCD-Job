@@ -15,6 +15,3 @@ insert into tbl_nivel(nivel) values("TÉCNICO"), ("SUPERIOR"), ("MESTRADO");
 
 insert into tbl_curso(curso, area_atuacao_id_area_atuacao, nivel_id_nivel) values ("DESENVOLVIMENTO DE SISTEMAS", 3, 1), ("ANÁLISE E DESENVOLVIMENTO DE SISTEMAS", 3, 2);
 
-select * from tbl_curso;
-
-select * from tbl_email_candidato;
