@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -23,7 +22,6 @@ public class Deficiencia {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String deficiencia;
-	@JoinColumn(name = "id_tipo_deficiencia")
 	@ManyToOne
 	private TipoDeficiencia tipoDeficiencia;
 	

@@ -34,118 +34,72 @@ public class CandidatoAtualizadoDTO {
 	public Long getId() {
 		return id;
 	}
-
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-
 	public String getNome() {
 		return nome;
 	}
-
-
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
-
 	public String getGenero() {
 		return genero;
 	}
-
-
 	public void setGenero(String genero) {
 		this.genero = genero;
 	}
-	
-
 	public String getNomeSocial() {
 		return nomeSocial;
 	}
-
-
 	public void setNomeSocial(String nomeSocial) {
 		this.nomeSocial = nomeSocial;
 	}
-
-
 	public List<ResponseEmailCandidato> getEmail() {
 		return email;
 	}
-
-
 	public void setEmail(List<ResponseEmailCandidato> email) {
 		this.email = email;
 	}
-
 	public List<ResponseTelefoneCandidato> getTelefone() {
 		return telefone;
 	}
-
-
 	public void setTelefone(List<ResponseTelefoneCandidato> telefone) {
 		this.telefone = telefone;
 	}
-
-	
 	public String getDataNascimento() {
 		return dataNascimento;
 	}
-
-
 	public void setDataNascimento(String dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
-
-	
 	public String getInformacoes() {
 		return informacoes;
 	}
-
-
 	public void setInformacoes(String informacoes) {
 		this.informacoes = informacoes;
 	}
-
 	public List<ResponseDeficiencia> getDeficiencia() {
 		return deficiencia;
 	}
-
-
 	public void setDeficiencia(List<ResponseDeficiencia> deficiencia) {
 		this.deficiencia = deficiencia;
 	}
-
-	
 	public List<ResponseExperienciaProfissional> getExperiencia() {
 		return experiencia;
 	}
-
-
 	public void setExperiencia(List<ResponseExperienciaProfissional> experiencia) {
 		this.experiencia = experiencia;
 	}
-
-	
-
 	public List<ResponseCursoCandidato> getCurso() {
 		return curso;
 	}
-
-
 	public void setCurso(List<ResponseCursoCandidato> curso) {
 		this.curso = curso;
 	}
-
-	
-	
 	public EnderecoCandidatoDTO getEndereco() {
 		return endereco;
 	}
-
-
 	public void setEndereco(EnderecoCandidatoDTO endereco) {
 		this.endereco = endereco;
 	}
@@ -223,7 +177,10 @@ public class CandidatoAtualizadoDTO {
 			this.curso = cursoList;
 		}
 		
-		this.endereco = new EnderecoCandidatoDTO(candidato.getEndereco());
+		if(candidato.getEndereco() != null) {
+			this.endereco = new EnderecoCandidatoDTO(candidato.getEndereco());
+		}
+		
 
 	}
 

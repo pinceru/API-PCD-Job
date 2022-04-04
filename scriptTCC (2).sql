@@ -63,9 +63,9 @@ create table tbl_tipo_deficiencia(
 create table tbl_deficiencia(
 	id_deficiencia int not null auto_increment primary key,
     deficiencia text not null,
-    id_tipo_deficiencia int not null,
+    tipo_deficiencia_id_tipo_deficiencia int not null,
     constraint fk_tipo_deficiencia_deficiencia
-    foreign key(id_tipo_deficiencia)
+    foreign key(tipo_deficiencia_id_tipo_deficiencia)
     references tbl_tipo_deficiencia(id_tipo_deficiencia)
 );
 

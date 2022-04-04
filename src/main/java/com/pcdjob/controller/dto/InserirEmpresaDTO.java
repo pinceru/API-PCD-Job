@@ -56,6 +56,12 @@ public class InserirEmpresaDTO {
 	public void setAreaAtuacao(Long areaAtuacao) {
 		this.areaAtuacao = areaAtuacao;
 	}
+	public List<String> getTelefone() {
+		return telefone;
+	}
+	public void setTelefone(List<String> telefone) {
+		this.telefone = telefone;
+	}
 	
 	public EmpresaEntity converter(AreaAtuacaoRepository areaRepository) {
 		Optional<AreaAtuacao> area = areaRepository.findById(areaAtuacao);
