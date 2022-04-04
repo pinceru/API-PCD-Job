@@ -32,7 +32,7 @@ public class CandidatoEntity {
 	private String informacoes;
 	
 	@JoinColumn(name = "id_genero")
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	private Genero genero;
 
 	@OneToMany(mappedBy = "candidato", cascade = CascadeType.ALL)
