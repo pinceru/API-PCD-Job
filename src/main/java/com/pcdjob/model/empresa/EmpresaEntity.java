@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.pcdjob.model.AreaAtuacao;
@@ -34,6 +35,8 @@ public class EmpresaEntity {
 	private List<TelefoneEmpresa> telefoneEmpresa = new ArrayList<>();
 	@ManyToOne
 	private AreaAtuacao areaAtuacao;
+	@OneToOne(mappedBy = "empresa", cascade = CascadeType.ALL)
+	private EnderecoEmpresa endereco;
 	
 	public Long getId() {
 		return id;
@@ -76,6 +79,12 @@ public class EmpresaEntity {
 	}
 	public void setTelefoneEmpresa(List<TelefoneEmpresa> telefoneEmpresa) {
 		this.telefoneEmpresa = telefoneEmpresa;
+	}
+	public EnderecoEmpresa getEndereco() {
+		return endereco;
+	}
+	public void setEndereco(EnderecoEmpresa endereco) {
+		this.endereco = endereco;
 	}
 	public EmpresaEntity() {
 		

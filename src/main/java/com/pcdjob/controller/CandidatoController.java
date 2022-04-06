@@ -113,7 +113,6 @@ public class CandidatoController {
 		atualizacaoDTO.converterEmail(candidato, emailRepository);
 		candidatoRepository.save(candidato);
 		
-		
 		URI uri = uriBuilder.path("/candidato/{id}")
 				.buildAndExpand(candidato.getId()).toUri();
 		return ResponseEntity.created(uri).body(new CandidatoAtualizadoDTO(candidato));

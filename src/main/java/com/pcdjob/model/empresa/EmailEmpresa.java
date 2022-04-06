@@ -44,6 +44,10 @@ public class EmailEmpresa {
 		this.empresa = empresa;
 	}
 
+	public EmailEmpresa() {
+		
+	}
+	
 	public EmailEmpresa(String email, EmpresaEntity empresa) {
 		this.email = email;
 		this.empresa = empresa;
