@@ -175,13 +175,13 @@ create table tbl_endereco_empresa(
     rua text not null,
     cep text not null,
     bairro text not null,
-    id_cidade int not null,
-    id_empresa int not null,
+    cidade_id_cidade int not null,
+    empresa_id_empresa int not null,
     constraint fk_empresa_endereco_empresa
-    foreign key(id_empresa)
+    foreign key(empresa_id_empresa)
     references tbl_empresa(id_empresa),
     constraint fk_cidade_endereco_empresa
-    foreign key(id_cidade)
+    foreign key(cidade_id_cidade)
     references tbl_cidade(id_cidade)
 );
 
@@ -273,22 +273,30 @@ create table tbl_vaga(
     titulo text not null,
     descricao text,
     requisitos text,
-    id_local_trabalho int not null,
-    id_salario int not null,
-    id_tipo_contrato int not null,
-    id_empresa int not null,
+    local_trabalho_id_local_trabalho int not null,
+    tipo_contrato_id_tipo_contrato int not null,
+    empresa_id_empresa int not null,
     constraint fk_local_trabalho_vaga
-    foreign key(id_local_trabalho)
+    foreign key(local_trabalho_id_local_trabalho)
     references tbl_local_trabalho(id_local_trabalho),
-    constraint fk_salario_vaga
-    foreign key(id_salario)
-    references tbl_salario(id_salario),
     constraint fk_tipo_contrato_vaga
-    foreign key(id_tipo_contrato)
+    foreign key(tipo_contrato_id_tipo_contrato)
     references tbl_tipo_contrato(id_tipo_contrato),
     constraint fk_empresa_vaga
-    foreign key(id_empresa)
+    foreign key(empresa_id_empresa)
     references tbl_empresa(id_empresa)
+);
+
+create table tbl_vaga_salario(
+    id_vaga_salario int not null auto_increment primary key,
+    salario_id_salario int not null,
+    vaga_id_vaga int not null,
+    constraint fk_vaga_salario_vaga
+    foreign key(vaga_id_vaga)
+    references tbl_vaga(id_vaga),
+    constraint fk_salario_salario_vaga
+    foreign key(salario_id_salario)
+    references tbl_salario(id_salario)
 );
 
 create table tbl_beneficio_vaga(
