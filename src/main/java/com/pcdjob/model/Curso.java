@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.pcdjob.model.candidato.CursoCandidato;
+import com.pcdjob.model.vaga.FormacaoDesejada;
 
 @Entity
 @Table(name = "tbl_curso")
@@ -28,6 +29,8 @@ public class Curso {
 	private AreaAtuacao areaAtuacao;
 	@OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
 	private List<CursoCandidato> cursoCandidato;
+	@OneToMany(mappedBy = "curso")
+	private List<FormacaoDesejada> formacaoDesejada;
 	
 	public Long getId() {
 		return id;
@@ -59,6 +62,11 @@ public class Curso {
 	public void setCursoCandidato(List<CursoCandidato> cursoCandidato) {
 		this.cursoCandidato = cursoCandidato;
 	}
-	
+	public List<FormacaoDesejada> getFormacaoDesejada() {
+		return formacaoDesejada;
+	}
+	public void setFormacaoDesejada(List<FormacaoDesejada> formacaoDesejada) {
+		this.formacaoDesejada = formacaoDesejada;
+	}
 	
 }

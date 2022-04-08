@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.pcdjob.model.candidato.DeficienciaCandidato;
+import com.pcdjob.model.vaga.VagaDeficiencia;
 
 @Entity
 @Table(name = "tbl_deficiencia")
@@ -27,6 +28,8 @@ public class Deficiencia {
 	
 	@OneToMany(mappedBy = "deficiencia", cascade = CascadeType.ALL)
 	private List<DeficienciaCandidato> deficienciaCandidato;
+	@OneToMany(mappedBy = "deficiencia")
+	private List<VagaDeficiencia> vagaDeficiencia;
 	
 	public Long getId() {
 		return id;
@@ -52,7 +55,10 @@ public class Deficiencia {
 	public void setDeficienciaCandidato(List<DeficienciaCandidato> deficienciaCandidato) {
 		this.deficienciaCandidato = deficienciaCandidato;
 	}
-	
-	
-	
+	public List<VagaDeficiencia> getVagaDeficiencia() {
+		return vagaDeficiencia;
+	}
+	public void setVagaDeficiencia(List<VagaDeficiencia> vagaDeficiencia) {
+		this.vagaDeficiencia = vagaDeficiencia;
+	}
 }

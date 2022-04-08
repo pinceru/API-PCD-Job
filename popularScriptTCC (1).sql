@@ -15,3 +15,6 @@ insert into tbl_nivel(nivel) values("TÉCNICO"), ("SUPERIOR"), ("MESTRADO");
 
 insert into tbl_curso(curso, area_atuacao_id_area_atuacao, nivel_id_nivel) values ("DESENVOLVIMENTO DE SISTEMAS", 3, 1), ("ANÁLISE E DESENVOLVIMENTO DE SISTEMAS", 3, 2);
 
+insert into tbl_suporte_pcd(suporte) values("ACOMPANHEMENTO"), ("CÃO-GUIA"), ("RAMPA DE ACESSO"), ("AMBIENTE CONTROLADO"), ("TRADUTOR DE LIBRAS"), ("DOCUMENTO EM BRAILLE");
+
+insert into tbl_tipo_contrato(tipo_contrato) values("CLT"), ("ESTÁGIO"), ("PJ"), ("INFORMAL");

@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.pcdjob.model.AreaAtuacao;
+import com.pcdjob.model.vaga.VagaEntity;
 
 import lombok.Data;
 
@@ -37,6 +38,8 @@ public class EmpresaEntity {
 	private AreaAtuacao areaAtuacao;
 	@OneToOne(mappedBy = "empresa", cascade = CascadeType.ALL)
 	private EnderecoEmpresa endereco;
+	@OneToMany(mappedBy = "empresa")
+	private List<VagaEntity> vaga;
 	
 	public Long getId() {
 		return id;

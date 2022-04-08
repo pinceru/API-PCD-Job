@@ -1,4 +1,4 @@
-drop database db_tcc_ds3t;
+drop database if exists db_tcc_ds3t;
 create database db_tcc_ds3t;
 
 use db_tcc_ds3t;
@@ -232,15 +232,15 @@ create table tbl_local_trabalho(
     rua text not null,
     cep text not null,
     bairro text not null,
-    id_cidade int not null,
+    cidade_id_cidade int not null,
     constraint fk_cidade_local_trabalho
-    foreign key(id_cidade)
+    foreign key(cidade_id_cidade)
     references tbl_cidade(id_cidade)
 );
 
 create table tbl_suporte_pcd(
 	id_suporte_pcd int not null auto_increment primary key,
-    suport text not null
+    suporte text not null
 );
 
 create table tbl_horario(
@@ -273,12 +273,16 @@ create table tbl_vaga(
     titulo text not null,
     descricao text,
     requisitos text,
+    horario_id_horario int not null,
     local_trabalho_id_local_trabalho int not null,
     tipo_contrato_id_tipo_contrato int not null,
     empresa_id_empresa int not null,
     constraint fk_local_trabalho_vaga
     foreign key(local_trabalho_id_local_trabalho)
     references tbl_local_trabalho(id_local_trabalho),
+    constraint fk_horario_vaga
+    foreign key(horario_id_horario)
+    references tbl_horario(id_horario),
     constraint fk_tipo_contrato_vaga
     foreign key(tipo_contrato_id_tipo_contrato)
     references tbl_tipo_contrato(id_tipo_contrato),
@@ -301,61 +305,61 @@ create table tbl_vaga_salario(
 
 create table tbl_beneficio_vaga(
 	id_beneficio_vaga int not null auto_increment primary key,
-    id_beneficio int not null,
-    id_vaga int not null,
+    beneficio_id_beneficio int not null,
+    vaga_id_vaga int not null,
     constraint fk_beneficio_beneficio_vaga
-    foreign key(id_beneficio)
+    foreign key(beneficio_id_beneficio)
     references tbl_beneficio(id_beneficio),
     constraint fk_vaga_beneficio_vaga
-    foreign key(id_vaga)
+    foreign key(vaga_id_vaga)
     references tbl_vaga(id_vaga)
 );
 
-create table tbl_vaga_suporte(
-	id_vaga_suporte int not null auto_increment primary key,
-    id_suporte int not null,
-    id_vaga int not null,
+create table tbl_vaga_suporte_pcd(
+	id_vaga_suporte_pcd int not null auto_increment primary key,
+    suporte_id_suporte_pcd int not null,
+    vaga_id_vaga int not null,
     constraint fk_suporte_vaga_suporte
-    foreign key(id_suporte)
+    foreign key(suporte_id_suporte_pcd)
     references tbl_suporte_pcd(id_suporte_pcd),
     constraint fk_vaga_vaga_suporte
-    foreign key(id_vaga)
+    foreign key(vaga_id_vaga)
     references tbl_vaga(id_vaga)
 );
 
 create table tbl_vaga_deficiencia(
 	id_vaga_deficiencia int not null auto_increment primary key,
-    id_deficiencia int not null,
-    id_vaga int not null,
+    deficiencia_id_deficiencia int not null,
+    vaga_id_vaga int not null,
     constraint fk_deficiencia_vaga_deficiencia
-    foreign key(id_deficiencia)
+    foreign key(deficiencia_id_deficiencia)
     references tbl_deficiencia(id_deficiencia),
     constraint fk_vaga_vaga_deficiencia
-    foreign key(id_vaga)
+    foreign key(vaga_id_vaga)
     references tbl_vaga(id_vaga)
 );
 
 create table tbl_formacao_desejada(
 	id_formacao_desejada int not null auto_increment primary key,
-    id_curso int not null,
-    id_vaga int not null,
+    curso_id_curso int not null,
+    vaga_id_vaga int not null,
     constraint fk_curso_formaca_desejada
-    foreign key(id_curso)
+    foreign key(curso_id_curso)
     references tbl_curso(id_curso),
     constraint fk_vaga_formacao_desejada
-    foreign key(id_vaga)
+    foreign key(vaga_id_vaga)
     references tbl_vaga(id_vaga)
 );
 
 create table tbl_vaga_candidato(
 	id_vaga_candidato int not null auto_increment primary key,
     status text not null,
-    id_candidato int not null,
-    id_vaga int not null,
+    candidato_id_candidato int not null,
+    vaga_id_vaga int not null,
     constraint fk_candidato_vaga_candidato
-    foreign key(id_candidato)
+    foreign key(candidato_id_candidato)
     references tbl_candidato(id_candidato),
     constraint fk_vaga_vaga_candidato
-    foreign key(id_vaga)
+    foreign key(vaga_id_vaga)
     references tbl_vaga(id_vaga)
 );

@@ -1,5 +1,7 @@
 package com.pcdjob.controller;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,13 +53,26 @@ public class CursoController {
 	
 	@GetMapping("/listar")
 	@Transactional
-	public Page<CursoDTO> listarCursos(@RequestParam(required = true) String areaAtuacao, @RequestParam(required = true) String nivel, 
+	public Page<CursoDTO> listarCursos(@RequestParam(required = false) Long idAreaAtuacao, @RequestParam(required = false) Long idNivel, 
 			@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
 		
-		AreaAtuacao area = areaRepository.findByAreaAtuacao(areaAtuacao);
-		Nivel nivelCurso = nivelRepository.findByNivel(nivel);
-		Page<Curso> cursos = cursoRepository.findByAreaAtuacaoAndNivel(area, nivelCurso, paginacao);
-		return CursoDTO.converter(cursos);
+		if(idAreaAtuacao != null && idNivel != null) {
+			Optional<AreaAtuacao> area = areaRepository.findById(idAreaAtuacao);
+			Optional<Nivel> nivelCurso = nivelRepository.findById(idNivel);
+			Page<Curso> cursos = cursoRepository.findByAreaAtuacaoAndNivel(area.get(), nivelCurso.get(), paginacao);
+			return CursoDTO.converter(cursos);
+		} else if(idAreaAtuacao != null && idNivel == null) {
+			Optional<AreaAtuacao> area = areaRepository.findById(idAreaAtuacao);
+			Page<Curso> cursos = cursoRepository.findByAreaAtuacao(area.get(), paginacao);
+			return CursoDTO.converter(cursos);
+		} else if(idAreaAtuacao == null && idNivel != null) {
+			Optional<Nivel> nivelCurso = nivelRepository.findById(idNivel);
+			Page<Curso> cursos = cursoRepository.findByNivel(nivelCurso.get(), paginacao);
+			return CursoDTO.converter(cursos);
+		} else {
+			Page<Curso> cursos = cursoRepository.findAll(paginacao);
+			return CursoDTO.converter(cursos);
+		}
 	}
 
 }

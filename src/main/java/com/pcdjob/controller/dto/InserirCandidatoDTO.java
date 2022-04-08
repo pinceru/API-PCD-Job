@@ -2,11 +2,6 @@ package com.pcdjob.controller.dto;
 
 import java.util.Optional;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
-
 import com.pcdjob.model.candidato.CandidatoEntity;
 import com.pcdjob.model.candidato.EmailCandidato;
 import com.pcdjob.model.candidato.Genero;
@@ -15,9 +10,7 @@ import com.pcdjob.repository.GeneroRepository;
 
 
 public class InserirCandidatoDTO {
-	@NotNull @NotEmpty @Length(min = 1, max = 100)
 	private String nome;
-	@NotNull @NotEmpty @Length(min = 5, max = 100)
 	private String senha;
 	private String email;
 	private String genero;
