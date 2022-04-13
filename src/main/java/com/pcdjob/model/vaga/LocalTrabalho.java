@@ -72,5 +72,16 @@ public class LocalTrabalho {
 		this.vaga = vaga;
 	}
 	
+	public LocalTrabalho() {
+		
+	}
+	
+	public LocalTrabalho(String rua, String numero, String cep, String bairro, Cidade cidade) {
+		this.bairro = bairro;
+		this.numero = numero;
+		this.cep = cep;
+		this.rua = rua;
+		this.cidade = cidade;
+	}
 	
 }

@@ -10,7 +10,6 @@ import org.hibernate.validator.constraints.Length;
 
 import com.pcdjob.model.AreaAtuacao;
 import com.pcdjob.model.Cidade;
-import com.pcdjob.model.Estado;
 import com.pcdjob.model.empresa.EmailEmpresa;
 import com.pcdjob.model.empresa.EmpresaEntity;
 import com.pcdjob.model.empresa.EnderecoEmpresa;
@@ -21,6 +20,7 @@ import com.pcdjob.repository.EmailEmpresaRepository;
 import com.pcdjob.repository.EnderecoEmpresaRepository;
 import com.pcdjob.repository.EstadoRepository;
 import com.pcdjob.repository.TelefoneEmpresaRepository;
+import com.pcdjob.util.ConverterEnderecoEHorario;
 
 public class InserirEmpresaDTO {
 	@NotNull @NotEmpty @Length(min = 1, max = 100)
@@ -38,7 +38,7 @@ public class InserirEmpresaDTO {
 	private String cidade;
 	private String estado;
 	private String sigla;
-	
+	ConverterEnderecoEHorario conversor = new ConverterEnderecoEHorario();
 	
 	public String getNome() {
 		return nome;
@@ -150,29 +150,8 @@ public class InserirEmpresaDTO {
 		}
 	}
 	
-	private Estado converterEstado(EstadoRepository estadoRepository) {
-		Optional<Estado> estadoOptional = estadoRepository.findBySigla(sigla);
-		if(estadoOptional.isPresent()) {
-			return estadoOptional.get();
-		} else {
-			Estado novoEstado = new Estado(estado, sigla);
-			return estadoRepository.save(novoEstado);
-		}
-	}
-	
-	private Cidade converterCidade(CidadeRepository cidadeRepository, EstadoRepository estadoRepository) {
-		Optional<Cidade> cidadeOptional = cidadeRepository.findByCidade(cidade);
-		if(cidadeOptional.isPresent()) {
-			return cidadeOptional.get();
-		} else {
-			Estado estadoObj = converterEstado(estadoRepository);
-			Cidade novaCidade = new Cidade(cidade, estadoObj);
-			return cidadeRepository.save(novaCidade);
-		}
-	}
-	
-	public void converterEndereco(EmpresaEntity empresa, EnderecoEmpresaRepository enderecoRepository, CidadeRepository cidadeRepository, EstadoRepository estadoRepository) {
-		Cidade cidadeSalva = converterCidade(cidadeRepository, estadoRepository);
-		enderecoRepository.save(new EnderecoEmpresa(rua, numero, bairro, cep, cidadeSalva, empresa));
+	public EnderecoEmpresa converterEndereco(EmpresaEntity empresa, EnderecoEmpresaRepository enderecoRepository, CidadeRepository cidadeRepository, EstadoRepository estadoRepository) {
+		Cidade cidadeSalva = conversor.cidade(cidadeRepository, estadoRepository, cidade, sigla, estado);
+		return enderecoRepository.save(new EnderecoEmpresa(rua, numero, bairro, cep, cidadeSalva, empresa));
 	}
 }

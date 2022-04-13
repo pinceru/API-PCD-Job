@@ -21,6 +21,11 @@ public class FormacaoDesejada {
 	private Curso curso;
 	@ManyToOne
 	private VagaEntity vaga;
+	
+	public FormacaoDesejada(VagaEntity vaga, Curso curso) {
+		this.vaga = vaga;
+		this.curso = curso;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -40,4 +45,7 @@ public class FormacaoDesejada {
 		this.vaga = vaga;
 	}
 	
+	public FormacaoDesejada() {
+		
+	}
 }

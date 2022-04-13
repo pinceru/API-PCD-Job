@@ -19,6 +19,11 @@ public class VagaBeneficio {
 	private VagaEntity vaga;
 	@ManyToOne
 	private Beneficio beneficio;
+	
+	public VagaBeneficio(VagaEntity vaga, Beneficio beneficio) {
+		this.beneficio = beneficio;
+		this.vaga = vaga;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -36,6 +41,10 @@ public class VagaBeneficio {
 	}
 	public void setBeneficio(Beneficio beneficio) {
 		this.beneficio = beneficio;
+	}
+	
+	public VagaBeneficio() {
+		
 	}
 	
 }

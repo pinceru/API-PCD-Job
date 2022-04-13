@@ -92,7 +92,7 @@ public class CandidatoController {
 	@Autowired
 	private EnderecoCandidatoRepository enderecoRepository;
 	
-	@PostMapping("/cadastrar")
+	@PostMapping(value= "/cadastrar")
 	@Transactional
 	public ResponseEntity<CandidatoInseridoDTO> cadastrarCandidato(@RequestBody InserirCandidatoDTO insercaoDTO, UriComponentsBuilder uriBuilder) {
 		CandidatoEntity candidato = insercaoDTO.converter(generoRepository);

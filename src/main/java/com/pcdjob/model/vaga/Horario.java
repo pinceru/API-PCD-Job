@@ -19,7 +19,6 @@ public class Horario {
 	private Long id;
 	private String horarioInicio;
 	private String horarioSaida;
-	private String cargaHoraria;
 	private int visivel;
 	@OneToMany(mappedBy = "horario")
 	private List<VagaEntity> vaga;
@@ -42,12 +41,6 @@ public class Horario {
 	public void setHorarioSaida(String horarioSaida) {
 		this.horarioSaida = horarioSaida;
 	}
-	public String getCargaHoraria() {
-		return cargaHoraria;
-	}
-	public void setCargaHoraria(String cargaHoraria) {
-		this.cargaHoraria = cargaHoraria;
-	}
 	public int getVisivel() {
 		return visivel;
 	}
@@ -59,5 +52,15 @@ public class Horario {
 	}
 	public void setVaga(List<VagaEntity> vaga) {
 		this.vaga = vaga;
+	}
+	
+	public Horario() {
+		
+	}
+	
+	public Horario(String horarioInicio, String horarioSaida, int visivel) {
+		this.horarioInicio = horarioInicio;
+		this.horarioSaida = horarioSaida;
+		this.visivel = visivel;
 	}
 }

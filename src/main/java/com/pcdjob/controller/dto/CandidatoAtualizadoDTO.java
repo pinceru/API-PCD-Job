@@ -144,7 +144,8 @@ public class CandidatoAtualizadoDTO {
 			while(indice < candidato.getDeficienciaCandidato().size()) {
 				Deficiencia deficienciaCandidato = candidato.getDeficienciaCandidato().get(indice).getDeficiencia();
 				ResponseDeficiencia response = 
-						new ResponseDeficiencia(deficienciaCandidato.getId(), deficienciaCandidato.getTipoDeficiencia().getId(), deficienciaCandidato.getDeficiencia(), deficienciaCandidato.getTipoDeficiencia().getTipo());
+						new ResponseDeficiencia(deficienciaCandidato.getId(), deficienciaCandidato.getTipoDeficiencia().getId(), 
+								deficienciaCandidato.getDeficiencia(), deficienciaCandidato.getTipoDeficiencia().getTipo(), candidato.getDeficienciaCandidato().get(indice).getId());
 				deficienciaCandidatoList.add(response);
 				indice++;
 			}
@@ -170,7 +171,8 @@ public class CandidatoAtualizadoDTO {
 			while(indice < candidato.getCursoCandidato().size()) {
 				Curso cursos = candidato.getCursoCandidato().get(indice).getCurso();
 				ResponseCursoCandidato cursoCandidato = 
-						new ResponseCursoCandidato(cursos.getId(), cursos.getCurso(), cursos.getNivel().getId(), cursos.getNivel().getNivel(), cursos.getAreaAtuacao().getId(), cursos.getAreaAtuacao().getAreaAtuacao());
+						new ResponseCursoCandidato(cursos.getId(), cursos.getCurso(), cursos.getNivel().getId(), 
+								cursos.getNivel().getNivel(), cursos.getAreaAtuacao().getId(), cursos.getAreaAtuacao().getAreaAtuacao(), candidato.getCursoCandidato().get(indice).getId());
 				cursoList.add(cursoCandidato);
 				indice++;
 			}

@@ -38,4 +38,8 @@ public class TipoContrato {
 	public void setVaga(List<VagaEntity> vaga) {
 		this.vaga = vaga;
 	}
+	
+	public TipoContrato() {
+		
+	}
 }

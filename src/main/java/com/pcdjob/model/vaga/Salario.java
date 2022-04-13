@@ -20,7 +20,12 @@ public class Salario {
 	private String salario;
 	private int visivel;
 	@OneToMany(mappedBy = "salario")
-	private List<VagaSalario> vagaSalario;
+	private List<VagaEntity> vaga;
+	
+	public Salario(String salario, int visivel) {
+		this.salario = salario;
+		this.visivel = visivel;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -39,11 +44,15 @@ public class Salario {
 	public void setVisivel(int visivel) {
 		this.visivel = visivel;
 	}
-	public List<VagaSalario> getVagaSalario() {
-		return vagaSalario;
+	public List<VagaEntity> getVaga() {
+		return vaga;
 	}
-	public void setVagaSalario(List<VagaSalario> vagaSalario) {
-		this.vagaSalario = vagaSalario;
+	public void setVaga(List<VagaEntity> vaga) {
+		this.vaga = vaga;
+	}
+	
+	public Salario() {
+		
 	}
 	
 }

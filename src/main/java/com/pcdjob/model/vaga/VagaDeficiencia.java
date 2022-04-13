@@ -21,6 +21,11 @@ public class VagaDeficiencia {
 	private VagaEntity vaga;
 	@ManyToOne
 	private Deficiencia deficiencia;
+	
+	public VagaDeficiencia(VagaEntity vaga, Deficiencia deficiencia) {
+		this.vaga = vaga;
+		this.deficiencia = deficiencia;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -39,5 +44,8 @@ public class VagaDeficiencia {
 	public void setDeficiencia(Deficiencia deficiencia) {
 		this.deficiencia = deficiencia;
 	}
-	
+
+	public VagaDeficiencia() {
+		
+	}
 }

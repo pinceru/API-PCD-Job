@@ -26,8 +26,8 @@ public class VagaEntity {
 	private String requisitos;
 	@ManyToOne
 	private TipoContrato tipoContrato;
-	@OneToMany(mappedBy = "vaga")
-	private List<VagaSalario> vagaSalario;
+	@ManyToOne
+	private Salario salario;
 	@OneToMany(mappedBy = "vaga")
 	private List<VagaDeficiencia> vagaDeficiencia;
 	@ManyToOne
@@ -79,11 +79,11 @@ public class VagaEntity {
 	public void setTipoContrato(TipoContrato tipoContrato) {
 		this.tipoContrato = tipoContrato;
 	}
-	public List<VagaSalario> getVagaSalario() {
-		return vagaSalario;
+	public Salario getSalario() {
+		return salario;
 	}
-	public void setVagaSalario(List<VagaSalario> vagaSalario) {
-		this.vagaSalario = vagaSalario;
+	public void setSalario(Salario salario) {
+		this.salario = salario;
 	}
 	public List<VagaDeficiencia> getVagaDeficiencia() {
 		return vagaDeficiencia;
@@ -128,4 +128,18 @@ public class VagaEntity {
 		this.formacaoDesejada = formacaoDesejada;
 	}
 	
+	public VagaEntity() {
+		
+	}
+	public VagaEntity(int status, String titulo, String descricao, String requisitos, TipoContrato tipoContrato, Horario horario, EmpresaEntity empresa, LocalTrabalho localTrabalho, Salario salario) {
+		this.status = status;
+		this.titulo = titulo;
+		this.descricao = descricao;
+		this.requisitos = requisitos;
+		this.tipoContrato = tipoContrato;
+		this.horario = horario;
+		this.empresa = empresa;
+		this.localTrabalho = localTrabalho;
+		this.salario = salario;
+	}
 }

@@ -1,17 +1,19 @@
 package com.pcdjob.controller.dto.response;
 
 public class ResponseCursoCandidato {
-	private Long id;
+	private Long idCursoCandidato;
+	private Long idCurso;
 	private String curso;
 	private Long idNivelCurso;
 	private String nivelCurso;
 	private Long idArea;
 	private String area;
-	public Long getId() {
-		return id;
+	
+	public Long getIdCurso() {
+		return idCurso;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdCurso(Long idCurso) {
+		this.idCurso = idCurso;
 	}
 	public String getCurso() {
 		return curso;
@@ -42,18 +44,24 @@ public class ResponseCursoCandidato {
 	}
 	public void setArea(String area) {
 		this.area = area;
+	}	
+	public Long getIdCursoCandidato() {
+		return idCursoCandidato;
 	}
-	
+	public void setIdCursoCandidato(Long idCursoCandidato) {
+		this.idCursoCandidato = idCursoCandidato;
+	}
 	public ResponseCursoCandidato() {
 		
 	}
 	
-	public ResponseCursoCandidato(Long id, String curso, Long idNivelCurso, String nivelCurso, Long idArea, String area) {
+	public ResponseCursoCandidato(Long id, String curso, Long idNivelCurso, String nivelCurso, Long idArea, String area, Long idCursoCandidato) {
 		this.area = area;
 		this.curso = curso;
-		this.id = id;
+		this.idCurso = id;
 		this.idArea = idArea;
 		this.idNivelCurso = idNivelCurso;
 		this.nivelCurso = nivelCurso;
+		this.idCursoCandidato = idCursoCandidato;
 	}
 }

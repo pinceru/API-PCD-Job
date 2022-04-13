@@ -21,6 +21,10 @@ public class VagaSuportePCD {
 	private SuportePCD suporte;
 	@ManyToOne
 	private VagaEntity vaga;
+	public VagaSuportePCD(VagaEntity vaga, SuportePCD suportePCD) {
+		this.suporte = suportePCD;
+		this.vaga = vaga;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -38,6 +42,10 @@ public class VagaSuportePCD {
 	}
 	public void setVaga(VagaEntity vaga) {
 		this.vaga = vaga;
+	}
+	
+	public VagaSuportePCD() {
+		
 	}
 	
 }
