@@ -18,3 +18,12 @@ insert into tbl_curso(curso, area_atuacao_id_area_atuacao, nivel_id_nivel) value
 insert into tbl_suporte_pcd(suporte) values("ACOMPANHEMENTO"), ("CÃO-GUIA"), ("RAMPA DE ACESSO"), ("AMBIENTE CONTROLADO"), ("TRADUTOR DE LIBRAS"), ("DOCUMENTO EM BRAILLE");
 
 insert into tbl_tipo_contrato(tipo_contrato) values("CLT"), ("ESTÁGIO"), ("PJ"), ("INFORMAL");
+
+insert into tbl_beneficio(beneficio) values("VALE TRANSPORTE"), ("VALE REFEIÇÃO"), ("PLANO DE SAÚDE"), ("CONVÊNIO MÉDICO"), ("PLANO ODONTOLÓGICO");
+
+select * from tbl_empresa;
+select* from tbl_vaga;
+select * from tbl_horario;
+select * from tbl_suporte_pcd;
+select * from tbl_vaga_suporte_pcd;
+select * from tbl_beneficio_vaga;

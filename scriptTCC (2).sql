@@ -246,8 +246,7 @@ create table tbl_suporte_pcd(
 create table tbl_horario(
 	id_horario int not null auto_increment primary key,
     horario_inicio text not null,
-    horario_final text not null,
-    carga_horaria text,
+    horario_saida text not null,
     visivel boolean
 );
 
@@ -264,19 +263,23 @@ create table tbl_salario(
 
 create table tbl_beneficio(
 	id_beneficio int not null auto_increment primary key,
-    beneficio text not null,
-    descricao_beneficio text
+    beneficio text not null
 );
 
 create table tbl_vaga(
 	id_vaga int not null auto_increment primary key,
     titulo text not null,
+    status boolean not null,
     descricao text,
     requisitos text,
     horario_id_horario int not null,
     local_trabalho_id_local_trabalho int not null,
     tipo_contrato_id_tipo_contrato int not null,
     empresa_id_empresa int not null,
+    salario_id_salario int not null,
+    constraint fk_salario_salario_vaga
+    foreign key(salario_id_salario)
+    references tbl_salario(id_salario),
     constraint fk_local_trabalho_vaga
     foreign key(local_trabalho_id_local_trabalho)
     references tbl_local_trabalho(id_local_trabalho),
@@ -289,18 +292,6 @@ create table tbl_vaga(
     constraint fk_empresa_vaga
     foreign key(empresa_id_empresa)
     references tbl_empresa(id_empresa)
-);
-
-create table tbl_vaga_salario(
-    id_vaga_salario int not null auto_increment primary key,
-    salario_id_salario int not null,
-    vaga_id_vaga int not null,
-    constraint fk_vaga_salario_vaga
-    foreign key(vaga_id_vaga)
-    references tbl_vaga(id_vaga),
-    constraint fk_salario_salario_vaga
-    foreign key(salario_id_salario)
-    references tbl_salario(id_salario)
 );
 
 create table tbl_beneficio_vaga(
