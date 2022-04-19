@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 
 import com.pcdjob.controller.dto.response.ResponseBeneficio;
 import com.pcdjob.controller.dto.response.ResponseDeficiencia;
+import com.pcdjob.controller.dto.response.ResponseEmpresa;
 import com.pcdjob.controller.dto.response.ResponseFormacao;
 import com.pcdjob.controller.dto.response.ResponseHorario;
 import com.pcdjob.controller.dto.response.ResponseLocalTrabalho;
@@ -35,6 +36,7 @@ public class VagaSalvaDTO {
 	private List<ResponseDeficiencia> deficiencia;
 	private ResponseLocalTrabalho localTrabalho;
 	private ResponseHorario horario;
+	private ResponseEmpresa empresa;
 	
 	public Long getId() {
 		return id;
@@ -139,6 +141,13 @@ public class VagaSalvaDTO {
 	public void setHorario(ResponseHorario horario) {
 		this.horario = horario;
 	}
+	public ResponseEmpresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(ResponseEmpresa empresa) {
+		this.empresa = empresa;
+	}
 
 	public VagaSalvaDTO(VagaEntity vaga) {
 		LocalTrabalho local = vaga.getLocalTrabalho();
@@ -170,7 +179,7 @@ public class VagaSalvaDTO {
 			List<ResponseBeneficio> beneficioList = new ArrayList<>();
 			while(indice < vaga.getVagaBeneficio().size()) {
 				Beneficio beneficioVaga = vaga.getVagaBeneficio().get(indice).getBeneficio();
-				ResponseBeneficio response = new ResponseBeneficio(beneficioVaga.getId(), beneficioVaga.getBeneficio());
+				ResponseBeneficio response = new ResponseBeneficio(beneficioVaga.getId(), beneficioVaga.getBeneficio(), vaga.getVagaBeneficio().get(indice).getId());
 				beneficioList.add(response);
 				indice++;
 			}
@@ -200,6 +209,7 @@ public class VagaSalvaDTO {
 			}
 			this.deficiencia = deficienciaList;
 		}
+		this.empresa = new ResponseEmpresa(vaga.getEmpresa().getId(), vaga.getEmpresa().getNome());
 	}
 	
 	public static Page<VagaSalvaDTO> converter(Page<VagaEntity> vagas) {

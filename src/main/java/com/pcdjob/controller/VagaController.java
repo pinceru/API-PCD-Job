@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.pcdjob.controller.dto.AtualizarVagaDTO;
 import com.pcdjob.controller.dto.InserirVagaDTO;
 import com.pcdjob.controller.dto.TipoContratoRepository;
 import com.pcdjob.controller.dto.VagaDTO;
@@ -94,7 +96,8 @@ public class VagaController {
 	@Autowired
 	private LocalTrabalhoRepository localRepository;
 	
-	@PostMapping("/cadastrar/{id}")
+	@CrossOrigin
+	@PostMapping(path = "/cadastrar/{id}", produces = "application/json")
 	@Transactional
 	public ResponseEntity<VagaDTO> cadastrarVaga(@PathVariable Long id, @RequestBody InserirVagaDTO insercaoDTO, UriComponentsBuilder uriBuilder) {
 		Optional<EmpresaEntity> empresa = empresaRepository.findById(id);
@@ -111,10 +114,30 @@ public class VagaController {
 		return ResponseEntity.created(uri).body(new VagaDTO(vagaSalva));
 	}
 	
-	@GetMapping("/listar")
+	@CrossOrigin
+	@GetMapping(path = "/listar", produces = "application/json")
 	@Transactional
 	public Page<VagaSalvaDTO> listarTodasVagas(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
 		Page<VagaEntity> vagas = vagaRepository.findAll(paginacao);
 		return VagaSalvaDTO.converter(vagas);
+	}
+	
+	@CrossOrigin
+	@GetMapping(path = "/buscar/{id}", produces = "application/json")
+	@Transactional
+	public ResponseEntity<VagaSalvaDTO> buscarVaga(@PathVariable Long id) {
+		Optional<VagaEntity> vaga = vagaRepository.findById(id);
+		if(vaga.isPresent()) {
+			return ResponseEntity.ok(new VagaSalvaDTO(vaga.get()));
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	@CrossOrigin
+	@GetMapping(path = "/atualizar/{id}", produces = "application/json")
+	@Transactional
+	public ResponseEntity<VagaSalvaDTO> atualizarVaga(@PathVariable Long id, @RequestBody AtualizarVagaDTO atualizacaoDTO, UriComponentsBuilder uriBuilder) {
+		
 	}
 }

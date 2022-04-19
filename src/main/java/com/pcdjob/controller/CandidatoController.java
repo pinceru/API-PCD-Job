@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -92,7 +93,8 @@ public class CandidatoController {
 	@Autowired
 	private EnderecoCandidatoRepository enderecoRepository;
 	
-	@PostMapping(value= "/cadastrar")
+	@CrossOrigin
+	@PostMapping(path = "/cadastrar", produces = "application/json")
 	@Transactional
 	public ResponseEntity<CandidatoInseridoDTO> cadastrarCandidato(@RequestBody InserirCandidatoDTO insercaoDTO, UriComponentsBuilder uriBuilder) {
 		CandidatoEntity candidato = insercaoDTO.converter(generoRepository);
@@ -103,8 +105,9 @@ public class CandidatoController {
 				.buildAndExpand(candidatoSalvo.getId()).toUri();
 		return ResponseEntity.created(uri).body(new CandidatoInseridoDTO(candidatoSalvo));
 	}
-
-	@PutMapping("/atualizar/{id}")
+	
+	@CrossOrigin
+	@PutMapping(path = "/atualizar/{id}", produces = "application/json")
 	@Transactional 
 	public ResponseEntity<CandidatoAtualizadoDTO> atualizarCadastroCandidato(@PathVariable Long id, @RequestBody AtualizarCandidatoDTO atualizacaoDTO, UriComponentsBuilder uriBuilder) {
 		CandidatoEntity candidato = atualizacaoDTO.converter(id, candidatoRepository, generoRepository);
@@ -118,14 +121,16 @@ public class CandidatoController {
 		return ResponseEntity.created(uri).body(new CandidatoAtualizadoDTO(candidato));
 	}
 	
-	@GetMapping("/listar")
+	@CrossOrigin
+	@GetMapping(path = "/listar", produces = "application/json")
 	@Transactional
 	public Page<CandidatoAtualizadoDTO> listarTodos(@PageableDefault(sort = "deficienciaCandidato", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
 		Page<CandidatoEntity> candidatos = candidatoRepository.findAll(paginacao);
 		return CandidatoAtualizadoDTO.converter(candidatos);
 	}
 	
-	@GetMapping("/buscar/{id}")
+	@CrossOrigin
+	@GetMapping(path = "/buscar/{id}", produces = "application/json")
 	@Transactional
 	public ResponseEntity<CandidatoAtualizadoDTO> buscarId(@PathVariable Long id) {
 		Optional<CandidatoEntity> candidato = candidatoRepository.findById(id);
@@ -136,7 +141,8 @@ public class CandidatoController {
 		}
 	}
 	
-	@DeleteMapping("/deletar/{id}")
+	@CrossOrigin
+	@DeleteMapping(path = "/deletar/{id}", produces = "application/json")
 	@Transactional
 	public ResponseEntity<?> deletarCandidato(@PathVariable Long id) {
 		Optional<CandidatoEntity> candidato = candidatoRepository.findById(id);
@@ -148,8 +154,8 @@ public class CandidatoController {
 		}
 	}
 	
-	
-	@PostMapping("/cadastrar/experiencia/{id}")
+	@CrossOrigin
+	@PostMapping(path = "/cadastrar/experiencia/{id}", produces = "application/json")
 	@Transactional
 	public ResponseEntity<ExperienciaProfissionalDTO> cadastrarExperiencia(@PathVariable Long id, @RequestBody InserirExperienciaProfissionalDTO insercaoDTO, UriComponentsBuilder uriBuilder) {
 		ExperienciaProfissional experienciaProfissional = insercaoDTO.converter(id, candidatoRepository);
@@ -160,7 +166,8 @@ public class CandidatoController {
 		return ResponseEntity.created(uri).body(new ExperienciaProfissionalDTO(experienciaProfissional));
 	}
 	
-	@GetMapping("/listar/experiencia/{id}")
+	@CrossOrigin
+	@GetMapping(path = "/listar/experiencia/{id}", produces = "application/json")
 	@Transactional
 	public Page<ExperienciaProfissionalDTO> listarExperienciaProfissional(@PathVariable Long id, @PageableDefault(sort = "dataInicio", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
 		Optional<CandidatoEntity> candidato = candidatoRepository.findById(id);
@@ -168,7 +175,8 @@ public class CandidatoController {
 		return ExperienciaProfissionalDTO.converter(experiencias);
 	}
 	
-	@PutMapping("/atualizar/experiencia/{id}")
+	@CrossOrigin
+	@PutMapping(path = "/atualizar/experiencia/{id}", produces = "application/json")
 	@Transactional
 	public ResponseEntity<ExperienciaProfissionalDTO> atualizarExperienciaProfissional(@PathVariable Long id, @RequestBody AtualizarExperienciaDTO atualizacaoDTO, UriComponentsBuilder uriBuilder) {
 		ExperienciaProfissional experienciaProfissional = atualizacaoDTO.converter(id, experienciaProfissionalRepository);
@@ -179,7 +187,8 @@ public class CandidatoController {
 		return ResponseEntity.created(uri).body(new ExperienciaProfissionalDTO(experienciaProfissional));
 	}
 	
-	@DeleteMapping("/deletar/experiencia/{id}")
+	@CrossOrigin
+	@DeleteMapping(path = "/deletar/experiencia/{id}", produces = "application/json")
 	@Transactional
 	public ResponseEntity<?> deletarExperiencia(@PathVariable Long id) {
 		Optional<ExperienciaProfissional> experiencia = experienciaProfissionalRepository.findById(id);
@@ -191,7 +200,8 @@ public class CandidatoController {
 		}
 	}
 	
-	@PostMapping("/cadastrar/curso/{id}")
+	@CrossOrigin
+	@PostMapping(path = "/cadastrar/curso/{id}", produces = "application/json")
 	@Transactional
 	public ResponseEntity<CursoCandidatoDTO> cadastrarCursoCandidato(@PathVariable Long id, @RequestBody InserirCursoDTO insercaoDTO, UriComponentsBuilder uriBuilder) {
 		CursoCandidato cursoCandidato = insercaoDTO.converter(id, candidatoRepository, cursoRepository);
@@ -202,7 +212,8 @@ public class CandidatoController {
 		return ResponseEntity.created(uri).body(new CursoCandidatoDTO(cursoCandidato));
 	}
 	
-	@GetMapping("/listar/cursos/{id}")
+	@CrossOrigin
+	@GetMapping(path = "/listar/cursos/{id}", produces = "application/json")
 	@Transactional
 	public Page<CursoCandidatoDTO> listarCursosCandidato(@PathVariable Long id,  @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
 		Optional<CandidatoEntity> candidato = candidatoRepository.findById(id);
@@ -210,7 +221,8 @@ public class CandidatoController {
 		return CursoCandidatoDTO.converter(cursos);
 	}
 	
-	@DeleteMapping("/deletar/curso/{id}")
+	@CrossOrigin
+	@DeleteMapping(path = "/deletar/curso/{id}", produces = "application/json")
 	@Transactional
 	public ResponseEntity<?> deletarCurso(@PathVariable Long id) {
 		Optional<CursoCandidato> curso = cursoCandidatoRepository.findById(id);
@@ -222,7 +234,8 @@ public class CandidatoController {
 		}
 	}
 	
-	@PostMapping("/cadastrar/endereco/{id}")
+	@CrossOrigin
+	@PostMapping(path = "/cadastrar/endereco/{id}", produces = "application/json")
 	@Transactional
 	public ResponseEntity<EnderecoCandidatoDTO> cadastrarEndereco(@PathVariable Long id, @RequestBody InserirEnderecoCandidatoDTO insercaoDTO, UriComponentsBuilder uriBuilder) {
 		Estado estado = insercaoDTO.converterEstado(estadoRepository);
@@ -236,7 +249,8 @@ public class CandidatoController {
 		return ResponseEntity.created(uri).body(new EnderecoCandidatoDTO(endereco));
 	}
 	
-	@PutMapping("/atualizar/endereco/{id}")
+	@CrossOrigin
+	@PutMapping(path = "/atualizar/endereco/{id}", produces = "application/json")
 	@Transactional
 	public ResponseEntity<EnderecoCandidatoDTO> atualizarEndereco(@PathVariable Long id, @RequestBody AtualizarEnderecoCandidatoDTO atualizacaoDTO, UriComponentsBuilder uriBuilder) {
 		EnderecoCandidato endereco = atualizacaoDTO.converter(id, enderecoRepository, estadoRepository, cidadeRepository);

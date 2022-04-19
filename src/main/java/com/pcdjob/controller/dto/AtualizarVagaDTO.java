@@ -34,7 +34,7 @@ import com.pcdjob.repository.VagaDeficienciaRepository;
 import com.pcdjob.repository.VagaSuporteRepository;
 import com.pcdjob.util.ConverterEnderecoEHorario;
 
-public class InserirVagaDTO {
+public class AtualizarVagaDTO {
 	private int status;
 	private String titulo;
 	private String descricao;

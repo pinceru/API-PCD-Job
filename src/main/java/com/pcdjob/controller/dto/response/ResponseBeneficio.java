@@ -1,13 +1,15 @@
 package com.pcdjob.controller.dto.response;
 
 public class ResponseBeneficio {
-	private Long id;
+	private Long idVagaBeneficio;
+	private Long idBeneficio;
 	private String beneficio;
-	public Long getId() {
-		return id;
+	
+	public Long getIdBeneficio() {
+		return idBeneficio;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdBeneficio(Long id) {
+		this.idBeneficio = id;
 	}
 	public String getBeneficio() {
 		return beneficio;
@@ -15,9 +17,15 @@ public class ResponseBeneficio {
 	public void setBeneficio(String beneficio) {
 		this.beneficio = beneficio;
 	}
-	
-	public ResponseBeneficio(Long id, String beneficio) {
-		this.id = id;
+	public Long getIdVagaBeneficio() {
+		return idVagaBeneficio;
+	}
+	public void setIdVagaBeneficio(Long idVagaBeneficio) {
+		this.idVagaBeneficio = idVagaBeneficio;
+	}
+	public ResponseBeneficio(Long id, String beneficio, Long idVagaBeneficio) {
+		this.idBeneficio = id;
 		this.beneficio = beneficio;
+		this.idVagaBeneficio = idVagaBeneficio;
 	}
 }

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +25,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.pcdjob.controller.dto.AtualizarEmpresaDTO;
 import com.pcdjob.controller.dto.EmpresaDTO;
 import com.pcdjob.controller.dto.EmpresaSalvaDTO;
+import com.pcdjob.controller.dto.EnderecoEmpresaDTO;
 import com.pcdjob.controller.dto.InserirEmpresaDTO;
 import com.pcdjob.model.empresa.EmpresaEntity;
+import com.pcdjob.model.empresa.EnderecoEmpresa;
 import com.pcdjob.repository.AreaAtuacaoRepository;
 import com.pcdjob.repository.CidadeRepository;
 import com.pcdjob.repository.EmailEmpresaRepository;
@@ -59,23 +62,36 @@ public class EmpresaController {
 	@Autowired
 	private EstadoRepository estadoRepository;
 	
-	@PostMapping("/cadastrar")
+	@CrossOrigin
+	@PostMapping(path = "/cadastrar", produces = "application/json")
 	@Transactional
 	public ResponseEntity<EmpresaDTO> cadastrarEmpresa(@RequestBody InserirEmpresaDTO insercaoDTO, UriComponentsBuilder uriBuilder) {
 		EmpresaEntity empresa = insercaoDTO.converter(areaRepository);
 		EmpresaEntity empresaSalva = empresaRepository.save(empresa);
 		insercaoDTO.converterEmail(empresaSalva, emailRepository);
 		insercaoDTO.converterTelefone(empresaSalva, telefoneRepository);
-		insercaoDTO.converterEndereco(empresaSalva, enderecoRepository, cidadeRepository, estadoRepository);
 		
 		URI uri = uriBuilder.path("/empresa/{id}")
 				.buildAndExpand(empresa.getId()).toUri();
 		return ResponseEntity.created(uri).body(new EmpresaDTO(empresa));
 	}
 	
-	@GetMapping("/buscar/{id}")
+	@CrossOrigin
+	@PostMapping(path = "/cadastrar/endereco/{id}", produces = "application/json")
 	@Transactional
-	public ResponseEntity<EmpresaSalvaDTO> buscarEmpresa(@PathVariable Long id, @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
+	public ResponseEntity<EnderecoEmpresaDTO> cadastrarEnderecoEmpresa(@PathVariable Long id, @RequestBody InserirEmpresaDTO insercaoDTO, UriComponentsBuilder uriBuilder) {
+		EmpresaEntity empresa = empresaRepository.getOne(id);
+		EnderecoEmpresa endereco = insercaoDTO.converterEndereco(empresa, enderecoRepository, cidadeRepository, estadoRepository);
+		
+		URI uri = uriBuilder.path("/empresa/{id}")
+				.buildAndExpand(empresa.getId()).toUri();
+		return ResponseEntity.created(uri).body(new EnderecoEmpresaDTO(endereco));
+	}
+	
+	@CrossOrigin
+	@GetMapping(path = "/buscar/{id}", produces = "application/json")
+	@Transactional
+	public ResponseEntity<EmpresaSalvaDTO> buscarEmpresa(@PathVariable Long id) {
 		Optional<EmpresaEntity> empresa = empresaRepository.findById(id);
 		if(empresa.isPresent()) {
 			return ResponseEntity.ok(new EmpresaSalvaDTO(empresa.get()));
@@ -84,14 +100,16 @@ public class EmpresaController {
 		}
 	}
 	
-	@GetMapping("/listar")
+	@CrossOrigin
+	@GetMapping(path = "/listar", produces = "application/json")
 	@Transactional
 	public Page<EmpresaSalvaDTO> listarEmpresa(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
 		Page<EmpresaEntity> empresas = empresaRepository.findAll(paginacao);
 		return EmpresaSalvaDTO.converter(empresas);
 	}
 	
-	@PutMapping("/atualizar/{id}")
+	@CrossOrigin
+	@PutMapping(path = "/atualizar/{id}", produces = "application/json")
 	@Transactional
 	public ResponseEntity<EmpresaSalvaDTO> atualizarEmpresa(@PathVariable Long id, @RequestBody AtualizarEmpresaDTO atualizacaoDTO, UriComponentsBuilder uriBuilder) {
 		EmpresaEntity empresa = atualizacaoDTO.converter(id, empresaRepository, areaRepository, telefoneRepository, emailRepository, estadoRepository, cidadeRepository);
@@ -102,7 +120,8 @@ public class EmpresaController {
 		return ResponseEntity.created(uri).body(new EmpresaSalvaDTO(empresa));
 	}
 	
-	@DeleteMapping("/deletar/{id}")
+	@CrossOrigin
+	@DeleteMapping(path = "/deletar/{id}", produces = "application/json")
 	@Transactional
 	public ResponseEntity<?> deletarEmpresa(@PathVariable Long id) {
 		Optional<EmpresaEntity> empresa = empresaRepository.findById(id);
