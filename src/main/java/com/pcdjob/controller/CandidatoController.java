@@ -215,7 +215,7 @@ public class CandidatoController {
 	@CrossOrigin
 	@GetMapping(path = "/listar/cursos/{id}", produces = "application/json")
 	@Transactional
-	public Page<CursoCandidatoDTO> listarCursosCandidato(@PathVariable Long id,  @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
+	public Page<CursoCandidatoDTO> listarCursosCandidato(@PathVariable Long id, @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
 		Optional<CandidatoEntity> candidato = candidatoRepository.findById(id);
 		Page<CursoCandidato> cursos = cursoCandidatoRepository.findByCandidato(candidato.get(), paginacao);
 		return CursoCandidatoDTO.converter(cursos);

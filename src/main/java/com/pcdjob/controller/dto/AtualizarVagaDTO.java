@@ -1,18 +1,13 @@
 package com.pcdjob.controller.dto;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.pcdjob.model.Cidade;
 import com.pcdjob.model.Curso;
 import com.pcdjob.model.Deficiencia;
 import com.pcdjob.model.SuportePCD;
-import com.pcdjob.model.empresa.EmpresaEntity;
 import com.pcdjob.model.vaga.Beneficio;
 import com.pcdjob.model.vaga.FormacaoDesejada;
-import com.pcdjob.model.vaga.Horario;
-import com.pcdjob.model.vaga.LocalTrabalho;
 import com.pcdjob.model.vaga.Salario;
 import com.pcdjob.model.vaga.TipoContrato;
 import com.pcdjob.model.vaga.VagaBeneficio;
@@ -20,17 +15,15 @@ import com.pcdjob.model.vaga.VagaDeficiencia;
 import com.pcdjob.model.vaga.VagaEntity;
 import com.pcdjob.model.vaga.VagaSuportePCD;
 import com.pcdjob.repository.BeneficioRepository;
-import com.pcdjob.repository.CidadeRepository;
 import com.pcdjob.repository.CursoRepository;
 import com.pcdjob.repository.DeficienciaRepository;
-import com.pcdjob.repository.EstadoRepository;
 import com.pcdjob.repository.FormacaoDesejadaRepository;
 import com.pcdjob.repository.HorarioRepository;
-import com.pcdjob.repository.LocalTrabalhoRepository;
 import com.pcdjob.repository.SalarioRepository;
 import com.pcdjob.repository.SuporteRepository;
 import com.pcdjob.repository.VagaBeneficioRepository;
 import com.pcdjob.repository.VagaDeficienciaRepository;
+import com.pcdjob.repository.VagaRepository;
 import com.pcdjob.repository.VagaSuporteRepository;
 import com.pcdjob.util.ConverterEnderecoEHorario;
 
@@ -184,102 +177,103 @@ public class AtualizarVagaDTO {
 		this.statusSalario = statusSalario;
 	}
 	
-	public void salvarFormacaoDesejada(VagaEntity vaga, CursoRepository cursoRepository, FormacaoDesejadaRepository formacaoRepository) {
-		List<Curso> cursos = converterCurso(cursoRepository);
+	public void atualizarFormacaoDesejada(VagaEntity vaga, CursoRepository cursoRepository, FormacaoDesejadaRepository formacaoRepository) {
 		int indice = 0;
-		while(cursos.size() > indice) {
-			formacaoRepository.save(new FormacaoDesejada(vaga, cursos.get(indice)));
-			indice++;
-		}
-	}
-	
-	private List<Curso> converterCurso(CursoRepository cursoRepository) {
-		if(formacaoDesejada.size() > 0) {
-			int indice = 0;
-			List<Curso> cursos = new ArrayList<>();
-			while(formacaoDesejada.size() > indice) {
-				Optional<Curso> curso = cursoRepository.findById(formacaoDesejada.get(indice)); 
-				cursos.add(curso.get());
-				indice++;
-			}
-			return cursos;
-		} else {
-			List<Curso> cursos = new ArrayList<>();
-			return cursos;
-		}
-	}
-	
-	public void salvarBeneficiosVaga(VagaEntity vaga, BeneficioRepository beneficioRepository, VagaBeneficioRepository vagaBeneficioRepository) {
-		List<Beneficio> beneficios = converterBeneficio(beneficioRepository);
-		int indice = 0;
-		while(beneficios.size() > indice) {
-			VagaBeneficio vagaBeneficio = new VagaBeneficio(vaga, beneficios.get(indice));
-			vagaBeneficioRepository.save(vagaBeneficio);
-			indice++;
-		}
-	}
-	
-	private List<Beneficio> converterBeneficio(BeneficioRepository beneficioRepository) {
-		if(beneficio.size() > 0) {
-			int indice = 0;
-			List<Beneficio> beneficios = new ArrayList<>();
-			while(beneficio.size() > indice) {
-				Optional<Beneficio> beneficioObj = beneficioRepository.findById(beneficio.get(indice)); 
-				System.out.println(beneficioObj.isPresent());
-				if(beneficioObj.isPresent()) {
-					beneficios.add(beneficioObj.get());
+		while(indice < formacaoDesejada.size()) {
+			Optional<Curso> cursoObj = cursoRepository.findById(formacaoDesejada.get(indice));
+			Optional<FormacaoDesejada> optional = formacaoRepository.findByCursoAndVaga(cursoObj.get(), vaga);
+			if(optional.isPresent() != true) {
+				formacaoRepository.save(new FormacaoDesejada(vaga, cursoObj.get()));
+			} else {
+				List<Curso> cursos = cursoRepository.findAll();
+				int indice2 = 0;
+				while(indice2 < cursos.size()) {
+					if(!formacaoDesejada.contains(cursos.get(indice2).getId())) {
+						Optional<FormacaoDesejada> cursoOptional = formacaoRepository.findByCurso(cursos.get(indice));
+						if(cursoOptional.isPresent()) {
+							FormacaoDesejada formacao = cursoOptional.get();
+							formacaoRepository.delete(formacao);
+						}
+					}
+					indice2++;
 				}
-				indice++;
 			}
-			return beneficios;
-		} else {
-			List<Beneficio> beneficios = new ArrayList<>();
-			return beneficios;
+			indice += 1;
 		}
 	}
 	
-	public void salvarDeficienciasVaga(VagaEntity vaga, DeficienciaRepository deficienciaRepository, VagaDeficienciaRepository vagaDeficienciaRepository) {
-		List<Deficiencia> deficiencias = converterDeficiencia(deficienciaRepository);
+	public void atualizarBeneficiosVaga(VagaEntity vaga, BeneficioRepository beneficioRepository, VagaBeneficioRepository vagaBeneficioRepository) {
 		int indice = 0;
-		while(deficiencias.size() > indice) {
-			vagaDeficienciaRepository.save(new VagaDeficiencia(vaga, deficiencias.get(indice)));
-			indice++;
+		while(indice < beneficio.size()) {
+			Optional<Beneficio> beneficioObj = beneficioRepository.findById(beneficio.get(indice));
+			Optional<VagaBeneficio> optional = vagaBeneficioRepository.findByBeneficioAndVaga(beneficioObj.get(), vaga);
+			if(optional.isPresent() != true) {
+				vagaBeneficioRepository.save(new VagaBeneficio(vaga, beneficioObj.get()));
+			} else {
+				List<Beneficio> beneficios = beneficioRepository.findAll();
+				int indice2 = 0;
+				while(indice2 < beneficios.size()) {
+					if(!beneficio.contains(beneficios.get(indice2).getId())) {
+						Optional<VagaBeneficio> beneficioOptional = vagaBeneficioRepository.findByBeneficio(beneficios.get(indice));
+						if(beneficioOptional.isPresent()) {
+							VagaBeneficio vagaBeneficio = beneficioOptional.get();
+							vagaBeneficioRepository.delete(vagaBeneficio);
+						}
+					}
+					indice2++;
+				}
+			}
+			indice += 1;
 		}
 	}
 	
-	private List<Deficiencia> converterDeficiencia(DeficienciaRepository deficienciaRepository) {
+	public void atualizarDeficienciasVaga(VagaEntity vaga, DeficienciaRepository deficienciaRepository, VagaDeficienciaRepository vagaDeficienciaRepository) {
 		int indice = 0;
-		List<Deficiencia> deficiencias = new ArrayList<>();
-		while(deficiencia.size() > indice) {
+		while(indice < deficiencia.size()) {
 			Optional<Deficiencia> deficienciaObj = deficienciaRepository.findById(deficiencia.get(indice));
-			deficiencias.add(deficienciaObj.get());
-			indice++;
-		}
-		return deficiencias;
-	}
-	
-	public void salvarSuportesVaga(VagaEntity vaga, SuporteRepository suporteRepository, VagaSuporteRepository vagaSuporteRepository) {
-		List<SuportePCD> suportes = converterSuporte(suporteRepository);
-		int indice = 0;
-		while(suportes.size() > indice) {
-			vagaSuporteRepository.save(new VagaSuportePCD(vaga, suportes.get(indice)));
-			indice++;
-		}
-	}
-	
-	private List<SuportePCD> converterSuporte(SuporteRepository suporteRepository) {
-		if(suporte.size() > 0) {
-			int indice = 0;
-			List<SuportePCD> suportes = new ArrayList<>();
-			while(suporte.size() > indice) {
-				SuportePCD suporteObj = suporteRepository.getOne(suporte.get(indice));
-				suportes.add(suporteObj);
-				indice++;
+			Optional<VagaDeficiencia> optional = vagaDeficienciaRepository.findByDeficienciaAndVaga(deficienciaObj.get(), vaga);
+			if(optional.isPresent() != true) {
+				vagaDeficienciaRepository.save(new VagaDeficiencia(vaga, deficienciaObj.get()));
+			} else {
+				List<Deficiencia> deficiencias = deficienciaRepository.findAll();
+				int indice2 = 0;
+				while(indice2 < deficiencias.size()) {
+					if(!deficiencia.contains(deficiencias.get(indice2).getId())) {
+						Optional<VagaDeficiencia> deficienciaOptional = vagaDeficienciaRepository.findByDeficiencia(deficiencias.get(indice));
+						if(deficienciaOptional.isPresent()) {
+							VagaDeficiencia vagaDeficiencia = deficienciaOptional.get();
+							vagaDeficienciaRepository.delete(vagaDeficiencia);
+						}
+					}
+					indice2++;
+				}
 			}
-			return suportes;
-		} else {
-			List<SuportePCD> suportes = new ArrayList<>();
-			return suportes;
+			indice += 1;
+		}
+	}
+	
+	public void atualizarSuportesVaga(VagaEntity vaga, SuporteRepository suporteRepository, VagaSuporteRepository vagaSuporteRepository) {
+		int indice = 0;
+		while(indice < suporte.size()) {
+			Optional<SuportePCD> suporteObj = suporteRepository.findById(suporte.get(indice));
+			Optional<VagaSuportePCD> optional = vagaSuporteRepository.findBySuporteAndVaga(suporteObj.get(), vaga);
+			if(optional.isPresent() != true) {
+				vagaSuporteRepository.save(new VagaSuportePCD(vaga, suporteObj.get()));
+			} else {
+				List<SuportePCD> suportes = suporteRepository.findAll();
+				int indice2 = 0;
+				while(indice2 < suportes.size()) {
+					if(!suporte.contains(suportes.get(indice2).getId())) {
+						Optional<VagaSuportePCD> suporteOptional = vagaSuporteRepository.findBySuporte(suportes.get(indice));
+						if(suporteOptional.isPresent()) {
+							VagaSuportePCD vagaSuporte = suporteOptional.get();
+							vagaSuporteRepository.delete(vagaSuporte);
+						}
+					}
+					indice2++;
+				}
+			}
+			indice += 1;
 		}
 	}
 	
@@ -296,15 +290,15 @@ public class AtualizarVagaDTO {
 		}
 	}
 	
-	public VagaEntity converter(EmpresaEntity empresa, EstadoRepository estadoRepository, CidadeRepository cidadeRepository, TipoContrato contrato, 
-			HorarioRepository horarioRepository, SalarioRepository salarioRepository, LocalTrabalhoRepository localTrabalhoRepository) {
-		
+	public VagaEntity converter(Long id, VagaRepository vagaRepository, SalarioRepository salarioRepository, TipoContratoRepository tipoContratoRepository, HorarioRepository horarioRepository) {
+		VagaEntity vaga = vagaRepository.getOne(id);
 		ConverterEnderecoEHorario conversor = new ConverterEnderecoEHorario();
-		Cidade cidadeSalva = conversor.cidade(cidadeRepository, estadoRepository, cidade, sigla, estado);
-		LocalTrabalho localTrabalho = localTrabalhoRepository.save(new LocalTrabalho(rua, numero, cep, bairro, cidadeSalva));
-		Horario horarioSalvo = conversor.horario(horarioInicio, horarioSaida, statusHorario, horarioRepository);
-		Salario salarioObj = converterSalario(salarioRepository);
-		
-		return new VagaEntity(status, titulo, descricao, requisitos, contrato, horarioSalvo, empresa, localTrabalho, salarioObj);
+		vaga.setDescricao(descricao);
+		vaga.setStatus(status);
+		vaga.setTitulo(titulo);
+		vaga.setSalario(converterSalario(salarioRepository));
+		vaga.setTipoContrato(converterTipoContrato(tipoContratoRepository));
+		vaga.setHorario(conversor.horario(horarioInicio, horarioSaida, status, horarioRepository));
+		return vaga;
 	}
 }

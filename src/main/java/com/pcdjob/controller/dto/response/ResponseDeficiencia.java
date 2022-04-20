@@ -7,10 +7,10 @@ public class ResponseDeficiencia {
 	private Long idTipoDeficiencia;
 	private String tipoDeficiencia;
 	
-	public Long getId() {
+	public Long getIdDeficiencia() {
 		return idDeficiencia;
 	}
-	public void setId(Long id) {
+	public void setIdDeficiencia(Long id) {
 		this.idDeficiencia = id;
 	}
 	public Long getIdTipoDeficiencia() {

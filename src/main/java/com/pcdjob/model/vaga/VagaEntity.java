@@ -2,6 +2,7 @@ package com.pcdjob.model.vaga;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,19 +29,19 @@ public class VagaEntity {
 	private TipoContrato tipoContrato;
 	@ManyToOne
 	private Salario salario;
-	@OneToMany(mappedBy = "vaga")
+	@OneToMany(mappedBy = "vaga", cascade = CascadeType.ALL)
 	private List<VagaDeficiencia> vagaDeficiencia;
 	@ManyToOne
 	private Horario horario;
-	@OneToMany(mappedBy = "vaga")
+	@OneToMany(mappedBy = "vaga", cascade = CascadeType.ALL)
 	private List<VagaSuportePCD> vagaSuporte;
-	@OneToMany(mappedBy = "vaga")
+	@OneToMany(mappedBy = "vaga", cascade = CascadeType.ALL)
 	private List<VagaBeneficio> vagaBeneficio;
 	@ManyToOne
 	private EmpresaEntity empresa;
 	@ManyToOne
 	private LocalTrabalho localTrabalho;
-	@OneToMany(mappedBy = "vaga")
+	@OneToMany(mappedBy = "vaga", cascade = CascadeType.ALL)
 	private List<FormacaoDesejada> formacaoDesejada;
 	
 	public Long getId() {
