@@ -32,7 +32,7 @@ import com.pcdjob.repository.SuporteRepository;
 import com.pcdjob.repository.VagaBeneficioRepository;
 import com.pcdjob.repository.VagaDeficienciaRepository;
 import com.pcdjob.repository.VagaSuporteRepository;
-import com.pcdjob.util.ConverterEnderecoEHorario;
+import com.pcdjob.service.ConverterEnderecoEHorario;
 
 public class InserirVagaDTO {
 	private int status;

@@ -1,6 +1,7 @@
 package com.pcdjob.controller;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -24,13 +25,17 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.pcdjob.controller.dto.AtualizarVagaDTO;
+import com.pcdjob.controller.dto.CandidatoAtualizadoDTO;
 import com.pcdjob.controller.dto.InserirVagaDTO;
+import com.pcdjob.controller.dto.StatusDTO;
 import com.pcdjob.controller.dto.TipoContratoRepository;
 import com.pcdjob.controller.dto.VagaDTO;
 import com.pcdjob.controller.dto.VagaSalvaDTO;
 import com.pcdjob.model.candidato.CandidatoEntity;
 import com.pcdjob.model.empresa.EmpresaEntity;
+import com.pcdjob.model.vaga.StatusVaga;
 import com.pcdjob.model.vaga.TipoContrato;
+import com.pcdjob.model.vaga.VagaCandidato;
 import com.pcdjob.model.vaga.VagaEntity;
 import com.pcdjob.repository.BeneficioRepository;
 import com.pcdjob.repository.CandidatoRepository;
@@ -43,11 +48,14 @@ import com.pcdjob.repository.FormacaoDesejadaRepository;
 import com.pcdjob.repository.HorarioRepository;
 import com.pcdjob.repository.LocalTrabalhoRepository;
 import com.pcdjob.repository.SalarioRepository;
+import com.pcdjob.repository.StatusRepository;
 import com.pcdjob.repository.SuporteRepository;
 import com.pcdjob.repository.VagaBeneficioRepository;
+import com.pcdjob.repository.VagaCandidatoRepository;
 import com.pcdjob.repository.VagaDeficienciaRepository;
 import com.pcdjob.repository.VagaRepository;
 import com.pcdjob.repository.VagaSuporteRepository;
+import com.pcdjob.service.CandidatoVagaService;
 
 @RestController
 @RequestMapping("/vaga")
@@ -103,6 +111,14 @@ public class VagaController {
 	
 	@Autowired
 	private CandidatoRepository candidatoRepository;
+	
+	@Autowired
+	private VagaCandidatoRepository vagaCandidatoRepository;
+	
+	@Autowired
+	private StatusRepository statusRepository;
+	
+	CandidatoVagaService service = new CandidatoVagaService();
 	
 	@CrossOrigin
 	@PostMapping(path = "/cadastrar/{id}", produces = "application/json")
@@ -180,12 +196,52 @@ public class VagaController {
 		return VagaSalvaDTO.converter(vagas);
 	}
 	
-//	@CrossOrigin
-//	@PostMapping(path = "/candidatar", produces = "application/json")
-//	@Transactional
-//	public ResponseEntity<CandidatoVagaDTO> candidatarVaga(@RequestParam(required = true) Long idCandidato, @RequestParam(required = true) Long idVaga) {
-//		Optional<VagaEntity> vaga = vagaRepository.findById(idVaga);
-//		Optional<CandidatoEntity> candidato = candidatoRepository.findById(idCandidato);
-//		
-//	}
+	@CrossOrigin
+	@PostMapping(path = "/candidatar", produces = "application/json")
+	@Transactional
+	public ResponseEntity<CandidatoVagaDTO> candidatarVaga(@RequestParam(required = true) Long idCandidato, @RequestParam(required = true) Long idStatus, @RequestParam(required = true) Long idVaga, 
+			UriComponentsBuilder uriBuilder) {
+		Optional<VagaEntity> vaga = vagaRepository.findById(idVaga);
+		Optional<CandidatoEntity> candidato = candidatoRepository.findById(idCandidato);
+		Optional<StatusVaga> status = statusRepository.findById(idStatus);
+		VagaCandidato vagaCandidato = vagaCandidatoRepository.save(new VagaCandidato(status.get(), candidato.get(), vaga.get()));
+		
+		URI uri = uriBuilder.path("/vaga/{id}")
+				.buildAndExpand(vagaCandidato.getId()).toUri();
+		return ResponseEntity.created(uri).body(new CandidatoVagaDTO(vagaCandidato));
+	}
+	
+	@CrossOrigin
+	@PutMapping(path = "/candidatar/{id}", produces = "application/json")
+	@Transactional
+	public ResponseEntity<CandidatoVagaDTO> atualizarStatus(@PathVariable Long id, @RequestParam(required = true) Long idStatus, UriComponentsBuilder uriBuilder) {
+		VagaCandidato vagaCandidato = vagaCandidatoRepository.getOne(id);
+		StatusVaga status = statusRepository.getOne(idStatus);
+		VagaCandidato vagaCandidatoAtualizado = service.atualizarVagaCandidato(vagaCandidato, status);
+		VagaCandidato vagaCandidatoSalvo = vagaCandidatoRepository.save(vagaCandidatoAtualizado);
+		
+		URI uri = uriBuilder.path("/vaga/{id}")
+				.buildAndExpand(vagaCandidato.getId()).toUri();
+		return ResponseEntity.created(uri).body(new CandidatoVagaDTO(vagaCandidatoSalvo));
+	}
+	
+	@CrossOrigin
+	@GetMapping(path = "/listar/status", produces = "application/json")
+	@Transactional
+	public Page<StatusDTO> listarStatusVaga(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
+		Page<StatusVaga> status = statusRepository.findAll(paginacao);  
+		return StatusDTO.converter(status);
+	}
+	
+	@CrossOrigin
+	@GetMapping(path = "/listar/candidatos/{id}", produces = "application/json")
+	@Transactional
+	public Page<CandidatoAtualizadoDTO> listarCandidatosVaga(@PathVariable Long id, @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
+		VagaEntity vaga = vagaRepository.getOne(id);
+		StatusVaga status = statusRepository.getOne((long) 1);
+		List<VagaCandidato> vagaCandidato = vagaCandidatoRepository.findByVagaAndStatus(vaga, status);
+		Page<CandidatoEntity> candidatos = service.getCandidatos(vagaCandidato, paginacao);
+		return CandidatoAtualizadoDTO.converter(candidatos);
+	}
+	
 }

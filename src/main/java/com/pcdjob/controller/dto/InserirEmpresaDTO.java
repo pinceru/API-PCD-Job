@@ -20,7 +20,7 @@ import com.pcdjob.repository.EmailEmpresaRepository;
 import com.pcdjob.repository.EnderecoEmpresaRepository;
 import com.pcdjob.repository.EstadoRepository;
 import com.pcdjob.repository.TelefoneEmpresaRepository;
-import com.pcdjob.util.ConverterEnderecoEHorario;
+import com.pcdjob.service.ConverterEnderecoEHorario;
 
 public class InserirEmpresaDTO {
 	@NotNull @NotEmpty @Length(min = 1, max = 100)
