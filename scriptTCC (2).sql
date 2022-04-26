@@ -298,10 +298,8 @@ create table tbl_beneficio_vaga(
 	id_beneficio_vaga int not null auto_increment primary key,
     beneficio_id_beneficio int not null,
     vaga_id_vaga int not null,
-    constraint fk_beneficio_beneficio_vaga
     foreign key(beneficio_id_beneficio)
     references tbl_beneficio(id_beneficio),
-    constraint fk_vaga_beneficio_vaga
     foreign key(vaga_id_vaga)
     references tbl_vaga(id_vaga)
 );
@@ -310,10 +308,8 @@ create table tbl_vaga_suporte_pcd(
 	id_vaga_suporte_pcd int not null auto_increment primary key,
     suporte_id_suporte_pcd int not null,
     vaga_id_vaga int not null,
-    constraint fk_suporte_vaga_suporte
     foreign key(suporte_id_suporte_pcd)
     references tbl_suporte_pcd(id_suporte_pcd),
-    constraint fk_vaga_vaga_suporte
     foreign key(vaga_id_vaga)
     references tbl_vaga(id_vaga)
 );
@@ -322,10 +318,8 @@ create table tbl_vaga_deficiencia(
 	id_vaga_deficiencia int not null auto_increment primary key,
     deficiencia_id_deficiencia int not null,
     vaga_id_vaga int not null,
-    constraint fk_deficiencia_vaga_deficiencia
     foreign key(deficiencia_id_deficiencia)
     references tbl_deficiencia(id_deficiencia),
-    constraint fk_vaga_vaga_deficiencia
     foreign key(vaga_id_vaga)
     references tbl_vaga(id_vaga)
 );
@@ -334,23 +328,27 @@ create table tbl_formacao_desejada(
 	id_formacao_desejada int not null auto_increment primary key,
     curso_id_curso int not null,
     vaga_id_vaga int not null,
-    constraint fk_curso_formaca_desejada
     foreign key(curso_id_curso)
     references tbl_curso(id_curso),
-    constraint fk_vaga_formacao_desejada
     foreign key(vaga_id_vaga)
     references tbl_vaga(id_vaga)
 );
 
+create table tbl_status_vaga(
+	id_status_vaga int not null auto_increment primary key,
+    status text not null
+);
+
 create table tbl_vaga_candidato(
 	id_vaga_candidato int not null auto_increment primary key,
-    status text not null,
+    status_id_status_vaga int not null,
     candidato_id_candidato int not null,
     vaga_id_vaga int not null,
-    constraint fk_candidato_vaga_candidato
     foreign key(candidato_id_candidato)
     references tbl_candidato(id_candidato),
-    constraint fk_vaga_vaga_candidato
     foreign key(vaga_id_vaga)
-    references tbl_vaga(id_vaga)
+    references tbl_vaga(id_vaga),
+	foreign key(status_id_status_vaga)
+    references tbl_status_vaga(id_status_vaga)
 );
+

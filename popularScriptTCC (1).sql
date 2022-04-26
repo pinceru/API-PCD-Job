@@ -21,9 +21,7 @@ insert into tbl_tipo_contrato(tipo_contrato) values("CLT"), ("ESTÁGIO"), ("PJ")
 
 insert into tbl_beneficio(beneficio) values("VALE TRANSPORTE"), ("VALE REFEIÇÃO"), ("PLANO DE SAÚDE"), ("CONVÊNIO MÉDICO"), ("PLANO ODONTOLÓGICO");
 
-select * from tbl_empresa;
-select* from tbl_vaga;
-select * from tbl_horario;
-select * from tbl_suporte_pcd;
-select * from tbl_vaga_suporte_pcd;
-select * from tbl_beneficio_vaga;
+insert into tbl_status_vaga(status) values("CANDIDATAR"), ("SALVAR"), ("DISPENSAR");
+
+select * from tbl_status_vaga;
+select * from tbl_vaga_candidato;
