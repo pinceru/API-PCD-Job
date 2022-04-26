@@ -11,4 +11,6 @@ import com.pcdjob.model.vaga.VagaEntity;
 @Repository
 public interface VagaRepository extends JpaRepository<VagaEntity, Long>{
 	Page<VagaEntity> findAllByEmpresa(EmpresaEntity empresaEntity, Pageable paginacao);
+
+	
 }

@@ -244,4 +244,15 @@ public class VagaController {
 		return CandidatoAtualizadoDTO.converter(candidatos);
 	}
 	
+	@CrossOrigin
+	@GetMapping(path = "/listar/vagas/status", produces = "application/json")
+	@Transactional
+	public Page<VagaSalvaDTO> listarVagasStatus(@RequestParam(required = true) Long idCandidato, @RequestParam(required = true) Long idStatus, @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
+		StatusVaga status = statusRepository.getOne(idStatus);
+		CandidatoEntity candidato = candidatoRepository.getOne(idCandidato);
+		List<VagaCandidato> vagaCandidato = vagaCandidatoRepository.findByCandidatoAndStatus(candidato, status);
+		Page<VagaEntity> vagas = service.getVagas(vagaCandidato, paginacao);
+		return VagaSalvaDTO.converter(vagas);
+	}
+	
 }
