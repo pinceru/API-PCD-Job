@@ -1,5 +1,7 @@
 package com.pcdjob.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,5 +19,7 @@ public interface CursoRepository extends JpaRepository<Curso, Long> {
 	Page<Curso> findByAreaAtuacao(AreaAtuacao area, Pageable paginacao);
 
 	Page<Curso> findByNivel(Nivel nivel, Pageable paginacao);
+
+	Optional<Curso> findByCurso(String palavra);
 
 }

@@ -78,5 +78,14 @@ public class CursoController {
 			return CursoDTO.converter(cursos);
 		}
 	}
+	
+	@CrossOrigin
+	@GetMapping(path = "/listar/nivel", produces = "application/json")
+	@Transactional
+	public Page<CursoDTO> listarCursosNivel(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao, @RequestParam(required = true) String nivel) {
+		Nivel nivelCurso = nivelRepository.findByNivel(nivel);
+		Page<Curso> cursos = cursoRepository.findByNivel(nivelCurso, paginacao);
+		return CursoDTO.converter(cursos);
+	}
 
 }

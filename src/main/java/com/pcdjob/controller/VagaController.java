@@ -25,7 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.pcdjob.controller.dto.AtualizarVagaDTO;
+import com.pcdjob.controller.dto.BeneficioDTO;
 import com.pcdjob.controller.dto.CandidatoAtualizadoDTO;
+import com.pcdjob.controller.dto.CandidatoVagaDTO;
+import com.pcdjob.controller.dto.ContratoDTO;
 import com.pcdjob.controller.dto.InserirVagaDTO;
 import com.pcdjob.controller.dto.StatusDTO;
 import com.pcdjob.controller.dto.TipoContratoRepository;
@@ -33,6 +36,7 @@ import com.pcdjob.controller.dto.VagaDTO;
 import com.pcdjob.controller.dto.VagaSalvaDTO;
 import com.pcdjob.model.candidato.CandidatoEntity;
 import com.pcdjob.model.empresa.EmpresaEntity;
+import com.pcdjob.model.vaga.Beneficio;
 import com.pcdjob.model.vaga.StatusVaga;
 import com.pcdjob.model.vaga.TipoContrato;
 import com.pcdjob.model.vaga.VagaCandidato;
@@ -253,6 +257,22 @@ public class VagaController {
 		List<VagaCandidato> vagaCandidato = vagaCandidatoRepository.findByCandidatoAndStatus(candidato, status);
 		Page<VagaEntity> vagas = service.getVagas(vagaCandidato, paginacao);
 		return VagaSalvaDTO.converter(vagas);
+	}
+	
+	@CrossOrigin
+	@GetMapping(path = "/listar/beneficio", produces = "application/json")
+	@Transactional
+	public Page<BeneficioDTO> listarBeneficios(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
+		Page<Beneficio> beneficios = beneficioRepository.findAll(paginacao);
+		return BeneficioDTO.converter(beneficios);
+	}
+	
+	@CrossOrigin
+	@GetMapping(path = "/listar/contrato", produces = "application/json")
+	@Transactional
+	public Page<ContratoDTO> listarTipoContrato(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
+		Page<TipoContrato> tipos = tipoContratoRepository.findAll(paginacao);
+		return ContratoDTO.converter(tipos);
 	}
 	
 }

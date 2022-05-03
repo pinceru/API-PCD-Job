@@ -47,13 +47,11 @@ public class InserirCandidatoDTO {
 	}
 	
 	public EmailCandidato converterEmail(EmailCandidatoRepository emailRepository, CandidatoEntity candidato) {
-		Optional<EmailCandidato> emailCandidato = emailRepository.findByEmailAndCandidato(email, candidato);
-		if(emailCandidato.isPresent()) {
-			//emailRepository.delete(emailCandidato.get());
-			return emailRepository.save(emailCandidato.get());
-		} else {
+		Optional<EmailCandidato> emailCandidato = emailRepository.findByEmail(email);
+		if(emailCandidato.isPresent() != true) {
 			return emailRepository.save(new EmailCandidato(email, candidato));
-			
+		} else {
+			return null;
 		}
 	}
 }

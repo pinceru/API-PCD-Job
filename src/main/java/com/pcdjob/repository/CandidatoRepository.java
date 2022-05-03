@@ -1,5 +1,7 @@
 package com.pcdjob.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +13,8 @@ import com.pcdjob.model.candidato.CandidatoEntity;
 public interface CandidatoRepository extends JpaRepository<CandidatoEntity, Long> {
 
 	Page<CandidatoEntity> findByDeficienciaCandidato(String deficienciaCandidato, Pageable paginacao);
+
+	Optional<CandidatoEntity> findByEmailCandidatoEmail(String login);
 
 
 }
