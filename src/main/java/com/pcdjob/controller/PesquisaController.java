@@ -13,27 +13,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pcdjob.controller.dto.EmpresaSalvaDTO;
 import com.pcdjob.controller.dto.VagaSalvaDTO;
 import com.pcdjob.model.empresa.EmpresaEntity;
 import com.pcdjob.model.vaga.VagaEntity;
 import com.pcdjob.repository.EmpresaRepository;
 import com.pcdjob.repository.VagaRepository;
 
-@RestController 
-@RequestMapping("/pesquisa")
-public class PesquisaController {
-
-	@Autowired 
-	private EmpresaRepository empresaRepository;
-	
-	@Autowired 
-	private VagaRepository vagaRepository;
-	
-//	@CrossOrigin
-//	@GetMapping(path = "/", produces = "application/json")
-//	public Page<?> pesquisarCandidato(@RequestParam(required = true) String palavra, @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
+//@RestController 
+//@RequestMapping("/pesquisa")
+//public class PesquisaController {
 //
-//		
-//	}
-}
+//	@Autowired 
+//	private EmpresaRepository empresaRepository;
+//	
+//	@Autowired 
+//	private VagaRepository vagaRepository;
+//	
+////	@CrossOrigin
+////	@GetMapping(path = "/", produces = "application/json")
+////	public Page<?> pesquisarCandidato(@RequestParam(required = true) String palavra, @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
+////
+////		
+////	}
+//}
