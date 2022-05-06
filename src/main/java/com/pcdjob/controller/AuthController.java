@@ -12,32 +12,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.pcdjob.controller.dto.CandidatoAtualizadoDTO;
-import com.pcdjob.controller.dto.EmpresaSalvaDTO;
-import com.pcdjob.controller.dto.FormLogin;
+import com.pcdjob.controller.dto.CandidatoInseridoDTO;
+import com.pcdjob.controller.dto.EmpresaDTO;
+import com.pcdjob.controller.form.LoginForm;
 import com.pcdjob.model.candidato.CandidatoEntity;
 import com.pcdjob.model.empresa.EmpresaEntity;
-import com.pcdjob.repository.CandidatoRepository;
-import com.pcdjob.repository.EmpresaRepository;
+import com.pcdjob.service.AuthService;
+import com.pcdjob.service.helper.Verificar;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-	@Autowired
-	private CandidatoRepository candidatoRepository;
 	
 	@Autowired
-	private EmpresaRepository empresaRepository;
+	private AuthService authService;
 	
 	@CrossOrigin
 	@PostMapping(path = "/candidato", produces = "application/json")
-	private ResponseEntity<?> autenticacaoTemporariaCandidato(@RequestBody FormLogin form, UriComponentsBuilder uriBuilder) {
-		Optional<CandidatoEntity> candidato = candidatoRepository.findByEmailCandidatoEmail(form.getLogin());
+	private ResponseEntity<?> autenticacaoTemporariaCandidato(@RequestBody LoginForm form, UriComponentsBuilder uriBuilder) {
+		Optional<CandidatoEntity> candidato = authService.buscarCandidatoEmail(form.getLogin());
 		if(candidato.isPresent()) {
-			if(form.autenticaCandidato(candidato.get())) {
-				URI uri = uriBuilder.path("/candidato/{id}")
-						.buildAndExpand(candidato.get().getId()).toUri();
-				return ResponseEntity.created(uri).body(new CandidatoAtualizadoDTO(candidato.get()));
+			if(authService.autenticaCandidato(candidato.get(), form.getLogin(), form.getSenha())) {
+				URI uri = uriBuilder.path("/candidato/{id}").buildAndExpand(candidato.get().getId()).toUri();
+				return ResponseEntity.created(uri).body(new CandidatoInseridoDTO(candidato.get()));
 			} else {
 				return ResponseEntity.badRequest().build();
 			}
@@ -48,13 +45,12 @@ public class AuthController {
 	
 	@CrossOrigin
 	@PostMapping(path = "/empresa", produces = "application/json")
-	private ResponseEntity<?> autenticacaoTemporariaEmpresa(@RequestBody FormLogin form, UriComponentsBuilder uriBuilder) {
-		Optional<EmpresaEntity> empresa = empresaRepository.findByEmailEmpresaEmail(form.getLogin());
-		if(empresa.isPresent()) {
-			if(form.autenticaEmpresa(empresa.get())) {
-				URI uri = uriBuilder.path("/empresa/{id}")
-						.buildAndExpand(empresa.get().getId()).toUri();
-				return ResponseEntity.created(uri).body(new EmpresaSalvaDTO(empresa.get()));
+	private ResponseEntity<?> autenticacaoTemporariaEmpresa(@RequestBody LoginForm form, UriComponentsBuilder uriBuilder) {
+		Optional<EmpresaEntity> empresa = authService.buscarEmpresaEmail(form.getLogin());
+		if(Verificar.verificarOptional(empresa)) {
+			if(authService.autenticaEmpresa(empresa.get(), form.getLogin(), form.getSenha())) {
+				URI uri = uriBuilder.path("/empresa/{id}").buildAndExpand(empresa.get().getId()).toUri();
+				return ResponseEntity.created(uri).body(new EmpresaDTO(empresa.get()));
 			} else {
 				return ResponseEntity.badRequest().build();
 			}

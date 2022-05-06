@@ -1,4 +1,4 @@
-package com.pcdjob.controller.dto;
+package com.pcdjob.repository;
 
 import java.util.Optional;
 

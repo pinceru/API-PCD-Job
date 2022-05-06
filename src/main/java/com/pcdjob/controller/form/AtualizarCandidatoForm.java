@@ -1,22 +1,11 @@
-package com.pcdjob.controller.dto;
+package com.pcdjob.controller.form;
 
 import java.util.List;
-import java.util.Optional;
 
-import com.pcdjob.model.Deficiencia;
 import com.pcdjob.model.candidato.CandidatoEntity;
-import com.pcdjob.model.candidato.DeficienciaCandidato;
-import com.pcdjob.model.candidato.EmailCandidato;
 import com.pcdjob.model.candidato.Genero;
-import com.pcdjob.model.candidato.TelefoneCandidato;
-import com.pcdjob.repository.CandidatoRepository;
-import com.pcdjob.repository.DeficienciaCandidatoRepository;
-import com.pcdjob.repository.DeficienciaRepository;
-import com.pcdjob.repository.EmailCandidatoRepository;
-import com.pcdjob.repository.GeneroRepository;
-import com.pcdjob.repository.TelefoneCandidatoRepository;
 
-public class AtualizarCandidatoDTO {
+public class AtualizarCandidatoForm {
 	private String nome;
 	private String nomeSocial;
 	private String dataNascimento;
@@ -74,12 +63,8 @@ public class AtualizarCandidatoDTO {
 	public void setEmail(List<String> email) {
 		this.email = email;
 	}
-	
 
-	public CandidatoEntity converter(Long id, CandidatoRepository candidatoRepository, GeneroRepository generoRepository) {
-		System.out.println("O id veio como: " + deficiencia.get(0));
-		CandidatoEntity candidato = candidatoRepository.getOne(id);
-		Genero generoObj = generoRepository.findByGenero(genero);
+	public CandidatoEntity converter(CandidatoEntity candidato, Genero generoObj) {
 		candidato.setNome(this.nome);
 		candidato.setDataNascimento(this.dataNascimento);
 		candidato.setNomeSocial(this.nomeSocial);
@@ -87,53 +72,5 @@ public class AtualizarCandidatoDTO {
 		candidato.setGenero(generoObj);
 		return candidato;
 	}
-	
-	public void converterDeficiencia(CandidatoEntity candidato, DeficienciaRepository deficienciaRepository, DeficienciaCandidatoRepository deficienciaCandidatoRepository) {
-		int indice = 0;
-		while(indice < deficiencia.size()) {
-			Optional<Deficiencia> deficienciaObj = deficienciaRepository.findById(deficiencia.get(indice));
-			Optional<DeficienciaCandidato> optional = deficienciaCandidatoRepository.findByDeficienciaAndCandidato(deficienciaObj.get(), candidato);
-			if(optional.isPresent() != true) {
-				deficienciaCandidatoRepository.save(new DeficienciaCandidato(deficienciaObj.get(), candidato));
-			} else {
-				List<Deficiencia> deficiencias = deficienciaRepository.findAll();
-				int indice2 = 0;
-				while(indice2 < deficiencias.size()) {
-					if(!deficiencia.contains(deficiencias.get(indice2).getId())) {
-						Optional<DeficienciaCandidato> deficienciaCandidatoOptional = deficienciaCandidatoRepository.findByDeficiencia(deficiencias.get(indice));
-						if(deficienciaCandidatoOptional.isPresent()) {
-							DeficienciaCandidato deficienciaCandidato = deficienciaCandidatoOptional.get();
-							deficienciaCandidatoRepository.delete(deficienciaCandidato);
-						}
-					}
-					indice2++;
-				}
-			}
-			indice += 1;
-		}
-	}
-	
-	public void converterTelefone(CandidatoEntity candidato, TelefoneCandidatoRepository telefoneRepository) {
-		int indice = 0;
-		while(indice < telefone.size()) {
-			Optional<TelefoneCandidato> optional = telefoneRepository.findByNumero(telefone.get(indice));
-			if(optional.isPresent() != true) {
-				telefoneRepository.save(new TelefoneCandidato(candidato, telefone.get(indice)));
-			}
-			indice += 1;
-		}
-	}	
-	
-	public void converterEmail(CandidatoEntity candidato, EmailCandidatoRepository emailRepository) {
-		int indice = 0;
-		while(indice < email.size()) {
-			Optional<EmailCandidato> optional = emailRepository.findByEmail(email.get(indice));
-			if(optional.isPresent() != true) {
-				emailRepository.save(new EmailCandidato(email.get(indice), candidato));
-			}
-			indice += 1;
-		}
-	}
-	
 }
 

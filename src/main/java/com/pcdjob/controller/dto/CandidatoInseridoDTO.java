@@ -24,7 +24,6 @@ public class CandidatoInseridoDTO {
 	public CandidatoInseridoDTO(CandidatoEntity candidato) {
 		this.id = candidato.getId();
 		this.nome = candidato.getNome();
-	
 	}
 
 	public static Page<CandidatoInseridoDTO> converter(Page<CandidatoEntity> candidatos) {

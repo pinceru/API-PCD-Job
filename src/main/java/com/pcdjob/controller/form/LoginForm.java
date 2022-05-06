@@ -1,9 +1,6 @@
-package com.pcdjob.controller.dto;
+package com.pcdjob.controller.form;
 
-import com.pcdjob.model.candidato.CandidatoEntity;
-import com.pcdjob.model.empresa.EmpresaEntity;
-
-public class FormLogin {
+public class LoginForm {
 	private String login;
 	private String senha;
 	
@@ -18,21 +15,5 @@ public class FormLogin {
 	}
 	public void setSenha(String senha) {
 		this.senha = senha;
-	}
-	
-	public boolean autenticaCandidato(CandidatoEntity candidato) {
-		if(candidato.getEmailCandidato().get(0).getEmail().equals(login) && candidato.getSenha().equals(senha)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public boolean autenticaEmpresa(EmpresaEntity empresa) {
-		if(empresa.getEmailEmpresa().get(0).getEmail().equals(login) && empresa.getSenha().equals(senha)) {
-			return true;
-		} else {
-			return false;
-		}
 	}
 }

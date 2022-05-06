@@ -2,9 +2,6 @@ package com.pcdjob.controller.dto;
 
 import com.pcdjob.model.empresa.EmpresaEntity;
 
-import lombok.Data;
-
-@Data
 public class EmpresaDTO {
 	private Long id;
 	private String nome;
@@ -25,5 +22,5 @@ public class EmpresaDTO {
 	public EmpresaDTO(EmpresaEntity empresa) {
 		this.id = empresa.getId();
 		this.nome = empresa.getNome();
-		}
+	}
 }

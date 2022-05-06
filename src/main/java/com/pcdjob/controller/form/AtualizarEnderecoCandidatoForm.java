@@ -1,15 +1,9 @@
-package com.pcdjob.controller.dto;
-
-import java.util.Optional;
+package com.pcdjob.controller.form;
 
 import com.pcdjob.model.Cidade;
-import com.pcdjob.model.Estado;
 import com.pcdjob.model.candidato.EnderecoCandidato;
-import com.pcdjob.repository.CidadeRepository;
-import com.pcdjob.repository.EnderecoCandidatoRepository;
-import com.pcdjob.repository.EstadoRepository;
 
-public class AtualizarEnderecoCandidatoDTO {
+public class AtualizarEnderecoCandidatoForm {
 	private String rua;
 	private String cep;
 	private String cidade;
@@ -61,24 +55,8 @@ public class AtualizarEnderecoCandidatoDTO {
 		this.sigla = sigla;
 	}
 
-	public EnderecoCandidato converter(Long id, EnderecoCandidatoRepository enderecoRepository, EstadoRepository estadoRepository, CidadeRepository cidadeRepository) {
-		Optional<EnderecoCandidato> optional = enderecoRepository.findById(id);
-		EnderecoCandidato endereco = optional.get();
-		Optional<Estado> estadoObj = estadoRepository.findBySigla(sigla);
-		Optional<Cidade> cidadeObj = cidadeRepository.findByCidade(cidade);
-		if(cidadeObj.isPresent()) {
-			endereco.setCidade(cidadeObj.get());
-		} else if(estadoObj.isPresent() && cidadeObj.isPresent() != true) {
-			Cidade novaCidade = new Cidade(cidade, estadoObj.get());	
-			Cidade cidadeSalva = cidadeRepository.save(novaCidade);
-			endereco.setCidade(cidadeSalva);
-		} else {
-			Estado novoEstado = new Estado(estado, sigla);
-			Estado estadoSalvo = estadoRepository.save(novoEstado);
-			Cidade novaCidade = new Cidade(cidade, estadoSalvo);	
-			Cidade cidadeSalva = cidadeRepository.save(novaCidade);
-			endereco.setCidade(cidadeSalva);
-		}
+	public EnderecoCandidato converter(EnderecoCandidato endereco, Cidade cidade) {
+		endereco.setCidade(cidade);
 		endereco.setBairro(bairro);
 		endereco.setCep(cep);
 		endereco.setNumero(numero);

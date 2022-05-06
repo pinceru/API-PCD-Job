@@ -1,7 +1,5 @@
 package com.pcdjob.controller;
 
-import java.util.Optional;
-
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +17,8 @@ import com.pcdjob.controller.dto.DeficienciaDTO;
 import com.pcdjob.controller.dto.TipoDeficienciaDTO;
 import com.pcdjob.model.Deficiencia;
 import com.pcdjob.model.TipoDeficiencia;
-import com.pcdjob.repository.DeficienciaRepository;
 import com.pcdjob.repository.TipoDeficienciaRepository;
+import com.pcdjob.service.DeficienciaService;
 
 @RestController
 @RequestMapping("/deficiencia")
@@ -30,7 +28,7 @@ public class DeficienciaController {
 	private TipoDeficienciaRepository tipoRepository;
 	
 	@Autowired
-	private DeficienciaRepository deficienciaRepository;
+	private DeficienciaService deficienciaService;
 	
 	@CrossOrigin
 	@GetMapping(path = "/listar/tipo", produces = "application/json")
@@ -44,8 +42,8 @@ public class DeficienciaController {
 	@GetMapping(path = "/listar/{id}", produces = "application/json")
 	@Transactional
 	public Page<DeficienciaDTO> listarDeficienciaPorTipo(@PathVariable Long id, @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
-		Optional<TipoDeficiencia> tipo = tipoRepository.findById(id);
-		Page<Deficiencia> deficiencias = deficienciaRepository.findByTipoDeficiencia(tipo.get(), paginacao);
+		TipoDeficiencia tipo = deficienciaService.buscarTipoID(id);
+		Page<Deficiencia> deficiencias = deficienciaService.paginarDeficienciasTipo(tipo, paginacao);
 		return DeficienciaDTO.converter(deficiencias);
 	}
 }

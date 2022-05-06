@@ -69,9 +69,8 @@ public class ExperienciaProfissionalDTO {
 		this.nomeEmpresa = experienciaProfissional.getNomeEmpresa();
 		
 	}
-
+	
 	public static Page<ExperienciaProfissionalDTO> converter(Page<ExperienciaProfissional> experiencias) {
 		return experiencias.map(ExperienciaProfissionalDTO::new);
 	}
-
 }

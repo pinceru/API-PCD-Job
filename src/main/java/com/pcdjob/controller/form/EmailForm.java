@@ -1,4 +1,4 @@
-package com.pcdjob.controller.dto;
+package com.pcdjob.controller.form;
 
 public class EmailForm {
 	private String email;

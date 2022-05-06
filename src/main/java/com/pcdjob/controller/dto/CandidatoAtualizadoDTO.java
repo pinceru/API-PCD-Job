@@ -1,21 +1,13 @@
 package com.pcdjob.controller.dto;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.data.domain.Page;
 
 import com.pcdjob.controller.dto.response.ResponseCursoCandidato;
 import com.pcdjob.controller.dto.response.ResponseDeficiencia;
 import com.pcdjob.controller.dto.response.ResponseEmailCandidato;
 import com.pcdjob.controller.dto.response.ResponseExperienciaProfissional;
 import com.pcdjob.controller.dto.response.ResponseTelefoneCandidato;
-import com.pcdjob.model.Curso;
-import com.pcdjob.model.Deficiencia;
 import com.pcdjob.model.candidato.CandidatoEntity;
-import com.pcdjob.model.candidato.EmailCandidato;
-import com.pcdjob.model.candidato.ExperienciaProfissional;
-import com.pcdjob.model.candidato.TelefoneCandidato;
 
 public class CandidatoAtualizadoDTO {
 	private Long id;
@@ -105,89 +97,18 @@ public class CandidatoAtualizadoDTO {
 	}
 
 
-	public CandidatoAtualizadoDTO(CandidatoEntity candidato) {
-			
+	public CandidatoAtualizadoDTO(CandidatoEntity candidato, List<ResponseEmailCandidato> emails, List<ResponseTelefoneCandidato> telefones,
+			List<ResponseDeficiencia> deficiencias, List<ResponseExperienciaProfissional> experiencia, List<ResponseCursoCandidato> cursos) {
 		this.id = candidato.getId();
 		this.nome = candidato.getNome();
 		this.nomeSocial = candidato.getNomeSocial();
 		this.genero = candidato.getGenero().getGenero();
 		this.dataNascimento = candidato.getDataNascimento();
 		this.informacoes = candidato.getInformacoes();
-	
-		if(candidato.getEmailCandidato().size() > 0) {
-			int indice = 0;
-			List<ResponseTelefoneCandidato> telefoneCandidatoList = new ArrayList<>();
-			while(indice < candidato.getTelefoneCandidato().size() && indice < 2) {
-				TelefoneCandidato telefoneCandidato = candidato.getTelefoneCandidato().get(indice);
-				ResponseTelefoneCandidato response = new ResponseTelefoneCandidato(telefoneCandidato.getId(), telefoneCandidato.getNumero());
-				telefoneCandidatoList.add(response);
-				indice++;
-			}
-			this.telefone = telefoneCandidatoList;
-		} 
-		
-		if(candidato.getEmailCandidato().size() > 0) {
-			int indice = 0;
-			List<ResponseEmailCandidato> emailCandidatoList = new ArrayList<>();
-			while(indice < candidato.getEmailCandidato().size() && indice < 2) {
-				EmailCandidato emailCandidato = candidato.getEmailCandidato().get(indice);
-				ResponseEmailCandidato response = new ResponseEmailCandidato(emailCandidato.getId(), emailCandidato.getEmail());
-				emailCandidatoList.add(response);
-				indice++;
-			}
-			this.email = emailCandidatoList;
-		} 
-		
-		if(candidato.getDeficienciaCandidato().size() > 0) {
-			int indice = 0;
-			List<ResponseDeficiencia> deficienciaCandidatoList = new ArrayList<>();
-			while(indice < candidato.getDeficienciaCandidato().size()) {
-				Deficiencia deficienciaCandidato = candidato.getDeficienciaCandidato().get(indice).getDeficiencia();
-				ResponseDeficiencia response = 
-						new ResponseDeficiencia(deficienciaCandidato.getId(), deficienciaCandidato.getTipoDeficiencia().getId(), 
-								deficienciaCandidato.getDeficiencia(), deficienciaCandidato.getTipoDeficiencia().getTipo(), candidato.getDeficienciaCandidato().get(indice).getId());
-				deficienciaCandidatoList.add(response);
-				indice++;
-			}
-			this.deficiencia = deficienciaCandidatoList;
-		} 
-		
-		if(candidato.getExperienciaProfissional().size() > 0) {
-			int indice = 0;
-			List<ResponseExperienciaProfissional> experienciaList = new ArrayList<>();
-			while(indice < candidato.getExperienciaProfissional().size()) {
-				ExperienciaProfissional exp = candidato.getExperienciaProfissional().get(indice);
-				ResponseExperienciaProfissional experienciaCandidato = 
-						new ResponseExperienciaProfissional(exp.getId(), exp.getCargo(), exp.getDataInicio(), exp.getDataSaida(), exp.getAtribuicoes(), exp.getNomeEmpresa());
-				experienciaList.add(experienciaCandidato);
-				indice++;
-			}
-			this.experiencia = experienciaList;
-		} 
-		
-		if(candidato.getCursoCandidato().size() > 0) {
-			int indice = 0;
-			List<ResponseCursoCandidato> cursoList = new ArrayList<>();
-			while(indice < candidato.getCursoCandidato().size()) {
-				Curso cursos = candidato.getCursoCandidato().get(indice).getCurso();
-				ResponseCursoCandidato cursoCandidato = 
-						new ResponseCursoCandidato(cursos.getId(), cursos.getCurso(), cursos.getNivel().getId(), 
-								cursos.getNivel().getNivel(), cursos.getAreaAtuacao().getId(), cursos.getAreaAtuacao().getAreaAtuacao(), candidato.getCursoCandidato().get(indice).getId());
-				cursoList.add(cursoCandidato);
-				indice++;
-			}
-			this.curso = cursoList;
-		}
-		
-		if(candidato.getEndereco() != null) {
-			this.endereco = new EnderecoCandidatoDTO(candidato.getEndereco());
-		}
-		
-
-	}
-
-
-	public static Page<CandidatoAtualizadoDTO> converter(Page<CandidatoEntity> candidatos) {
-		return candidatos.map(CandidatoAtualizadoDTO::new);
+		this.email = emails;
+		this.telefone = telefones;
+		this.deficiencia = deficiencias;
+		this.experiencia = experiencia;
+		this.curso = cursos;
 	}
 }

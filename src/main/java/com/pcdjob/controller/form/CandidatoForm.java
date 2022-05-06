@@ -1,15 +1,10 @@
-package com.pcdjob.controller.dto;
-
-import java.util.Optional;
+package com.pcdjob.controller.form;
 
 import com.pcdjob.model.candidato.CandidatoEntity;
-import com.pcdjob.model.candidato.EmailCandidato;
 import com.pcdjob.model.candidato.Genero;
-import com.pcdjob.repository.EmailCandidatoRepository;
-import com.pcdjob.repository.GeneroRepository;
 
 
-public class InserirCandidatoDTO {
+public class CandidatoForm {
 	private String nome;
 	private String senha;
 	private String email;
@@ -41,17 +36,7 @@ public class InserirCandidatoDTO {
 		this.email = email;
 	}
 	
-	public CandidatoEntity converter(GeneroRepository generoRepository) {
-		Genero generoObj = generoRepository.findByGenero(genero);
+	public CandidatoEntity converter(Genero generoObj) {
 		return new CandidatoEntity(nome, senha, generoObj);
-	}
-	
-	public EmailCandidato converterEmail(EmailCandidatoRepository emailRepository, CandidatoEntity candidato) {
-		Optional<EmailCandidato> emailCandidato = emailRepository.findByEmail(email);
-		if(emailCandidato.isPresent() != true) {
-			return emailRepository.save(new EmailCandidato(email, candidato));
-		} else {
-			return null;
-		}
 	}
 }

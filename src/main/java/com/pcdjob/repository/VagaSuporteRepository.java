@@ -16,4 +16,5 @@ public interface VagaSuporteRepository extends JpaRepository<VagaSuportePCD, Lon
 
 	Optional<VagaSuportePCD> findBySuporte(SuportePCD suportePCD);
 
+
 }

@@ -1,12 +1,9 @@
-package com.pcdjob.controller.dto;
-
-import java.util.Optional;
+package com.pcdjob.controller.form;
 
 import com.pcdjob.model.candidato.CandidatoEntity;
 import com.pcdjob.model.candidato.ExperienciaProfissional;
-import com.pcdjob.repository.CandidatoRepository;
 
-public class InserirExperienciaProfissionalDTO {
+public class ExperienciaProfissionalForm {
 	
 	private String cargo;
 	private String dataInicio;
@@ -54,10 +51,7 @@ public class InserirExperienciaProfissionalDTO {
 		this.nomeEmpresa = nomeEmpresa;
 	}
 
-	public ExperienciaProfissional converter(Long id, CandidatoRepository candidatoRepository) {
-		Optional<CandidatoEntity> candidatoObj = candidatoRepository.findById(id);
-		return new ExperienciaProfissional(cargo, dataInicio, dataSaida, atribuicoes, nomeEmpresa, candidatoObj.get());
-		
+	public ExperienciaProfissional converter(CandidatoEntity candidato) {
+		return new ExperienciaProfissional(cargo, dataInicio, dataSaida, atribuicoes, nomeEmpresa, candidato);
 	}
-
 }

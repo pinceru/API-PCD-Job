@@ -5,13 +5,13 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.pcdjob.controller.dto.TipoContratoRepository;
 import com.pcdjob.model.Curso;
 import com.pcdjob.model.vaga.FormacaoDesejada;
 import com.pcdjob.model.vaga.TipoContrato;
 import com.pcdjob.model.vaga.VagaEntity;
 import com.pcdjob.repository.CursoRepository;
 import com.pcdjob.repository.FormacaoDesejadaRepository;
+import com.pcdjob.repository.TipoContratoRepository;
 import com.pcdjob.repository.VagaRepository;
 
 //@Service

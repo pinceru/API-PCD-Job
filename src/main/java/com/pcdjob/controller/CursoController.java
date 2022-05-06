@@ -1,7 +1,5 @@
 package com.pcdjob.controller;
 
-import java.util.Optional;
-
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +19,11 @@ import com.pcdjob.controller.dto.NivelDTO;
 import com.pcdjob.model.AreaAtuacao;
 import com.pcdjob.model.Curso;
 import com.pcdjob.model.Nivel;
-import com.pcdjob.repository.AreaAtuacaoRepository;
 import com.pcdjob.repository.CursoRepository;
 import com.pcdjob.repository.NivelRepository;
+import com.pcdjob.service.AreaAtuacaoService;
+import com.pcdjob.service.CursoService;
+import com.pcdjob.service.NivelService;
 
 @RestController
 @RequestMapping("/curso")
@@ -33,10 +33,16 @@ public class CursoController {
 	private NivelRepository nivelRepository;
 	
 	@Autowired
-	private AreaAtuacaoRepository areaRepository;
+	private CursoRepository cursoRepository;
 	
 	@Autowired
-	private CursoRepository cursoRepository;
+	private NivelService nivelService;
+	
+	@Autowired
+	private AreaAtuacaoService areaService;
+	
+	@Autowired
+	private CursoService cursoService;
 	
 	@CrossOrigin
 	@GetMapping(path = "/nivel/listar", produces = "application/json")
@@ -50,7 +56,7 @@ public class CursoController {
 	@GetMapping(path = "/area/listar", produces = "application/json")
 	@Transactional
 	public Page<AreaDTO> listarAreas(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
-		Page<AreaAtuacao> areas = areaRepository.findAll(paginacao);
+		Page<AreaAtuacao> areas = areaService.paginarAreaAtuacao(paginacao);
 		return AreaDTO.converter(areas);
 	}
 	
@@ -61,31 +67,23 @@ public class CursoController {
 			@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
 		
 		if(idAreaAtuacao != null && idNivel != null) {
-			Optional<AreaAtuacao> area = areaRepository.findById(idAreaAtuacao);
-			Optional<Nivel> nivelCurso = nivelRepository.findById(idNivel);
-			Page<Curso> cursos = cursoRepository.findByAreaAtuacaoAndNivel(area.get(), nivelCurso.get(), paginacao);
+			AreaAtuacao area = areaService.buscarAreaID(idAreaAtuacao);
+			Nivel nivelCurso = nivelService.buscarNivelID(idNivel);
+			Page<Curso> cursos = cursoService.paginarCursoAreaNivel(area, nivelCurso, paginacao);
+			
 			return CursoDTO.converter(cursos);
 		} else if(idAreaAtuacao != null && idNivel == null) {
-			Optional<AreaAtuacao> area = areaRepository.findById(idAreaAtuacao);
-			Page<Curso> cursos = cursoRepository.findByAreaAtuacao(area.get(), paginacao);
+			AreaAtuacao area = areaService.buscarAreaID(idAreaAtuacao);
+			Page<Curso> cursos = cursoService.paginarCursoArea(area, paginacao);
 			return CursoDTO.converter(cursos);
 		} else if(idAreaAtuacao == null && idNivel != null) {
-			Optional<Nivel> nivelCurso = nivelRepository.findById(idNivel);
-			Page<Curso> cursos = cursoRepository.findByNivel(nivelCurso.get(), paginacao);
+			Nivel nivelCurso = nivelService.buscarNivelID(idNivel);
+			Page<Curso> cursos = cursoService.paginarCursoNivel(nivelCurso, paginacao);
 			return CursoDTO.converter(cursos);
 		} else {
 			Page<Curso> cursos = cursoRepository.findAll(paginacao);
 			return CursoDTO.converter(cursos);
 		}
-	}
-	
-	@CrossOrigin
-	@GetMapping(path = "/listar/nivel", produces = "application/json")
-	@Transactional
-	public Page<CursoDTO> listarCursosNivel(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao, @RequestParam(required = true) String nivel) {
-		Nivel nivelCurso = nivelRepository.findByNivel(nivel);
-		Page<Curso> cursos = cursoRepository.findByNivel(nivelCurso, paginacao);
-		return CursoDTO.converter(cursos);
 	}
 
 }
