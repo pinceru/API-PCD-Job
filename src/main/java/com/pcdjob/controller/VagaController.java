@@ -295,4 +295,18 @@ public class VagaController {
 		return ContratoDTO.converter(tipos);
 	}
 	
+	@CrossOrigin
+	@GetMapping(path = "/listar/{id}", produces = "application/json")
+	@Transactional
+	public Page<VagaSalvaDTO> listarVagasCandidato(@PathVariable Long id, @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
+		CandidatoEntity candidato = candidatoService.buscarCandidatoID(id);
+		if(candidato != null) {
+			List<VagaEntity> vagas = candidatoVagaService.buscarVagas(candidato);
+			List<VagaSalvaDTO> dtos = vagaResponseService.listarVagas(vagas);
+			return vagaResponseService.paginarVagasDTO(dtos, paginacao);
+		} else {
+			return null;
+		}
+	}
+	
 }

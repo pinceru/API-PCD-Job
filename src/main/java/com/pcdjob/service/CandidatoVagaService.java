@@ -13,6 +13,7 @@ import com.pcdjob.model.vaga.StatusVaga;
 import com.pcdjob.model.vaga.VagaCandidato;
 import com.pcdjob.model.vaga.VagaEntity;
 import com.pcdjob.repository.VagaCandidatoRepository;
+import com.pcdjob.repository.VagaRepository;
 import com.pcdjob.service.helper.Verificar;
 
 @Service
@@ -20,6 +21,9 @@ public class CandidatoVagaService {
 	
 	@Autowired
 	private VagaCandidatoRepository vagaCandidatoRepository;
+	
+	@Autowired
+	private VagaRepository vagaRepository;
 	
 	public List<VagaCandidato> encontrarStatusVagasCandidato(StatusVaga status, CandidatoEntity candidato) {
 		return vagaCandidatoRepository.findByCandidatoAndStatus(candidato, status);
@@ -61,5 +65,31 @@ public class CandidatoVagaService {
 		return vagaList;
 	}
 	
+	public List<VagaCandidato> buscarVagasCandidato(CandidatoEntity candidato) {
+		return vagaCandidatoRepository.findByCandidato(candidato);
+	}
 	
+	public List<VagaEntity> buscarVagas(CandidatoEntity candidato) {
+		List<VagaEntity> vagas = vagaRepository.findAll();
+		List<VagaEntity> vagaReturn = new ArrayList<>();
+		int indiceVaga = 0;
+		int indiceCandidato = 0; 
+		
+		while(indiceVaga < vagas.size()) {
+			indiceCandidato = 0;
+			if(vagas.get(indiceVaga).getVagaCandidato().size() > 0) {
+				while(indiceCandidato < vagas.get(indiceVaga).getVagaCandidato().size()) {
+					System.out.println("O candidato é: " + vagas.get(indiceVaga).getVagaCandidato().get(indiceCandidato).getCandidato().getId() + " e o id é: " + candidato.getId());
+					if(vagas.get(indiceVaga).getVagaCandidato().get(indiceCandidato).getCandidato().getId() != candidato.getId()) {
+						vagaReturn.add(vagas.get(indiceVaga));
+					}
+					indiceCandidato++;
+				}
+			} else {
+				vagaReturn.add(vagas.get(indiceVaga));
+			}
+			indiceVaga++;
+		}
+		return vagaReturn;
+	}
 }

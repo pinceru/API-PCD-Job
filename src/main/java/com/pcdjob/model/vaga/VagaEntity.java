@@ -43,6 +43,8 @@ public class VagaEntity {
 	private LocalTrabalho localTrabalho;
 	@OneToMany(mappedBy = "vaga", cascade = CascadeType.ALL)
 	private List<FormacaoDesejada> formacaoDesejada;
+	@OneToMany(mappedBy = "vaga")
+	private List<VagaCandidato> vagaCandidato;
 	
 	public Long getId() {
 		return id;
@@ -128,7 +130,12 @@ public class VagaEntity {
 	public void setFormacaoDesejada(List<FormacaoDesejada> formacaoDesejada) {
 		this.formacaoDesejada = formacaoDesejada;
 	}
-	
+	public List<VagaCandidato> getVagaCandidato() {
+		return vagaCandidato;
+	}
+	public void setVagaCandidato(List<VagaCandidato> vagaCandidato) {
+		this.vagaCandidato = vagaCandidato;
+	}
 	public VagaEntity() {
 		
 	}
