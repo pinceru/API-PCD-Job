@@ -28,6 +28,7 @@ import com.pcdjob.controller.dto.CandidatoAtualizadoDTO;
 import com.pcdjob.controller.dto.CandidatoVagaDTO;
 import com.pcdjob.controller.dto.ContratoDTO;
 import com.pcdjob.controller.dto.StatusDTO;
+import com.pcdjob.controller.dto.SuporteDTO;
 import com.pcdjob.controller.dto.VagaDTO;
 import com.pcdjob.controller.dto.VagaSalvaDTO;
 import com.pcdjob.controller.dto.response.ResponseBeneficio;
@@ -42,6 +43,7 @@ import com.pcdjob.controller.dto.response.ResponseTipoContrato;
 import com.pcdjob.controller.form.AtualizarVagaForm;
 import com.pcdjob.controller.form.VagaForm;
 import com.pcdjob.model.Cidade;
+import com.pcdjob.model.SuportePCD;
 import com.pcdjob.model.candidato.CandidatoEntity;
 import com.pcdjob.model.empresa.EmpresaEntity;
 import com.pcdjob.model.vaga.Beneficio;
@@ -64,6 +66,7 @@ import com.pcdjob.service.CandidatoVagaService;
 import com.pcdjob.service.ContratoService;
 import com.pcdjob.service.EmpresaService;
 import com.pcdjob.service.EnderecoService;
+import com.pcdjob.service.SuporteService;
 import com.pcdjob.service.VagaResponseService;
 import com.pcdjob.service.VagaService;
 
@@ -112,6 +115,9 @@ public class VagaController {
 	
 	@Autowired
 	private CandidatoService candidatoService;
+	
+	@Autowired
+	private SuporteService suporteService;
 	
 	@CrossOrigin
 	@PostMapping(path = "/cadastrar/{id}", produces = "application/json")
@@ -293,6 +299,14 @@ public class VagaController {
 	public Page<ContratoDTO> listarTipoContrato(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
 		Page<TipoContrato> tipos = tipoContratoRepository.findAll(paginacao);
 		return ContratoDTO.converter(tipos);
+	}
+	
+	@CrossOrigin
+	@GetMapping(path = "/listar/suporte", produces = "application/json")
+	@Transactional
+	public Page<SuporteDTO> listarSuportes(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
+		Page<SuportePCD> suportes = suporteService.listarSuportesPCD(paginacao);
+		return SuporteDTO.converter(suportes);
 	}
 	
 	@CrossOrigin
