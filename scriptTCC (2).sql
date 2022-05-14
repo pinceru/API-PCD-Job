@@ -352,3 +352,18 @@ create table tbl_vaga_candidato(
     references tbl_status_vaga(id_status_vaga)
 );
 
+create table tbl_recuperar_candidato(
+	id_recuperar_candidato int not null auto_increment primary key,
+    codigo int not null,
+    email_id_email_candidato int not null,
+    foreign key(email_id_email_candidato)
+    references tbl_email_candidato(id_email_candidato)
+);
+
+create table tbl_recuperar_empresa(
+	id_recuperar_empresa int not null auto_increment primary key,
+    codigo int not null,
+    email_id_email_empresa int not null,
+    foreign key(email_id_email_empresa)
+    references tbl_email_empresa(id_email_empresa)
+);

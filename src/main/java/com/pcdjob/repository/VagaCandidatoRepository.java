@@ -19,4 +19,6 @@ public interface VagaCandidatoRepository extends JpaRepository<VagaCandidato, Lo
 
 	List<VagaCandidato> findByCandidato(CandidatoEntity candidato);
 
+	List<VagaCandidato> findByCandidatoNot(CandidatoEntity candidato);
+
 }

@@ -64,8 +64,8 @@ public class EmpresaService {
 	
 	public List<TelefoneEmpresa> atualizarTelefones(List<String> telefone, EmpresaEntity empresa) {
 		List<TelefoneEmpresa> listaTelefone = new ArrayList<>();
-		int indice = 1;
-		while(telefone.size() < indice) {
+		int indice = 0;
+		while(telefone.size() > indice) {
 			Optional<TelefoneEmpresa> optional = telefoneEmpresaRepository.findByEmpresaAndNumero(empresa, telefone.get(indice));
 			if(Verificar.verificarOptional(optional)) {
 				listaTelefone.add(optional.get());
@@ -80,8 +80,8 @@ public class EmpresaService {
 	
 	public List<EmailEmpresa> atualizarEmails(List<String> email, EmpresaEntity empresa) {
 		List<EmailEmpresa> listaEmail = new ArrayList<>();
-		int indice = 1;
-		while(email.size() < indice) {
+		int indice = 0;
+		while(email.size() > indice) {
 			Optional<EmailEmpresa> optional = emailEmpresaRepository.findByEmpresaAndEmail(empresa, email.get(indice));
 			if(Verificar.verificarOptional(optional)) {
 				listaEmail.add(optional.get());
@@ -92,5 +92,9 @@ public class EmpresaService {
 			indice++;
 		}
 		return listaEmail;
+	}
+	
+	public Optional<EmailEmpresa> verificarEmail(String email) {
+		return emailEmpresaRepository.findByEmail(email);
 	}
 }

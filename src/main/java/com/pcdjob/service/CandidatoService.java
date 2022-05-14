@@ -78,4 +78,8 @@ public class CandidatoService {
 			indice += 1;
 		}
 	}
+	
+	public Optional<EmailCandidato> verificarEmail(String email) {
+		return emailCandidatoRepository.findByEmail(email);
+	}
 }

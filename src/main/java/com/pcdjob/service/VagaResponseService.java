@@ -83,7 +83,8 @@ public class VagaResponseService {
 			List<ResponseFormacao> cursoList = new ArrayList<>();
 			while(indice < vaga.getFormacaoDesejada().size()) {
 				Curso curso = vaga.getFormacaoDesejada().get(indice).getCurso();
-				ResponseFormacao response = new ResponseFormacao(curso.getId(), curso.getCurso(), curso.getAreaAtuacao().getId(), curso.getAreaAtuacao().getAreaAtuacao(), vaga.getFormacaoDesejada().get(indice).getId());
+				ResponseFormacao response = new ResponseFormacao(curso.getId(), curso.getCurso(), curso.getAreaAtuacao().getId(), curso.getAreaAtuacao().getAreaAtuacao(), vaga.getFormacaoDesejada().get(indice).getId(),
+																	curso.getNivel().getId(), curso.getNivel().getNivel());
 				cursoList.add(response);
 				indice++;
 			}

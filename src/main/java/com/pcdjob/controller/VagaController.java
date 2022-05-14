@@ -1,6 +1,7 @@
 package com.pcdjob.controller;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -66,6 +67,7 @@ import com.pcdjob.service.CandidatoVagaService;
 import com.pcdjob.service.ContratoService;
 import com.pcdjob.service.EmpresaService;
 import com.pcdjob.service.EnderecoService;
+import com.pcdjob.service.PesquisaService;
 import com.pcdjob.service.SuporteService;
 import com.pcdjob.service.VagaResponseService;
 import com.pcdjob.service.VagaService;
@@ -119,6 +121,9 @@ public class VagaController {
 	@Autowired
 	private SuporteService suporteService;
 	
+	@Autowired
+	private PesquisaService pesquisaService;
+	
 	@CrossOrigin
 	@PostMapping(path = "/cadastrar/{id}", produces = "application/json")
 	@Transactional
@@ -142,8 +147,25 @@ public class VagaController {
 	@CrossOrigin
 	@GetMapping(path = "/listar", produces = "application/json")
 	@Transactional
-	public Page<VagaSalvaDTO> listarTodasVagas(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
-		List<VagaEntity> vagas = vagaRepository.findAll();
+	public Page<VagaSalvaDTO> listarTodasVagas(@RequestParam(required = false) Long idDeficiencia,
+			@RequestParam(required = false) Long idSuporte, @RequestParam(required = false) Long idEstado, @RequestParam(required = false) Long idCidade,
+			@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
+		
+		List<VagaEntity> vagas = new ArrayList<>();
+		if(idDeficiencia == null && idSuporte == null && idCidade == null && idEstado == null) {
+			vagas = vagaRepository.findAll();
+		} else {
+			List<VagaEntity> vagasDeficiencia = pesquisaService.filtrarPorDeficiencia(idDeficiencia);
+			List<VagaEntity> vagasSuporte = pesquisaService.filtrarPorSuporte(idSuporte);
+			if(idCidade != null) {
+				vagas = pesquisaService.filtrarPorCidade(idCidade);
+			} else if(idEstado != null){
+				vagas = pesquisaService.filtrarPorEstado(idEstado);
+			}
+			vagas.addAll(vagasDeficiencia);
+			vagas.addAll(vagasSuporte);
+		}
+		
 		List<VagaSalvaDTO> dtos = vagaResponseService.listarVagas(vagas);
 		return vagaResponseService.paginarVagasDTO(dtos, paginacao);
 	}
@@ -175,8 +197,9 @@ public class VagaController {
 	@Transactional
 	public ResponseEntity<VagaSalvaDTO> atualizarVaga(@PathVariable Long id, @RequestBody AtualizarVagaForm form, UriComponentsBuilder uriBuilder) {
 		VagaEntity vaga = vagaService.buscarVagaID(id);
+		System.out.println("A vaga é:" + vaga.getTitulo());
 		Salario salario = vagaService.converterSalario(form.getSalario(), form.getStatusSalario());
-		TipoContrato tipoContrato = contratoService.buscarTipoContratoID(id);
+		TipoContrato tipoContrato = contratoService.buscarTipoContratoID(form.getTipoContrato());
 		Horario horario = vagaService.converterHorario(form.getHorarioInicio(), form.getHorarioSaida(), form.getStatusHorario());
 		VagaEntity vagaAtualizada = form.converter(vaga, salario, tipoContrato, horario);
 		
@@ -323,4 +346,18 @@ public class VagaController {
 		}
 	}
 	
+	@CrossOrigin
+	@GetMapping(path = "/listar/vagas/candidato/{id}", produces = "application/json")
+	@Transactional
+	public Page<VagaSalvaDTO> listarVagasCandidatoX(@PathVariable Long id, @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
+		CandidatoEntity candidato = candidatoService.buscarCandidatoID(id);
+		if(candidato != null) {
+			List<VagaCandidato> vagasCandidato = candidatoVagaService.buscarVagasCandidato(candidato);
+			List<VagaEntity> vagas = candidatoVagaService.listarVagas(vagasCandidato);
+			List<VagaSalvaDTO> dtos = vagaResponseService.listarVagas(vagas);
+			return vagaResponseService.paginarVagasDTO(dtos, paginacao);
+		} else {
+			return null;
+		}
+	}
 }

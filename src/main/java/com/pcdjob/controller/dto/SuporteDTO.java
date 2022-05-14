@@ -1,5 +1,3 @@
-
-  
 package com.pcdjob.controller.dto;
 
 import org.springframework.data.domain.Page;

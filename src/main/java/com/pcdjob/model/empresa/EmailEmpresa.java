@@ -1,12 +1,17 @@
 package com.pcdjob.model.empresa;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.pcdjob.model.RecuperarSenhaEmpresa;
 
 @Entity
 @Table(name = "tbl_email_empresa")
@@ -16,6 +21,8 @@ public class EmailEmpresa {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String email;
+	@OneToMany(mappedBy = "email")
+	private List<RecuperarSenhaEmpresa> recuperar;
 	
 	@ManyToOne
 	private EmpresaEntity empresa;

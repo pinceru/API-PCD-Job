@@ -40,7 +40,12 @@ public class Estado {
 	public void setSigla(String sigla) {
 		this.sigla = sigla;
 	}
-	
+	public List<Cidade> getCidade() {
+		return cidade;
+	}
+	public void setCidade(List<Cidade> cidade) {
+		this.cidade = cidade;
+	}
 	public Estado() {
 		
 	}

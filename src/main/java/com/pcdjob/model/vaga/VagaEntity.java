@@ -43,7 +43,7 @@ public class VagaEntity {
 	private LocalTrabalho localTrabalho;
 	@OneToMany(mappedBy = "vaga", cascade = CascadeType.ALL)
 	private List<FormacaoDesejada> formacaoDesejada;
-	@OneToMany(mappedBy = "vaga")
+	@OneToMany(mappedBy = "vaga", cascade = CascadeType.ALL)
 	private List<VagaCandidato> vagaCandidato;
 	
 	public Long getId() {

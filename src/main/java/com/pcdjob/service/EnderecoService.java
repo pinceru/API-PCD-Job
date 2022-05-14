@@ -3,6 +3,8 @@ package com.pcdjob.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.pcdjob.model.Cidade;
@@ -39,5 +41,22 @@ public class EnderecoService {
 			Cidade novaCidade = new Cidade(cidade, estadoObj);
 			return cidadeRepository.save(novaCidade);
 		}
+	}
+	
+	public Estado buscarEstadoID(Long id) {
+		Optional<Estado> optional = estadoRepository.findById(id);
+		if(Verificar.verificarOptional(optional)) {
+			return optional.get();
+		} else {
+			return null;
+		}
+	}
+	
+	public Page<Cidade> buscarCidadesEstado(Estado estado, Pageable paginacao) {
+		return cidadeRepository.findByEstado(estado, paginacao);
+	}
+	
+	public Page<Estado> listarTodosEstados(Pageable paginacao) {
+		return estadoRepository.findAll(paginacao);
 	}
 }

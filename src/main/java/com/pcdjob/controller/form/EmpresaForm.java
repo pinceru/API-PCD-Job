@@ -2,6 +2,8 @@ package com.pcdjob.controller.form;
 
 import java.util.List;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import com.pcdjob.model.AreaAtuacao;
 import com.pcdjob.model.Cidade;
 import com.pcdjob.model.empresa.EmpresaEntity;
@@ -101,10 +103,11 @@ public class EmpresaForm {
 		this.sigla = sigla;
 	}
 	public EmpresaEntity converter(AreaAtuacao area) {
+		String novaSenha = new BCryptPasswordEncoder().encode(senha);
 		if(descricao != null && !descricao.equals(" ")) {
-			return new EmpresaEntity(nome, senha, descricao, area);
+			return new EmpresaEntity(nome, novaSenha, descricao, area);
 		} else {
-			return new EmpresaEntity(nome, senha, area);
+			return new EmpresaEntity(nome, novaSenha, area);
 		}
 	}	
 	

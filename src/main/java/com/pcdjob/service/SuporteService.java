@@ -17,4 +17,12 @@ public class SuporteService {
 	public Page<SuportePCD> listarSuportesPCD(Pageable paginacao) {
 		return suporteRepository.findAll(paginacao);
 	}
+	
+//	public List<SuporteDTO> listarSuportesDTO(List<SuportePCD> suportes) {
+//		int indice = 0;
+//		List<SuporteDTO> dtos = new ArrayList<>();
+//		while(indice < suportes.size()) {
+//			SuporteDTO dto 
+//		}
+//	}
 }

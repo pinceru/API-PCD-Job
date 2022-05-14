@@ -2,7 +2,7 @@ package com.pcdjob.controller.dto.response;
 
 public class ResponseTipoContrato {
 	private Long id;
-	private String tpoContrato;
+	private String tipoContrato;
 	public Long getId() {
 		return id;
 	}
@@ -10,14 +10,14 @@ public class ResponseTipoContrato {
 		this.id = id;
 	}
 	public String getTpoContrato() {
-		return tpoContrato;
+		return tipoContrato;
 	}
-	public void setTpoContrato(String tpoContrato) {
-		this.tpoContrato = tpoContrato;
+	public void setTpoContrato(String tipoContrato) {
+		this.tipoContrato = tipoContrato;
 	}
 	
 	public ResponseTipoContrato(Long id, String tipoContrato) {
 		this.id = id;
-		this.tpoContrato = tipoContrato;
+		this.tipoContrato = tipoContrato;
 	}
 }

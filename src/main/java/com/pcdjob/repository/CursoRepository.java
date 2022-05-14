@@ -19,7 +19,7 @@ public interface CursoRepository extends JpaRepository<Curso, Long> {
 	Page<Curso> findByAreaAtuacao(AreaAtuacao area, Pageable paginacao);
 
 	Page<Curso> findByNivel(Nivel nivel, Pageable paginacao);
-
+	
 	Optional<Curso> findByCurso(String palavra);
 
 }

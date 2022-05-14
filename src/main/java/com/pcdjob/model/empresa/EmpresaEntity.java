@@ -89,6 +89,12 @@ public class EmpresaEntity {
 	public void setEndereco(EnderecoEmpresa endereco) {
 		this.endereco = endereco;
 	}
+	public List<VagaEntity> getVaga() {
+		return vaga;
+	}
+	public void setVaga(List<VagaEntity> vaga) {
+		this.vaga = vaga;
+	}
 	public EmpresaEntity() {
 		
 	}

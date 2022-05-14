@@ -3,6 +3,7 @@ package com.pcdjob.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.pcdjob.model.candidato.CandidatoEntity;
@@ -20,7 +21,7 @@ public class AuthService {
 	private CandidatoRepository candidatoRepository;
 	
 	public boolean autenticaCandidato(CandidatoEntity candidato, String login, String senha) {
-		if(candidato.getEmailCandidato().get(0).getEmail().equals(login) && candidato.getSenha().equals(senha)) {
+		if(candidato.getEmailCandidato().get(0).getEmail().equals(login) && new BCryptPasswordEncoder().matches(senha, candidato.getSenha())) {
 			return true;
 		} else {
 			return false;
@@ -28,7 +29,7 @@ public class AuthService {
 	}
 	
 	public boolean autenticaEmpresa(EmpresaEntity empresa, String login, String senha) {
-		if(empresa.getEmailEmpresa().get(0).getEmail().equals(login) && empresa.getSenha().equals(senha)) {
+		if(empresa.getEmailEmpresa().get(0).getEmail().equals(login) && new BCryptPasswordEncoder().matches(senha, empresa.getSenha())) {
 			return true;
 		} else {
 			return false;

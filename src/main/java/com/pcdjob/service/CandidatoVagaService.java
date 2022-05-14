@@ -79,7 +79,6 @@ public class CandidatoVagaService {
 			indiceCandidato = 0;
 			if(vagas.get(indiceVaga).getVagaCandidato().size() > 0) {
 				while(indiceCandidato < vagas.get(indiceVaga).getVagaCandidato().size()) {
-					System.out.println("O candidato é: " + vagas.get(indiceVaga).getVagaCandidato().get(indiceCandidato).getCandidato().getId() + " e o id é: " + candidato.getId());
 					if(vagas.get(indiceVaga).getVagaCandidato().get(indiceCandidato).getCandidato().getId() != candidato.getId()) {
 						vagaReturn.add(vagas.get(indiceVaga));
 					}

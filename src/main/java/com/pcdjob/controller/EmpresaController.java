@@ -120,23 +120,29 @@ public class EmpresaController {
 	@CrossOrigin
 	@PutMapping(path = "/atualizar/{id}", produces = "application/json")
 	@Transactional
-	public ResponseEntity<EmpresaSalvaDTO> atualizarEmpresa(@PathVariable Long id, @RequestBody AtualizarEmpresaForm form, UriComponentsBuilder uriBuilder) {
-		EmpresaEntity empresa = empresaService.buscarEmpresaID(id);
-		AreaAtuacao area = areaService.buscarAreaID(form.getAreaAtuacao());
-		Cidade cidade = enderecoService.converterCidade(form.getCidade(), form.getSigla(), form.getEstado());
-		List<TelefoneEmpresa> telefones = empresaService.atualizarTelefones(form.getTelefone(), empresa);
-		List<EmailEmpresa> emails = empresaService.atualizarEmails(form.getEmail(), empresa);
-		EmpresaEntity empresaAtualizada = form.converter(empresa, area, telefones, emails, cidade);
-		empresaRepository.save(empresaAtualizada);
+	public ResponseEntity<?> atualizarEmpresa(@PathVariable Long id, @RequestBody AtualizarEmpresaForm form, UriComponentsBuilder uriBuilder) {
+		try {
+			EmpresaEntity empresa = empresaService.buscarEmpresaID(id);
+			AreaAtuacao area = areaService.buscarAreaID(form.getAreaAtuacao());
+			Cidade cidade = enderecoService.converterCidade(form.getCidade(), form.getSigla(), form.getEstado());
+			List<TelefoneEmpresa> telefones = empresaService.atualizarTelefones(form.getTelefone(), empresa);
+			List<EmailEmpresa> emails = empresaService.atualizarEmails(form.getEmail(), empresa);
+			EmpresaEntity empresaAtualizada = form.converter(empresa, area, telefones, emails, cidade);
+			empresaRepository.save(empresaAtualizada);
+			
+			
+			List<ResponseEmailEmpresa> responseEmail = empresaResponseService.converterEmail(empresaAtualizada);
+			List<ResponseTelefoneEmpresa> responseTelefone = empresaResponseService.converterTelefone(empresaAtualizada);
+			ResponseEnderecoEmpresa responseEndereco = empresaResponseService.converterEndereco(empresaAtualizada);
+			AreaDTO responseArea = new AreaDTO(empresaAtualizada.getAreaAtuacao());
+			URI uri = uriBuilder.path("/empresa/{id}").buildAndExpand(empresa.getId()).toUri();
+			return ResponseEntity.created(uri).body(new EmpresaSalvaDTO(empresaAtualizada, responseEmail, responseTelefone, responseEndereco, responseArea));
+		} catch(Exception e) {
+			e.getStackTrace();
+		}
+		return ResponseEntity.badRequest().build();
 		
 		
-		List<ResponseEmailEmpresa> responseEmail = empresaResponseService.converterEmail(empresaAtualizada);
-		List<ResponseTelefoneEmpresa> responseTelefone = empresaResponseService.converterTelefone(empresaAtualizada);
-		ResponseEnderecoEmpresa responseEndereco = empresaResponseService.converterEndereco(empresaAtualizada);
-		AreaDTO responseArea = new AreaDTO(empresaAtualizada.getAreaAtuacao());
-		
-		URI uri = uriBuilder.path("/empresa/{id}").buildAndExpand(empresa.getId()).toUri();
-		return ResponseEntity.created(uri).body(new EmpresaSalvaDTO(empresaAtualizada, responseEmail, responseTelefone, responseEndereco, responseArea));
 	}
 	
 	@CrossOrigin

@@ -1,5 +1,7 @@
 package com.pcdjob.controller.form;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import com.pcdjob.model.candidato.CandidatoEntity;
 import com.pcdjob.model.candidato.Genero;
 
@@ -37,6 +39,7 @@ public class CandidatoForm {
 	}
 	
 	public CandidatoEntity converter(Genero generoObj) {
-		return new CandidatoEntity(nome, senha, generoObj);
+		String novaSenha = new BCryptPasswordEncoder().encode(senha);
+		return new CandidatoEntity(nome, novaSenha, generoObj);
 	}
 }
