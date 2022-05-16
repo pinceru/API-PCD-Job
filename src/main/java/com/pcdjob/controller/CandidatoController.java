@@ -58,6 +58,7 @@ import com.pcdjob.service.DeficienciaService;
 import com.pcdjob.service.EnderecoCandidatoService;
 import com.pcdjob.service.EnderecoService;
 import com.pcdjob.service.ExperienciaProfissionalService;
+import com.pcdjob.service.helper.EmailException;
 
 @RestController
 @RequestMapping("/candidato")
@@ -102,36 +103,51 @@ public class CandidatoController {
 	@CrossOrigin
 	@PostMapping(path = "/cadastrar", produces = "application/json")
 	@Transactional
-	public ResponseEntity<CandidatoInseridoDTO> cadastrarCandidato(@RequestBody CandidatoForm form, UriComponentsBuilder uriBuilder) {
-		Genero genero = candidatoService.recuperarGenero(form.getGenero());
-		CandidatoEntity candidato = form.converter(genero);
-		CandidatoEntity candidatoSalvo = candidatoRepository.save(candidato);
-		candidatoService.converterEmail(candidatoSalvo, form.getEmail());
-		
-		URI uri = uriBuilder.path("/candidato/{id}").buildAndExpand(candidatoSalvo.getId()).toUri();
-		return ResponseEntity.created(uri).body(new CandidatoInseridoDTO(candidatoSalvo));
+	public ResponseEntity<?> cadastrarCandidato(@RequestBody CandidatoForm form, UriComponentsBuilder uriBuilder) {
+		try {
+			Genero genero = candidatoService.recuperarGenero(form.getGenero());
+			CandidatoEntity candidato = form.converter(genero);
+			CandidatoEntity candidatoSalvo = candidatoRepository.save(candidato);
+			
+			try {
+				candidatoService.converterEmail(candidatoSalvo, form.getEmail());
+			} catch(EmailException e) {
+				System.out.println("Esse e-mail já está cadastrado.");
+			}
+			
+			URI uri = uriBuilder.path("/candidato/{id}").buildAndExpand(candidatoSalvo.getId()).toUri();
+			return ResponseEntity.created(uri).body(new CandidatoInseridoDTO(candidatoSalvo));
+		} catch(Exception e) {
+			System.out.println("Não foi possível realizar o cadastro devido a um exception " + e.getMessage());
+			return ResponseEntity.status(500).build();
+		}
 	}
 	
 	@CrossOrigin
 	@PutMapping(path = "/atualizar/{id}", produces = "application/json")
 	@Transactional 
-	public ResponseEntity<CandidatoAtualizadoDTO> atualizarCadastroCandidato(@PathVariable Long id, @RequestBody AtualizarCandidatoForm form, UriComponentsBuilder uriBuilder) {
-		CandidatoEntity candidato = candidatoService.buscarCandidatoID(id);
-		Genero genero = candidatoService.recuperarGenero(form.getGenero());
-		CandidatoEntity candidatoAtualizado = form.converter(candidato, genero);
-		deficienciaService.converterDeficiencias(candidatoAtualizado, form.getDeficiencia());
-		candidatoService.salvarTelefones(candidatoAtualizado, form.getTelefone());
-		candidatoService.salvarEmails(candidatoAtualizado, form.getEmail());
-		CandidatoEntity candidatoSalvo = candidatoRepository.save(candidatoAtualizado);
+	public ResponseEntity<?> atualizarCadastroCandidato(@PathVariable Long id, @RequestBody AtualizarCandidatoForm form, UriComponentsBuilder uriBuilder) {
+		try {
+			CandidatoEntity candidato = candidatoService.buscarCandidatoID(id);
+			Genero genero = candidatoService.recuperarGenero(form.getGenero());
+			CandidatoEntity candidatoAtualizado = form.converter(candidato, genero);
+			deficienciaService.converterDeficiencias(candidatoAtualizado, form.getDeficiencia());
+			candidatoService.salvarTelefones(candidatoAtualizado, form.getTelefone());
+			candidatoService.salvarEmails(candidatoAtualizado, form.getEmail());
+			CandidatoEntity candidatoSalvo = candidatoRepository.save(candidatoAtualizado);
 		
-		List<ResponseExperienciaProfissional> responseExperiencia = candidatoReponseService.converterExperienciaProfissional(candidatoSalvo);
-		List<ResponseDeficiencia> responseDeficiencia = candidatoReponseService.converterDeficienciaCandidato(candidatoSalvo);
-		List<ResponseCursoCandidato> responseCurso = candidatoReponseService.converterCursoCandidato(candidatoSalvo);
-		List<ResponseTelefoneCandidato> responseTelefone = candidatoReponseService.converterTelefoneCandidato(candidatoSalvo);
-		List<ResponseEmailCandidato> responseEmail = candidatoReponseService.converterEmailCandidato(candidatoSalvo);
-		
-		URI uri = uriBuilder.path("/candidato/{id}").buildAndExpand(candidato.getId()).toUri();
-		return ResponseEntity.created(uri).body(new CandidatoAtualizadoDTO(candidato, responseEmail, responseTelefone, responseDeficiencia, responseExperiencia, responseCurso));
+			List<ResponseExperienciaProfissional> responseExperiencia = candidatoReponseService.converterExperienciaProfissional(candidatoSalvo);
+			List<ResponseDeficiencia> responseDeficiencia = candidatoReponseService.converterDeficienciaCandidato(candidatoSalvo);
+			List<ResponseCursoCandidato> responseCurso = candidatoReponseService.converterCursoCandidato(candidatoSalvo);
+			List<ResponseTelefoneCandidato> responseTelefone = candidatoReponseService.converterTelefoneCandidato(candidatoSalvo);
+			List<ResponseEmailCandidato> responseEmail = candidatoReponseService.converterEmailCandidato(candidatoSalvo);
+			
+			URI uri = uriBuilder.path("/candidato/{id}").buildAndExpand(candidato.getId()).toUri();
+			return ResponseEntity.created(uri).body(new CandidatoAtualizadoDTO(candidato, responseEmail, responseTelefone, responseDeficiencia, responseExperiencia, responseCurso));
+		} catch(Exception e) {
+			System.out.println("Houve um problema em " + e.getClass());
+			return ResponseEntity.status(500).build();
+		}
 	}
 	
 	@CrossOrigin

@@ -14,6 +14,8 @@ import com.pcdjob.repository.CandidatoRepository;
 import com.pcdjob.repository.EmailCandidatoRepository;
 import com.pcdjob.repository.GeneroRepository;
 import com.pcdjob.repository.TelefoneCandidatoRepository;
+import com.pcdjob.service.helper.EmailException;
+import com.pcdjob.service.helper.NotFoundException;
 import com.pcdjob.service.helper.Verificar;
 
 @Service
@@ -41,20 +43,18 @@ public class CandidatoService {
 	
 	public EmailCandidato converterEmail(CandidatoEntity candidato, String email) {
 		Optional<EmailCandidato> optional = emailCandidatoRepository.findByEmail(email);
-		if(!Verificar.verificarOptional(optional)) {
-			return emailCandidatoRepository.save(new EmailCandidato(email, candidato));
-		} else {
-			return null;
-		}
+		if(Verificar.verificarOptional(optional)) {
+			throw new EmailException();
+		} 
+		return emailCandidatoRepository.save(new EmailCandidato(email, candidato));
 	}
 	
 	public CandidatoEntity buscarCandidatoID(Long id) {
 		Optional<CandidatoEntity> optional = candidatoRepository.findById(id);
-		if(Verificar.verificarOptional(optional)) {
-			return optional.get();
-		} else {
-			return null;
-		}
+		if(!Verificar.verificarOptional(optional)) {
+			throw new NotFoundException();
+		} 
+		return optional.get();
 	}
 	
 	public void salvarTelefones(CandidatoEntity candidato, List<String> telefones) {

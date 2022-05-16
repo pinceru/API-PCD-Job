@@ -37,25 +37,40 @@ public class DeficienciaService {
 			return null;
 		}
 	}
-	
+
 	public List<Deficiencia> listarDeficiencias() {
 		return deficienciaRepository.findAll();
 	}
 	
 	public void converterDeficiencias(CandidatoEntity candidato, List<Long> deficienciasRequisitadas) {
-		int indice = 0;
-		while(indice < deficienciasRequisitadas.size()) {
-			Optional<Deficiencia> deficiencia = deficienciaRepository.findById(deficienciasRequisitadas.get(indice));
+//		int indice = 0;
+//		while(indice < deficienciasRequisitadas.size()) {
+//			Optional<Deficiencia> deficiencia = deficienciaRepository.findById(deficienciasRequisitadas.get(indice));
+//			Optional<DeficienciaCandidato> optional = deficienciaCandidatoRepository.findByDeficienciaAndCandidato(deficiencia.get(), candidato);
+//			if(!Verificar.verificarOptional(optional)) {
+//				deficienciaCandidatoRepository.save(new DeficienciaCandidato(deficiencia.get(), candidato));
+//			} else {
+//				List<Deficiencia> deficiencias = deficienciaRepository.findAll();
+//				deletarDeficiencias(deficiencias, deficienciasRequisitadas);
+//				
+//			}
+//			indice += 1;
+//		}
+//		
+		if(deficienciasRequisitadas.size() == 0) {
+			throw new NullPointerException();
+		}
+		
+		deficienciasRequisitadas.forEach((deficienciasID) -> {
+			Optional<Deficiencia> deficiencia = deficienciaRepository.findById(deficienciasID);
 			Optional<DeficienciaCandidato> optional = deficienciaCandidatoRepository.findByDeficienciaAndCandidato(deficiencia.get(), candidato);
 			if(!Verificar.verificarOptional(optional)) {
 				deficienciaCandidatoRepository.save(new DeficienciaCandidato(deficiencia.get(), candidato));
-			} else {
-				List<Deficiencia> deficiencias = deficienciaRepository.findAll();
-				deletarDeficiencias(deficiencias, deficienciasRequisitadas);
-				
-			}
-			indice += 1;
-		}
+			} 
+			List<Deficiencia> deficiencias = deficienciaRepository.findAll();
+			deletarDeficiencias(deficiencias, deficienciasRequisitadas);
+			
+		});
 	}
 	
 	private boolean verificarDeficiencia(int indice, List<Long> deficienciasRequisitadas, List<Deficiencia> deficienciasExistentes) {

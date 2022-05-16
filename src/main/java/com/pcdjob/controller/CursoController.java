@@ -24,6 +24,7 @@ import com.pcdjob.repository.NivelRepository;
 import com.pcdjob.service.AreaAtuacaoService;
 import com.pcdjob.service.CursoService;
 import com.pcdjob.service.NivelService;
+import com.pcdjob.service.helper.NotFoundException;
 
 @RestController
 @RequestMapping("/curso")
@@ -67,23 +68,39 @@ public class CursoController {
 			@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
 		
 		if(idAreaAtuacao != null && idNivel != null) {
-			AreaAtuacao area = areaService.buscarAreaID(idAreaAtuacao);
-			Nivel nivelCurso = nivelService.buscarNivelID(idNivel);
-			Page<Curso> cursos = cursoService.paginarCursoAreaNivel(area, nivelCurso, paginacao);
-			
-			return CursoDTO.converter(cursos);
-		} else if(idAreaAtuacao != null && idNivel == null) {
-			AreaAtuacao area = areaService.buscarAreaID(idAreaAtuacao);
-			Page<Curso> cursos = cursoService.paginarCursoArea(area, paginacao);
-			return CursoDTO.converter(cursos);
-		} else if(idAreaAtuacao == null && idNivel != null) {
-			Nivel nivelCurso = nivelService.buscarNivelID(idNivel);
-			Page<Curso> cursos = cursoService.paginarCursoNivel(nivelCurso, paginacao);
-			return CursoDTO.converter(cursos);
-		} else {
-			Page<Curso> cursos = cursoRepository.findAll(paginacao);
-			return CursoDTO.converter(cursos);
-		}
+			try {
+				AreaAtuacao area = areaService.buscarAreaID(idAreaAtuacao);
+				Nivel nivelCurso = nivelService.buscarNivelID(idNivel);
+				Page<Curso> cursos = cursoService.paginarCursoAreaNivel(area, nivelCurso, paginacao);
+				return CursoDTO.converter(cursos);
+			} catch(Exception e) {
+				System.out.println("Ocorreu uma Exception em " + e.getClass());
+			} 
+		} 
+		
+		if(idAreaAtuacao != null && idNivel == null) {
+			try {
+				AreaAtuacao area = areaService.buscarAreaID(idAreaAtuacao);
+				Page<Curso> cursos = cursoService.paginarCursoArea(area, paginacao);
+				return CursoDTO.converter(cursos);
+			} catch(NotFoundException e) {
+				e.mensagem();
+				System.out.println("Ocorreu uma Exception em " + e.getClass());
+			}
+		} 
+		
+		if(idAreaAtuacao == null && idNivel != null) {
+			try {
+				Nivel nivelCurso = nivelService.buscarNivelID(idNivel);
+				Page<Curso> cursos = cursoService.paginarCursoNivel(nivelCurso, paginacao);
+				return CursoDTO.converter(cursos);
+			} catch(NotFoundException e) {
+				e.mensagem();
+				System.out.println("Ocorreu uma Exception em " + e.getClass());
+			}
+		} 
+		
+		Page<Curso> cursos = cursoRepository.findAll(paginacao);
+		return CursoDTO.converter(cursos);
 	}
-
 }

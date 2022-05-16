@@ -15,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.pcdjob.controller.dto.CandidatoInseridoDTO;
 import com.pcdjob.controller.dto.EmpresaDTO;
+import com.pcdjob.controller.dto.response.ResponseEmailCandidato;
 import com.pcdjob.controller.form.LoginForm;
 import com.pcdjob.controller.form.SenhaForm;
 import com.pcdjob.model.candidato.CandidatoEntity;
@@ -98,14 +99,22 @@ public class AuthController {
 			senhaService.salvarRelacao(optionalEmpresa, optionalCandidato, numero);
 			return ResponseEntity.ok().build();
 		} catch(Exception e) {
-			e.getMessage();
+			System.out.println("Não foi possível realizar o cadastro devido a um exception " + e.getMessage());
 			return ResponseEntity.badRequest().build();
 		}
 	}
 	
-//	@CrossOrigin
-//	@PostMapping(path = "/recuperar/senha", produces = "application/json")
-//	public ResponseEntity<?> verificarCodigo(@RequestBody SenhaForm form) {
-//		Integer codigo = form.getCodigo();
-//	}
+	@CrossOrigin
+	@PostMapping(path = "/recuperar/senha/candidato", produces = "application/json")
+	public ResponseEntity<?> verificarCodigo(@RequestBody SenhaForm form, UriComponentsBuilder uriBuilder) {
+		Integer codigo = form.getCodigo();
+		try {
+			EmailCandidato emailCandidato = senhaService.compararCodigoCandidato(codigo);
+			URI uri = uriBuilder.path("/candidato/{id}").buildAndExpand(emailCandidato.getId()).toUri();
+			return ResponseEntity.created(uri).body(new ResponseEmailCandidato(emailCandidato.getId(), emailCandidato.getEmail()));
+		} catch(Exception e) {
+			System.out.println("Não foi possível realizar o cadastro devido a um exception " + e.getMessage());
+			return ResponseEntity.notFound().build();
+		}
+	}
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.pcdjob.model.AreaAtuacao;
 import com.pcdjob.repository.AreaAtuacaoRepository;
+import com.pcdjob.service.helper.NotFoundException;
 import com.pcdjob.service.helper.Verificar;
 
 @Service
@@ -19,11 +20,10 @@ public class AreaAtuacaoService {
 	
 	public AreaAtuacao buscarAreaID(Long id) {
 		Optional<AreaAtuacao> optional = areaRepository.findById(id);
-		if(Verificar.verificarOptional(optional)) {
-			return optional.get();
-		} else {
-			return null;
-		}
+		if(!Verificar.verificarOptional(optional)) {
+			throw new NotFoundException();
+		} 
+		return optional.get();
 	}
 	
 	public Page<AreaAtuacao> paginarAreaAtuacao(Pageable paginacao) {

@@ -20,6 +20,7 @@ import com.pcdjob.model.candidato.CandidatoEntity;
 import com.pcdjob.model.candidato.EmailCandidato;
 import com.pcdjob.model.candidato.ExperienciaProfissional;
 import com.pcdjob.model.candidato.TelefoneCandidato;
+import com.pcdjob.service.helper.Verificar;
 
 @Service
 public class CandidatoResponseService {
@@ -38,6 +39,17 @@ public class CandidatoResponseService {
 		} else {
 			return null;
 		}
+		
+//		Verificar.verificarList(candidato.getEmailCandidato());
+//		List<EmailCandidato> emailsCandidato = candidato.getEmailCandidato();
+//		List<ResponseEmailCandidato> responseList = new ArrayList<>();
+//		while(emailsCandidato.size() < 2) {
+//			emailsCandidato.forEach((email) -> {
+//				ResponseEmailCandidato response = new ResponseEmailCandidato(email.getId(), email.getEmail());
+//				responseList.add(response);
+//			});
+//		}
+//		return responseList;
 	}
 	
 	public List<ResponseTelefoneCandidato> converterTelefoneCandidato(CandidatoEntity candidato) {

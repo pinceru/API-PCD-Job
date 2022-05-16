@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.pcdjob.model.Nivel;
 import com.pcdjob.repository.NivelRepository;
+import com.pcdjob.service.helper.NotFoundException;
 import com.pcdjob.service.helper.Verificar;
 
 @Service
@@ -17,10 +18,9 @@ public class NivelService {
 	
 	public Nivel buscarNivelID(Long id) {
 		Optional<Nivel> optional = nivelRepository.findById(id);
-		if(Verificar.verificarOptional(optional)) {
-			return optional.get();
-		} else {
-			return null;
-		}
+		if(!Verificar.verificarOptional(optional)) {
+			throw new NotFoundException();
+		} 
+		return optional.get();
 	}
 }
