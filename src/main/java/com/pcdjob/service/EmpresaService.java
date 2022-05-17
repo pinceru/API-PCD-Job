@@ -97,4 +97,12 @@ public class EmpresaService {
 	public Optional<EmailEmpresa> verificarEmail(String email) {
 		return emailEmpresaRepository.findByEmail(email);
 	}
+	
+	public EmpresaEntity buscarEmpresaEmail(String email) {
+		Optional<EmpresaEntity> optional = empresaRepository.findByEmailEmpresaEmail(email);
+		if(!Verificar.verificarOptional(optional)) {
+			throw new NullPointerException();
+		}
+		return optional.get();
+	}
 }

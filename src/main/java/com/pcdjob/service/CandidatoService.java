@@ -82,4 +82,13 @@ public class CandidatoService {
 	public Optional<EmailCandidato> verificarEmail(String email) {
 		return emailCandidatoRepository.findByEmail(email);
 	}
+	
+	public CandidatoEntity buscarCandidatoEmail(String email) {
+		Optional<CandidatoEntity> optional = candidatoRepository.findByEmailCandidatoEmail(email);
+		
+		if(!Verificar.verificarOptional(optional)) {
+			throw new NullPointerException();
+		}
+		return optional.get();
+	}
 }
