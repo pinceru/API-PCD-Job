@@ -1,8 +1,14 @@
 package com.pcdjob.controller.form;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.pcdjob.model.candidato.CandidatoEntity;
 
 public class AtualizarSenhaCandidatoForm {
+	@NotNull @NotEmpty @Length(min = 3, max = 20)
 	private String senha;
 
 	public String getSenha() {

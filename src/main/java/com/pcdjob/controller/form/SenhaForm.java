@@ -1,6 +1,12 @@
 package com.pcdjob.controller.form;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 public class SenhaForm {
+	@NotNull @NotEmpty @Length(min = 11, max = 50)
 	private String email;
 	private Integer codigo;
 

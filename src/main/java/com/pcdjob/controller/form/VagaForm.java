@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.pcdjob.model.Cidade;
 import com.pcdjob.model.Curso;
 import com.pcdjob.model.empresa.EmpresaEntity;
@@ -17,26 +22,46 @@ import com.pcdjob.repository.CursoRepository;
 import com.pcdjob.repository.FormacaoDesejadaRepository;
 
 public class VagaForm {
+	@NotNull @NotEmpty @Length(max = 1)
 	private int status;
+	@NotNull @NotEmpty @Length(max = 50)
 	private String titulo;
+	@Length(max = 200)
 	private String descricao;
+	@NotNull @NotEmpty @Length(max = 150)
 	private String requisitos;
+	@NotNull @NotEmpty
 	private Long tipoContrato;
+	@NotNull @NotEmpty @Length(min = 4, max = 15)
 	private String salario;
+	@NotNull @NotEmpty 
 	private int statusSalario;
+	@NotEmpty
 	private List<Long> suporte;
+	@NotEmpty
 	private List<Long> beneficio;
+	@NotEmpty
 	private List<Long> formacaoDesejada;
+	@NotEmpty
 	private List<Long> deficiencia;
+	@Length(min = 2, max = 50)
 	private String rua;
+	@Length(min = 2, max = 50)
 	private String cidade;
+	@Length(min = 2, max = 50)
 	private String estado;
+	@Length(min = 2, max = 2)
 	private String sigla;
+	@Length(min = 2, max = 50)
 	private String bairro;
 	private String numero;
+	@Length(min = 8, max = 9)
 	private String cep;
+	@NotNull @NotEmpty @Length(min = 5, max = 5)
 	private String horarioInicio;
+	@NotNull @NotEmpty @Length(min = 5, max = 5)
 	private String horarioSaida;
+	@NotNull @NotEmpty @Length(min = 1, max = 1)
 	private int statusHorario;
 	
 	public int getStatus() {

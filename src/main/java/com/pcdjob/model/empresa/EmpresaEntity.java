@@ -17,9 +17,6 @@ import javax.persistence.Table;
 import com.pcdjob.model.AreaAtuacao;
 import com.pcdjob.model.vaga.VagaEntity;
 
-import lombok.Data;
-
-@Data
 @Entity
 @Table(name = "tbl_empresa")
 public class EmpresaEntity {

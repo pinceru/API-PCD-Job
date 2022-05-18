@@ -2,17 +2,28 @@ package com.pcdjob.controller.form;
 
 import java.util.List;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.pcdjob.model.candidato.CandidatoEntity;
 import com.pcdjob.model.candidato.Genero;
 
 public class AtualizarCandidatoForm {
+	@NotNull @NotEmpty @Length(min = 2, max = 50)
 	private String nome;
+	@Length(max = 50)
 	private String nomeSocial;
+	@NotNull @NotEmpty @Length(min = 8, max = 10)
 	private String dataNascimento;
 	private String informacoes;
+	@NotNull @NotEmpty
 	private String genero;
+	@NotEmpty
 	private List<Long> deficiencia;
 	private List<String> telefone;
+	@NotEmpty
 	private List<String> email;
 
 	public String getNome() {

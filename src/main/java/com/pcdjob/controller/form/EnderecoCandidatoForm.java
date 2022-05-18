@@ -1,15 +1,26 @@
 package com.pcdjob.controller.form;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.pcdjob.model.Cidade;
 import com.pcdjob.model.candidato.CandidatoEntity;
 import com.pcdjob.model.candidato.EnderecoCandidato;
 
 public class EnderecoCandidatoForm {
+	@NotNull @NotEmpty @Length(max = 50)
 	private String rua;
+	@NotNull @NotEmpty @Length(max = 50)
 	private String bairro;
+	@NotNull @NotEmpty @Length(min = 8, max = 9)
 	private String cep;
+	@NotNull @NotEmpty @Length(min = 2)
 	private String sigla;
+	@NotNull @NotEmpty @Length(max = 50)
 	private String estado;
+	@NotNull @NotEmpty @Length(max = 50)
 	private String cidade;
 	private String numero;
 	

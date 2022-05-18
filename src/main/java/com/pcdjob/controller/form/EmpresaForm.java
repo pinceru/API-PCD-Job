@@ -2,6 +2,10 @@ package com.pcdjob.controller.form;
 
 import java.util.List;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.pcdjob.model.AreaAtuacao;
@@ -10,11 +14,17 @@ import com.pcdjob.model.empresa.EmpresaEntity;
 import com.pcdjob.model.empresa.EnderecoEmpresa;
 
 public class EmpresaForm {
+	@NotNull @NotEmpty @Length(min = 5, max = 50)
 	private String nome;
+	@NotNull @NotEmpty @Length(min = 3, max = 20)
 	private String senha;
+	@NotEmpty
 	private List<String> email;
+	@NotEmpty
 	private List<String> telefone;
+	@Length(max = 200)
 	private String descricao;
+	@Length(max = 1)
 	private Long areaAtuacao;
 	private String rua;
 	private String cep;

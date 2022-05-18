@@ -2,6 +2,11 @@ package com.pcdjob.controller.form;
 
 import java.util.List;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.pcdjob.model.AreaAtuacao;
 import com.pcdjob.model.Cidade;
 import com.pcdjob.model.empresa.EmailEmpresa;
@@ -9,10 +14,13 @@ import com.pcdjob.model.empresa.EmpresaEntity;
 import com.pcdjob.model.empresa.TelefoneEmpresa;
 
 public class AtualizarEmpresaForm {
+	@NotNull @NotEmpty @Length(min = 2, max = 50)
 	private String nome;
 	private String descricao;
+	@NotEmpty
 	private List<String> email;
 	private List<String> telefone;
+	@NotNull @NotEmpty
 	private Long areaAtuacao;
 	private String rua;
 	private String bairro;

@@ -1,5 +1,9 @@
 package com.pcdjob.controller.form;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.pcdjob.model.candidato.CandidatoEntity;
@@ -7,9 +11,13 @@ import com.pcdjob.model.candidato.Genero;
 
 
 public class CandidatoForm {
+	@NotNull @NotEmpty @Length(min = 2, max = 50)
 	private String nome;
+	@NotNull @NotEmpty @Length(min = 3, max = 35)
 	private String senha;
+	@NotNull @NotEmpty @Length(min = 11, max = 50)
 	private String email;
+	@NotNull @NotEmpty
 	private String genero;
 	
 	public String getNome() {

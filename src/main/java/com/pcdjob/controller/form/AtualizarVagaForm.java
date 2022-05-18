@@ -2,18 +2,30 @@ package com.pcdjob.controller.form;
 
 import java.util.List;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.pcdjob.model.vaga.Horario;
 import com.pcdjob.model.vaga.Salario;
 import com.pcdjob.model.vaga.TipoContrato;
 import com.pcdjob.model.vaga.VagaEntity;
 
 public class AtualizarVagaForm {
+	@NotNull @NotEmpty @Length(max = 1)
 	private int status;
+	@NotNull @NotEmpty @Length(max = 50)
 	private String titulo;
+	@Length(max = 200)
 	private String descricao;
+	@Length(max = 200)
 	private String requisitos;
+	@NotNull @NotEmpty
 	private Long tipoContrato;
+	@NotNull @NotEmpty @Length(min = 4, max = 15)
 	private String salario;
+	@NotNull @NotEmpty @Length(max = 1)
 	private int statusSalario;
 	private List<Long> suporte;
 	private List<Long> beneficio;
@@ -26,8 +38,11 @@ public class AtualizarVagaForm {
 	private String bairro;
 	private String numero;
 	private String cep;
+	@NotNull @NotEmpty @Length(max = 5)
 	private String horarioInicio;
+	@NotNull @NotEmpty @Length(max = 5)
 	private String horarioSaida;
+	@NotNull @NotEmpty @Length(max = 1)
 	private int statusHorario;
 	
 	public int getStatus() {

@@ -1,12 +1,22 @@
 package com.pcdjob.controller.form;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.pcdjob.model.candidato.ExperienciaProfissional;
 
 public class AtualizarExperienciaForm {
+	@NotNull @NotEmpty
 	private String cargo;
+	@Length(min = 8, max = 10)
 	private String dataInicio;
+	@NotNull @NotEmpty @Length(min = 8, max = 10)
 	private String dataSaida;
+	@Length(min = 8, max = 200)
 	private String atribuicoes;
+	@Length(min = 8, max = 200)
 	private String nomeEmpresa;
 	
 	public String getCargo() {
