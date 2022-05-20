@@ -9,6 +9,6 @@ import com.pcdjob.model.vaga.Salario;
 
 @Repository
 public interface SalarioRepository extends JpaRepository<Salario, Long>{
-	Optional<Salario> findBySalarioAndVisivel(String salario, int statuSalario);
+	Optional<Salario> findBySalarioAndVisivel(Float salario, int statuSalario);
 
 }

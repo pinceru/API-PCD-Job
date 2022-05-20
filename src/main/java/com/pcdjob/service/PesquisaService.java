@@ -16,6 +16,7 @@ import com.pcdjob.model.TipoDeficiencia;
 import com.pcdjob.model.empresa.EmpresaEntity;
 import com.pcdjob.model.vaga.FormacaoDesejada;
 import com.pcdjob.model.vaga.LocalTrabalho;
+import com.pcdjob.model.vaga.Salario;
 import com.pcdjob.model.vaga.TipoContrato;
 import com.pcdjob.model.vaga.VagaEntity;
 import com.pcdjob.repository.CidadeRepository;
@@ -24,6 +25,7 @@ import com.pcdjob.repository.DeficienciaRepository;
 import com.pcdjob.repository.EmpresaRepository;
 import com.pcdjob.repository.EstadoRepository;
 import com.pcdjob.repository.LocalTrabalhoRepository;
+import com.pcdjob.repository.SalarioRepository;
 import com.pcdjob.repository.SuporteRepository;
 import com.pcdjob.repository.TipoContratoRepository;
 import com.pcdjob.repository.TipoDeficienciaRepository;
@@ -63,6 +65,9 @@ public class PesquisaService {
 	
 	@Autowired
 	private LocalTrabalhoRepository localRepository;
+	
+	@Autowired
+	private SalarioRepository salarioRepository;
 	
 	public List<VagaEntity> filtraPesquisa(String palavra) {
 		List<VagaEntity> vagas = new ArrayList<>();
@@ -153,12 +158,14 @@ public class PesquisaService {
 		
 		Optional<Estado> estado = estadoRepository.findById(idEstado);
 		List<Cidade> cidades =  estado.get().getCidade();
-		while(indiceCidade < cidades.size()) {
-			List<LocalTrabalho> locais = localRepository.findByCidade(cidades.get(indiceCidade));
-			if(locais.size() > 0) {
-				retornoVagas.addAll(listarVagasPorLocalTrabalho(0, locais));
+		if(cidades.size() > 0) {
+			while(indiceCidade < cidades.size()) {
+				List<LocalTrabalho> locais = localRepository.findByCidade(cidades.get(indiceCidade));
+				if(locais.size() > 0) {
+					retornoVagas.addAll(listarVagasPorLocalTrabalho(0, locais));
+				}
+				indiceCidade++;
 			}
-			indiceCidade++;
 		}
 		return retornoVagas;
 	}
@@ -166,11 +173,18 @@ public class PesquisaService {
 	private List<VagaEntity> listarVagasPorLocalTrabalho(int indice, List<LocalTrabalho> locais) {
 		System.out.println("A cidade do local de trabalho é exatamente: " + locais.get(indice).getCidade().getCidade());
 		List<VagaEntity> vagas = new ArrayList<>();
-		while(indice < locais.size()) {
-			VagaEntity vaga = locais.get(indice).getVaga().get(indice);
-			vagas.add(vaga);
-			indice++;
+		if(locais.size() > 0) {
+			while(indice < locais.size()) {
+				VagaEntity vaga = locais.get(indice).getVaga().get(indice);
+				vagas.add(vaga);
+				indice++;
+			}
 		}
 		return vagas;
 	}
+	
+//	public List<VagaEntity> filtrarPorSalario(int comparador) {
+//		
+//	}
+	
 }

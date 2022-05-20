@@ -32,8 +32,8 @@ public class VagaForm {
 	private String requisitos;
 	@NotNull @NotEmpty
 	private Long tipoContrato;
-	@NotNull @NotEmpty @Length(min = 4, max = 15)
-	private String salario;
+	@NotNull 
+	private Float salario;
 	@NotNull @NotEmpty 
 	private int statusSalario;
 	@NotEmpty
@@ -94,10 +94,10 @@ public class VagaForm {
 	public void setTipoContrato(Long tipoContrato) {
 		this.tipoContrato = tipoContrato;
 	}
-	public String getSalario() {
+	public Float getSalario() {
 		return salario;
 	}
-	public void setSalario(String salario) {
+	public void setSalario(Float salario) {
 		this.salario = salario;
 	}
 	public List<Long> getSuporte() {

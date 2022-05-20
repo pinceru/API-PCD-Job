@@ -53,7 +53,7 @@ public class VagaService {
 		}
 	}
 	
-	public Salario converterSalario(String salario, int status) {
+	public Salario converterSalario(Float salario, int status) {
 		Optional<Salario> optional = salarioRepository.findBySalarioAndVisivel(salario, status);
 		if(optional.isPresent()) {
 			return optional.get();

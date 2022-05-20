@@ -23,8 +23,8 @@ public class AtualizarVagaForm {
 	private String requisitos;
 	@NotNull @NotEmpty
 	private Long tipoContrato;
-	@NotNull @NotEmpty @Length(min = 4, max = 15)
-	private String salario;
+	@NotNull 
+	private Float salario;
 	@NotNull @NotEmpty @Length(max = 1)
 	private int statusSalario;
 	private List<Long> suporte;
@@ -75,10 +75,10 @@ public class AtualizarVagaForm {
 	public void setTipoContrato(Long tipoContrato) {
 		this.tipoContrato = tipoContrato;
 	}
-	public String getSalario() {
+	public Float getSalario() {
 		return salario;
 	}
-	public void setSalario(String salario) {
+	public void setSalario(Float salario) {
 		this.salario = salario;
 	}
 	public List<Long> getSuporte() {

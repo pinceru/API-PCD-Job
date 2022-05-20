@@ -2,7 +2,7 @@ package com.pcdjob.controller.dto.response;
 
 public class ResponseSalario {
 	private Long id;
-	private String salario;
+	private Float salario;
 	private int status;
 	public Long getId() {
 		return id;
@@ -10,10 +10,10 @@ public class ResponseSalario {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getSalario() {
+	public Float getSalario() {
 		return salario;
 	}
-	public void setSalario(String salario) {
+	public void setSalario(Float salario) {
 		this.salario = salario;
 	}
 	public int getStatus() {
@@ -22,7 +22,7 @@ public class ResponseSalario {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	public ResponseSalario(Long id, String salario, int status) {
+	public ResponseSalario(Long id, Float salario, int status) {
 		this.id = id;
 		this.salario = salario;
 		this.status = status;

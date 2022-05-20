@@ -17,12 +17,12 @@ public class Salario {
 	@Column(name = "id_salario")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String salario;
+	private Float salario;
 	private int visivel;
 	@OneToMany(mappedBy = "salario")
 	private List<VagaEntity> vaga;
 	
-	public Salario(String salario, int visivel) {
+	public Salario(Float salario, int visivel) {
 		this.salario = salario;
 		this.visivel = visivel;
 	}
@@ -32,10 +32,10 @@ public class Salario {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getSalario() {
+	public Float getSalario() {
 		return salario;
 	}
-	public void setSalario(String salario) {
+	public void setSalario(Float salario) {
 		this.salario = salario;
 	}
 	public int getVisivel() {
