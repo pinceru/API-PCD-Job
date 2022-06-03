@@ -91,4 +91,8 @@ public class CandidatoVagaService {
 		}
 		return vagaReturn;
 	}
+	
+	public VagaCandidato buscarVagaCandidatoPorVagaECandidato(CandidatoEntity candidato, VagaEntity vaga) {
+		return vagaCandidatoRepository.findByCandidatoAndVaga(candidato, vaga);
+	}
 }
