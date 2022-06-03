@@ -24,7 +24,7 @@ create table tbl_candidato(
 
 create table tbl_foto_candidato(
 	id_foto_candidato int not null auto_increment primary key,
-    foto binary not null,
+    foto longblob not null,
     candidato_id_candidato int not null,
     foreign key(candidato_id_candidato)
     references tbl_candidato(id_candidato)
