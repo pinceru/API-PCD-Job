@@ -16,7 +16,6 @@ import com.pcdjob.model.TipoDeficiencia;
 import com.pcdjob.model.empresa.EmpresaEntity;
 import com.pcdjob.model.vaga.FormacaoDesejada;
 import com.pcdjob.model.vaga.LocalTrabalho;
-import com.pcdjob.model.vaga.Salario;
 import com.pcdjob.model.vaga.TipoContrato;
 import com.pcdjob.model.vaga.VagaEntity;
 import com.pcdjob.repository.CidadeRepository;
@@ -25,7 +24,6 @@ import com.pcdjob.repository.DeficienciaRepository;
 import com.pcdjob.repository.EmpresaRepository;
 import com.pcdjob.repository.EstadoRepository;
 import com.pcdjob.repository.LocalTrabalhoRepository;
-import com.pcdjob.repository.SalarioRepository;
 import com.pcdjob.repository.SuporteRepository;
 import com.pcdjob.repository.TipoContratoRepository;
 import com.pcdjob.repository.TipoDeficienciaRepository;
@@ -34,7 +32,6 @@ import com.pcdjob.service.helper.Verificar;
 
 @Service
 public class PesquisaService {
-	
 	
 	@Autowired
 	private VagaRepository vagaRepository;
@@ -66,16 +63,13 @@ public class PesquisaService {
 	@Autowired
 	private LocalTrabalhoRepository localRepository;
 	
-	@Autowired
-	private SalarioRepository salarioRepository;
-	
 	public List<VagaEntity> filtraPesquisa(String palavra) {
 		List<VagaEntity> vagas = new ArrayList<>();
 		
-		Optional<Curso> curso = cursoRepository.findByCurso(palavra);
-		Optional<TipoContrato> tipoContrato = contratoRepository.findByTipoContrato(palavra);
-		List<VagaEntity> vagasTitulo = vagaRepository.findByTitulo(palavra);
-		Optional<EmpresaEntity> empresa = empresaRepository.findByNome(palavra);
+		Optional<Curso> curso = cursoRepository.findByCursoContaining(palavra);
+		Optional<TipoContrato> tipoContrato = contratoRepository.findByTipoContratoContaining(palavra);
+		List<VagaEntity> vagasTitulo = vagaRepository.findByTituloContaining(palavra);
+		Optional<EmpresaEntity> empresa = empresaRepository.findByNomeContaining(palavra);
 		
 		if(Verificar.verificarOptional(curso)) {
 			List<FormacaoDesejada> formacao = curso.get().getFormacaoDesejada();
@@ -171,20 +165,15 @@ public class PesquisaService {
 	}
 	
 	private List<VagaEntity> listarVagasPorLocalTrabalho(int indice, List<LocalTrabalho> locais) {
-		System.out.println("A cidade do local de trabalho é exatamente: " + locais.get(indice).getCidade().getCidade());
 		List<VagaEntity> vagas = new ArrayList<>();
 		if(locais.size() > 0) {
 			while(indice < locais.size()) {
-				VagaEntity vaga = locais.get(indice).getVaga().get(indice);
-				vagas.add(vaga);
+				LocalTrabalho local = locais.get(indice);
+				vagas.addAll(local.getVaga());
 				indice++;
 			}
 		}
 		return vagas;
 	}
-	
-//	public List<VagaEntity> filtrarPorSalario(int comparador) {
-//		
-//	}
-	
+
 }

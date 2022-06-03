@@ -10,4 +10,6 @@ public interface EmpresaRepository extends JpaRepository<EmpresaEntity, Long> {
 	Optional<EmpresaEntity> findByEmailEmpresaEmail(String email);
 
 	Optional<EmpresaEntity> findByNome(String palavra);
+
+	Optional<EmpresaEntity> findByNomeContaining(String palavra);
 }

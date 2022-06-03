@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.pcdjob.controller.dto.CandidatoAtualizadoDTO;
+import com.pcdjob.controller.dto.EnderecoCandidatoDTO;
 import com.pcdjob.controller.dto.response.ResponseCursoCandidato;
 import com.pcdjob.controller.dto.response.ResponseDeficiencia;
 import com.pcdjob.controller.dto.response.ResponseEmailCandidato;
@@ -130,8 +131,8 @@ public class CandidatoResponseService {
 			List<ResponseCursoCandidato> cursos = converterCursoCandidato(candidatos.get(indice));
 			List<ResponseEmailCandidato> emails = converterEmailCandidato(candidatos.get(indice));
 			List<ResponseTelefoneCandidato> telefones = converterTelefoneCandidato(candidatos.get(indice));
-			
-			CandidatoAtualizadoDTO dto = new CandidatoAtualizadoDTO(candidatos.get(indice), emails, telefones, deficiencias, experiencias, cursos);
+			EnderecoCandidatoDTO endereco = new EnderecoCandidatoDTO(candidatos.get(indice));
+			CandidatoAtualizadoDTO dto = new CandidatoAtualizadoDTO(candidatos.get(indice), emails, telefones, deficiencias, experiencias, cursos, endereco);
 			dtoList.add(dto);
 			indice++;
 		}

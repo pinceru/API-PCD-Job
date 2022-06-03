@@ -21,5 +21,7 @@ public interface VagaRepository extends JpaRepository<VagaEntity, Long>{
 
 	List<VagaEntity> findByVagaCandidatoCandidatoNot(CandidatoEntity candidato);
 
+	List<VagaEntity> findByTituloContaining(String palavra);
+
 	
 }

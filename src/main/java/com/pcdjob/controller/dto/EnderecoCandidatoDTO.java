@@ -1,5 +1,6 @@
 package com.pcdjob.controller.dto;
 
+import com.pcdjob.model.candidato.CandidatoEntity;
 import com.pcdjob.model.candidato.EnderecoCandidato;
 
 public class EnderecoCandidatoDTO {
@@ -71,6 +72,20 @@ public class EnderecoCandidatoDTO {
 		this.numero = endereco.getNumero();
 		this.rua = endereco.getRua();
 		this.sigla = endereco.getCidade().getEstado().getSigla();
+	}
+	
+	public EnderecoCandidatoDTO(CandidatoEntity candidato) {
+		if(candidato.getEndereco() != null) {
+			EnderecoCandidato endereco = candidato.getEndereco();
+			this.bairro = endereco.getBairro();
+			this.cep = endereco.getCep();
+			this.cidade = endereco.getCidade().getCidade();
+			this.estado = endereco.getCidade().getEstado().getEstado();
+			this.id = endereco.getId();
+			this.numero = endereco.getNumero();
+			this.rua = endereco.getRua();
+			this.sigla = endereco.getCidade().getEstado().getSigla();
+		} 
 	}
 
 }

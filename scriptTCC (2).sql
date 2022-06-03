@@ -12,8 +12,6 @@ create table tbl_candidato(
 	id_candidato int not null auto_increment primary key,
     nome text not null,
     senha text not null,
-    foto_perfil text,
-	banner text,
     curriculo text,
     data_nascimento text,
     nome_social text,
@@ -22,6 +20,14 @@ create table tbl_candidato(
     constraint fk_genero_candidato
     foreign key(id_genero)
     references tbl_genero(id_genero)
+);
+
+create table tbl_foto_candidato(
+	id_foto_candidato int not null auto_increment primary key,
+    foto binary not null,
+    candidato_id_candidato int not null,
+    foreign key(candidato_id_candidato)
+    references tbl_candidato(id_candidato)
 );
 
 create table tbl_telefone_candidato(
@@ -152,12 +158,18 @@ create table tbl_empresa(
     nome text not null,
     senha text not null,
     descricao text,
-    foto_empresa text,
-    banner text,
     area_atuacao_id_area_atuacao int not null,
     constraint fk_area_atuacao_empresa
     foreign key(area_atuacao_id_area_atuacao)
     references tbl_area_atuacao(id_area_atuacao)
+);
+
+create table tbl_foto_empresa(
+	id_foto_empresa int not null auto_increment primary key,
+    foto text not null,
+    empresa_id_empresa int not null,
+    foreign key(empresa_id_empresa)
+    references tbl_empresa(id_empresa)
 );
 
 create table tbl_email_empresa(

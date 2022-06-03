@@ -152,6 +152,7 @@ public class VagaController {
 			@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
 		
 		List<VagaEntity> vagas = new ArrayList<>();
+		List<VagaEntity> vagasNaoRepetidas = new ArrayList<>();
 		if(idDeficiencia == null && idSuporte == null && idCidade == null && idEstado == null) {
 			vagas = vagaRepository.findAll();
 		} else {
@@ -159,14 +160,20 @@ public class VagaController {
 			List<VagaEntity> vagasSuporte = pesquisaService.filtrarPorSuporte(idSuporte);
 			if(idCidade != null) {
 				vagas = pesquisaService.filtrarPorCidade(idCidade);
-			} else if(idEstado != null){
+			} else if(idEstado != null && idCidade == null){
 				vagas = pesquisaService.filtrarPorEstado(idEstado);
 			}
 			vagas.addAll(vagasDeficiencia);
 			vagas.addAll(vagasSuporte);
 		}
 		
-		List<VagaSalvaDTO> dtos = vagaResponseService.listarVagas(vagas);
+		for(VagaEntity vaga : vagas) {
+			if(!vagasNaoRepetidas.contains(vaga)) {
+				vagasNaoRepetidas.add(vaga);
+			}
+		}
+		
+		List<VagaSalvaDTO> dtos = vagaResponseService.listarVagas(vagasNaoRepetidas);
 		return vagaResponseService.paginarVagasDTO(dtos, paginacao);
 	}
 	

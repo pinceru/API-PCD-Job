@@ -22,4 +22,6 @@ public interface CursoRepository extends JpaRepository<Curso, Long> {
 	
 	Optional<Curso> findByCurso(String palavra);
 
+	Optional<Curso> findByCursoContaining(String palavra);
+
 }

@@ -12,4 +12,6 @@ public interface TipoContratoRepository extends JpaRepository<TipoContrato, Long
 
 	Optional<TipoContrato> findByTipoContrato(String palavra);
 
+	Optional<TipoContrato> findByTipoContratoContaining(String palavra);
+
 }

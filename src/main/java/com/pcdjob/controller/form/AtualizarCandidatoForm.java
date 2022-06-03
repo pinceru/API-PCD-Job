@@ -25,7 +25,9 @@ public class AtualizarCandidatoForm {
 	private List<String> telefone;
 	@NotEmpty
 	private List<String> email;
-
+	@Length(max = 350)
+	private String curriculo;
+	
 	public String getNome() {
 		return nome;
 	}
@@ -74,13 +76,22 @@ public class AtualizarCandidatoForm {
 	public void setEmail(List<String> email) {
 		this.email = email;
 	}
-
+	public String getCurriculo() {
+		return curriculo;
+	}
+	public void setCurriculo(String curriculo) {
+		this.curriculo = curriculo;
+	}
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
 	public CandidatoEntity converter(CandidatoEntity candidato, Genero generoObj) {
 		candidato.setNome(this.nome);
 		candidato.setDataNascimento(this.dataNascimento);
 		candidato.setNomeSocial(this.nomeSocial);
 		candidato.setInformacoes(this.informacoes);
 		candidato.setGenero(generoObj);
+		candidato.setCurriculo(curriculo);
 		return candidato;
 	}
 }

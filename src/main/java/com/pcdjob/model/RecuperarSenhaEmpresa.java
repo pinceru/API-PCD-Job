@@ -40,6 +40,10 @@ public class RecuperarSenhaEmpresa {
 		this.email = email;
 	}
 	
+	public RecuperarSenhaEmpresa() {
+		
+	}
+	
 	public RecuperarSenhaEmpresa(Integer codigo, EmailEmpresa email) {
 		this.email = email;
 		this.codigo = codigo;

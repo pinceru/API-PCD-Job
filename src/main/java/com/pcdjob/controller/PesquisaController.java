@@ -40,7 +40,6 @@ public class PesquisaController {
 	@CrossOrigin
 	@GetMapping(path = "/", produces = "application/json")
 	public Page<VagaSalvaDTO> pesquisarCandidato(@RequestParam(required = true) String palavra, @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
-		System.out.println("A PALAVRA SALVA É : " + palavra);
 		List<VagaEntity> vagas = pesquisaService.filtraPesquisa(palavra);
 		List<VagaSalvaDTO> dtos = vagaResponseService.listarVagas(vagas);
 		return vagaResponseService.paginarVagasDTO(dtos, paginacao);

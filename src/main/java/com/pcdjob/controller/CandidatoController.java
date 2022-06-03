@@ -1,6 +1,7 @@
 package com.pcdjob.controller;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -58,6 +60,7 @@ import com.pcdjob.service.DeficienciaService;
 import com.pcdjob.service.EnderecoCandidatoService;
 import com.pcdjob.service.EnderecoService;
 import com.pcdjob.service.ExperienciaProfissionalService;
+import com.pcdjob.service.FiltroEmpresaService;
 import com.pcdjob.service.helper.EmailException;
 
 @RestController
@@ -100,6 +103,9 @@ public class CandidatoController {
 	@Autowired
 	private EnderecoCandidatoService enderecoCandidatoService;
 	
+	@Autowired
+	private FiltroEmpresaService filtroEmpresaService;
+	
 	@CrossOrigin
 	@PostMapping(path = "/cadastrar", produces = "application/json")
 	@Transactional
@@ -141,9 +147,9 @@ public class CandidatoController {
 			List<ResponseCursoCandidato> responseCurso = candidatoReponseService.converterCursoCandidato(candidatoSalvo);
 			List<ResponseTelefoneCandidato> responseTelefone = candidatoReponseService.converterTelefoneCandidato(candidatoSalvo);
 			List<ResponseEmailCandidato> responseEmail = candidatoReponseService.converterEmailCandidato(candidatoSalvo);
-			
+			EnderecoCandidatoDTO endereco = new EnderecoCandidatoDTO(candidato);
 			URI uri = uriBuilder.path("/candidato/{id}").buildAndExpand(candidato.getId()).toUri();
-			return ResponseEntity.created(uri).body(new CandidatoAtualizadoDTO(candidato, responseEmail, responseTelefone, responseDeficiencia, responseExperiencia, responseCurso));
+			return ResponseEntity.created(uri).body(new CandidatoAtualizadoDTO(candidato, responseEmail, responseTelefone, responseDeficiencia, responseExperiencia, responseCurso, endereco));
 		} catch(Exception e) {
 			System.out.println("Houve um problema em " + e.getClass());
 			return ResponseEntity.status(500).build();
@@ -153,8 +159,22 @@ public class CandidatoController {
 	@CrossOrigin
 	@GetMapping(path = "/listar", produces = "application/json")
 	@Transactional
-	public Page<CandidatoAtualizadoDTO> listarTodos(@PageableDefault(sort = "deficienciaCandidato", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
-		List<CandidatoEntity> candidatos = candidatoRepository.findAll();
+	public Page<CandidatoAtualizadoDTO> listarTodos(@RequestParam(required = false) Long idDeficiencia, @RequestParam(required = false) Long idCidade, @RequestParam(required = false) Long idEstado,
+			@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
+		List<CandidatoEntity> candidatos = new ArrayList<>();
+		
+		if(idDeficiencia == null && idCidade == null) {
+			candidatos = candidatoRepository.findAll();
+		} else {
+			List<CandidatoEntity> candidatosDeficiencia = filtroEmpresaService.filtrarPorDeficiencia(idDeficiencia);
+			if(idCidade != null) {
+				candidatos = filtroEmpresaService.filtrarPorCidade(idCidade);
+			} else if(idEstado != null) {
+				candidatos = filtroEmpresaService.filtrarPorEstado(idEstado);
+			}
+			candidatos.addAll(candidatosDeficiencia);
+		}
+		
 		List<CandidatoAtualizadoDTO> dtos = candidatoReponseService.listarCandidatos(candidatos);
 		return candidatoReponseService.paginarCandidatosDTO(dtos, paginacao);
 	}
@@ -169,9 +189,9 @@ public class CandidatoController {
 		List<ResponseCursoCandidato> responseCurso = candidatoReponseService.converterCursoCandidato(candidato);
 		List<ResponseTelefoneCandidato> responseTelefone = candidatoReponseService.converterTelefoneCandidato(candidato);
 		List<ResponseEmailCandidato> responseEmail = candidatoReponseService.converterEmailCandidato(candidato);
-		
+		EnderecoCandidatoDTO endereco = new EnderecoCandidatoDTO(candidato);
 		if(candidato != null) {
-			return ResponseEntity.ok(new CandidatoAtualizadoDTO(candidato, responseEmail, responseTelefone, responseDeficiencia, responseExperiencia, responseCurso));
+			return ResponseEntity.ok(new CandidatoAtualizadoDTO(candidato, responseEmail, responseTelefone, responseDeficiencia, responseExperiencia, responseCurso, endereco));
 		} else {
 			return ResponseEntity.notFound().build();
 		}

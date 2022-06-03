@@ -16,6 +16,7 @@ public class CandidatoAtualizadoDTO {
 	private String genero;
 	private String dataNascimento;
 	private String informacoes;
+	private String curriculo;
 	private List<ResponseEmailCandidato> email;
 	private List<ResponseTelefoneCandidato> telefone;
 	private List<ResponseDeficiencia> deficiencia;
@@ -95,13 +96,19 @@ public class CandidatoAtualizadoDTO {
 	public void setEndereco(EnderecoCandidatoDTO endereco) {
 		this.endereco = endereco;
 	}
-
-
+	public String getCurriculo() {
+		return curriculo;
+	}
+	public void setCurriculo(String curriculo) {
+		this.curriculo = curriculo;
+	}
+	
 	public CandidatoAtualizadoDTO(CandidatoEntity candidato, List<ResponseEmailCandidato> emails, List<ResponseTelefoneCandidato> telefones,
-			List<ResponseDeficiencia> deficiencias, List<ResponseExperienciaProfissional> experiencia, List<ResponseCursoCandidato> cursos) {
+			List<ResponseDeficiencia> deficiencias, List<ResponseExperienciaProfissional> experiencia, List<ResponseCursoCandidato> cursos, EnderecoCandidatoDTO endereco) {
 		this.id = candidato.getId();
 		this.nome = candidato.getNome();
 		this.nomeSocial = candidato.getNomeSocial();
+		this.curriculo = candidato.getCurriculo();
 		this.genero = candidato.getGenero().getGenero();
 		this.dataNascimento = candidato.getDataNascimento();
 		this.informacoes = candidato.getInformacoes();
@@ -110,5 +117,6 @@ public class CandidatoAtualizadoDTO {
 		this.deficiencia = deficiencias;
 		this.experiencia = experiencia;
 		this.curso = cursos;
-	}
+		this.endereco = endereco;
+	} 
 }

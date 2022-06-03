@@ -25,11 +25,10 @@ public class CandidatoEntity {
 	private Long id;
 	private String nome;
 	private String senha;
-	private String fotoPerfil;
-	private String banner;
 	private String dataNascimento;
 	private String nomeSocial;
 	private String informacoes;
+	private String curriculo;
 	
 	@JoinColumn(name = "id_genero")
 	@ManyToOne
@@ -58,6 +57,12 @@ public class CandidatoEntity {
 		this.genero = genero;
 	}
 	
+	public String getCurriculo() {
+		return curriculo;
+	}
+	public void setCurriculo(String curriculo) {
+		this.curriculo = curriculo;
+	}
 	public List<EmailCandidato> getEmailCandidato() {
 		return emailCandidato;
 	}
@@ -94,18 +99,6 @@ public class CandidatoEntity {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	public String getFotoPerfil() {
-		return fotoPerfil;
-	}
-	public void setFotoPerfil(String fotoPerfil) {
-		this.fotoPerfil = fotoPerfil;
-	}
-	public String getBanner() {
-		return banner;
-	}
-	public void setBanner(String banner) {
-		this.banner = banner;
-	}
 	public String getDataNascimento() {
 		return dataNascimento;
 		}
@@ -127,27 +120,21 @@ public class CandidatoEntity {
 	public List<ExperienciaProfissional> getExperienciaProfissional() {
 		return experienciaProfissional;
 	}
-
 	public void setExperienciaProfissional(List<ExperienciaProfissional> experienciaProfissional) {
 		this.experienciaProfissional = experienciaProfissional;
 	}
-
 	public List<CursoCandidato> getCursoCandidato() {
 		return cursoCandidato;
 	}
-
 	public void setCursoCandidato(List<CursoCandidato> cursoCandidato) {
 		this.cursoCandidato = cursoCandidato;
 	}
-
 	public EnderecoCandidato getEndereco() {
 		return endereco;
 	}
-
 	public void setEndereco(EnderecoCandidato endereco) {
 		this.endereco = endereco;
 	}
-
 	public Genero getGenero() {
 		return genero;
 	}
@@ -155,6 +142,4 @@ public class CandidatoEntity {
 		this.genero = genero;
 	}
 
-
-	
 }

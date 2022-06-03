@@ -40,6 +40,10 @@ public class RecuperarSenhaCandidato {
 		this.email = email;
 	}
 	
+	public RecuperarSenhaCandidato() {
+		
+	}
+	
 	public RecuperarSenhaCandidato(Integer codigo, EmailCandidato email) {
 		this.email = email;
 		this.codigo = codigo;
