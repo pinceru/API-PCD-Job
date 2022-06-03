@@ -270,10 +270,13 @@ public class VagaController {
 	}
 	
 	@CrossOrigin
-	@PutMapping(path = "/candidatar/{id}", produces = "application/json")
+	@PutMapping(path = "/candidatar", produces = "application/json")
 	@Transactional
-	public ResponseEntity<CandidatoVagaDTO> atualizarStatus(@PathVariable Long id, @RequestParam(required = true) Long idStatus, UriComponentsBuilder uriBuilder) {
-		VagaCandidato vagaCandidato = candidatoVagaService.buscarVagaCandidatoID(id);
+	public ResponseEntity<CandidatoVagaDTO> atualizarStatus(@RequestParam(required = true) Long idStatus, @RequestParam(required = true) Long idCandidato, @RequestParam(required = true) Long idVaga,
+			UriComponentsBuilder uriBuilder) {
+		CandidatoEntity candidato = candidatoService.buscarCandidatoID(idCandidato);
+		VagaEntity vaga = vagaService.buscarVagaID(idVaga);
+		VagaCandidato vagaCandidato = candidatoVagaService.buscarVagaCandidatoPorVagaECandidato(candidato, vaga);
 		StatusVaga status = vagaService.buscarStatusID(idStatus);
 		VagaCandidato vagaCandidatoAtualizado = candidatoVagaService.atualizarVagaCandidato(vagaCandidato, status);
 		VagaCandidato vagaCandidatoSalvo = vagaCandidatoRepository.save(vagaCandidatoAtualizado);
@@ -342,7 +345,7 @@ public class VagaController {
 	@CrossOrigin
 	@GetMapping(path = "/listar/{id}", produces = "application/json")
 	@Transactional
-	public Page<VagaSalvaDTO> listarVagasCandidato(@PathVariable Long id, @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
+	public Page<VagaSalvaDTO> listarVagasQueNaoTiveramInteracaoComUmCandidatoEspecifico(@PathVariable Long id, @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
 		CandidatoEntity candidato = candidatoService.buscarCandidatoID(id);
 		if(candidato != null) {
 			List<VagaEntity> vagas = candidatoVagaService.buscarVagas(candidato);
