@@ -166,7 +166,7 @@ create table tbl_empresa(
 
 create table tbl_foto_empresa(
 	id_foto_empresa int not null auto_increment primary key,
-    foto text not null,
+    foto longblob not null,
     empresa_id_empresa int not null,
     foreign key(empresa_id_empresa)
     references tbl_empresa(id_empresa)
