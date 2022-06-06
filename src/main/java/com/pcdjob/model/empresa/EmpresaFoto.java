@@ -15,7 +15,7 @@ public class EmpresaFoto {
 	@Column(name = "id_foto_empresa")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String foto;
+	private byte[] foto;
 	@OneToOne
 	private EmpresaEntity empresa;
 	
@@ -25,10 +25,10 @@ public class EmpresaFoto {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getFoto() {
+	public byte[] getFoto() {
 		return foto;
 	}
-	public void setFoto(String foto) {
+	public void setFoto(byte[] foto) {
 		this.foto = foto;
 	}
 	public EmpresaEntity getEmpresa() {
@@ -42,7 +42,7 @@ public class EmpresaFoto {
 		
 	}
 	
-	public EmpresaFoto(String foto, EmpresaEntity empresa) {
+	public EmpresaFoto(byte[] foto, EmpresaEntity empresa) {
 		this.foto = foto;
 		this.empresa = empresa;
 	}
