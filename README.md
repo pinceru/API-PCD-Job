@@ -1,3 +1,5 @@
+#### ```parado```
+
 # API-PCD-Job
 
 ##
@@ -13,13 +15,13 @@
 #### O candidato pode se cadastrar no sistema para procurar por vagas direcionadas especificamente para eles. Além de buscar por suas preferencias.
 #### A empresa, por sua vez, pode se cadastrar e cadastrar vagas direcionadas a pessoas com determinado tipo de deficiencia. Informando os detalhes da vaga.
 #### A empresa pode informar detalhes como:
-##### - Tipo de suporte oferecido.
-##### - Salário.
-##### - PCD para qual a vaga é voltada.
-##### - Entre outros.
+##### - ```Tipo de suporte oferecido.```
+##### - ```Salário.```
+##### - ```PCD para qual a vaga é voltada.```
+##### - ```Entre outros.```
 
 ## Requisitos:
-##### - Java 1.8
-##### - MySQL
+##### - ```Java 1.8```
+##### - ```MySQL```
 
 
